@@ -1,0 +1,47 @@
+@charset "UTF-8";
+/* 头部登入hd-login */
+.userA {
+  display: block;
+  padding: 0px 30px;
+  line-height: 48px;
+  float: right;
+  font-weight: bold;
+  color: #fff; }
+  .userA span {
+    font-size: 14px;
+    margin-top: -2px;
+    margin-left: 10px; }
+
+/* 侧栏icon */
+.nav-sidebar span {
+  margin-left: 10px; }
+
+/* 用户模块 */
+.prosi h1 {
+  line-height: 50px;
+  padding-left: 70px;
+  font-size: 16px;
+  color: #fff; }
+.prosi .prosi-lis {
+  width: 50%;
+  float: left;
+  margin: 20px 0; }
+  .prosi .prosi-lis span {
+    display: block;
+    width: 100%;
+    text-align: center;
+    color: #fff; }
+
+.user {
+  width: 53px;
+  height: 53px;
+  float: left;
+  padding: 4px;
+  border: 1px solid #b9babe;
+  border-radius: 50%; }
+  .user img {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%; }
+
+/*# sourceMappingURL=style.css.map */
