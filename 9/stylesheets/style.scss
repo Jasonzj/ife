@@ -1,3 +1,7 @@
+body{
+  background: #ededec;
+}
+
 /* 头部登入hd-login */
 .userA{
   display: block;
@@ -52,3 +56,62 @@
     }
   }
 
+
+/* main(主体) */
+    $fontColor: #aaa;
+    $borderColor: #cacdd1;
+    /* m-catalog(主题模块) */
+    .m-catalog{
+      height: 30px;
+      background: #fff;
+    }
+    .m-catalogBox{
+      padding: 5px 20px;
+      color: $fontColor;
+      a{
+        padding: 0 10px;
+        color: $fontColor;
+        text-decoration: none;
+        &.link{color: #6898c2;}
+      }
+    }
+
+
+    /* g-main(内容模块) */
+    .g-main{
+      padding: 20px 60px;
+      .m-search{
+        padding: 23px 40px 18px 40px;
+        border: 1px solid $borderColor;
+        background: #fff;
+      }
+      .m-searchBox{
+        float: left;
+
+        label{
+          margin: 0 15px 0 10px;
+          color: $fontColor;
+          font-weight: normal;
+        }
+        p{
+          margin-left: 30px;
+        }
+        select{
+          height: 26px;
+          border: 1px solid $borderColor;
+        }
+        input{border: 1px solid $borderColor;}
+        .selects1{
+          width: 71px;
+        }
+        .selects2{
+          width: 121px;
+        }
+
+      }
+      .search-Btn{
+
+        width: 70px;
+        margin: 15px 0 0 30px;
+      }
+    }

@@ -1,4 +1,7 @@
 @charset "UTF-8";
+body {
+  background: #ededec; }
+
 /* 头部登入hd-login */
 .userA {
   display: block;
@@ -43,5 +46,49 @@
     height: 100%;
     width: 100%;
     border-radius: 50%; }
+
+/* main(主体) */
+/* m-catalog(主题模块) */
+.m-catalog {
+  height: 30px;
+  background: #fff; }
+
+.m-catalogBox {
+  padding: 5px 20px;
+  color: #aaa; }
+  .m-catalogBox a {
+    padding: 0 10px;
+    color: #aaa;
+    text-decoration: none; }
+    .m-catalogBox a.link {
+      color: #6898c2; }
+
+/* g-main(内容模块) */
+.g-main {
+  padding: 20px 60px; }
+  .g-main .m-search {
+    padding: 23px 40px 18px 40px;
+    border: 1px solid #cacdd1;
+    background: #fff; }
+  .g-main .m-searchBox {
+    float: left; }
+    .g-main .m-searchBox label {
+      margin: 0 15px 0 10px;
+      color: #aaa;
+      font-weight: normal; }
+    .g-main .m-searchBox p {
+      margin-left: 30px; }
+    .g-main .m-searchBox select {
+      height: 26px;
+      border: 1px solid #cacdd1; }
+    .g-main .m-searchBox input {
+      border: 1px solid #cacdd1; }
+    .g-main .m-searchBox .selects1 {
+      width: 71px; }
+    .g-main .m-searchBox .selects2 {
+      width: 121px; }
+  .g-main .search-Btn {
+    width: 70px;
+    margin: 15px 0 0 30px; }
 
 /*# sourceMappingURL=style.css.map */

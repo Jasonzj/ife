@@ -1603,8 +1603,8 @@ pre code {
   }
 }
 .container-fluid {
-  padding-right: 30px;
-  padding-left: 30px;
+  /*padding-right: 30px;*/
+  /*padding-left: 30px;*/
   margin-right: auto;
   margin-left: auto;
 }
@@ -1943,7 +1943,7 @@ pre code {
     width: 91.66666667%;
   }
   .col-md-10 {
-    width: 83.33333333%;
+    width: 83.63333333%;
   }
   .col-md-9 {
     width: 75%;
