@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .f-cb:after,.f-cbli li:after{display:block;clear:both;visibility:hidden;height:0;overflow:hidden;content:".";}
+        .f-cb,.f-cbli li{zoom:1;}
+        body,div,dl,dt,dd,ul,li,h1,h2,h3,h4,h5,h6,input,form,a,p,textarea{
+            margin: 0;
+            padding: 0;
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        }
+        ol,ul,li{
+            list-style: none;
+        }
+        a{
+            text-decoration: none;
+            display: block;
+        }
+        main{
+            width: 500px;
+            margin: 50px auto;
+            padding: 40px;
+            border:1px solid #ccc;
+            background: #eee;
+        }
+        ul{
+            margin-top: 30px;
+        }
+        ul li{
+            float: left;
+            padding: 20px;
+            margin: 5px;
+            background: #fff;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="inputBox">
+            <input type="text" id="inpt">
+            <button id="left-into">左侧入</button>
+            <button id="right-into">右侧入</button>
+            <button id="left-out">左侧出</button>
+            <button id="right-out">右侧出</button>
+        </div>
+
+        <ul id="ulBox" class="f-cb">
+            <li>10</li>
+            <li>3</li>
+            <li>7</li>
+            <li>12</li>
+            <li>11</li>
+            <li>30</li>
+        </ul>
+    </main>
+
+    <script>
+        var leftinto = document.getElementById('left-into');
+        var rightinto = document.getElementById('right-into');
+        var leftout = document.getElementById('left-out');
+        var rightout = document.getElementById('right-out');
+        var inpt = document.getElementById('inpt');
+        var ulBox = document.getElementById('ulBox');
+
+        (function () {
+            leftinto.onclick = function () {
+                if(inpt.value != ""){
+                    var li = document.createElement('li');
+                    var txt = document.createTextNode(inpt.value);
+                    li.appendChild(txt);
+                    ulBox.insertBefore(li,ulBox.childNodes[0]);
+                }
+                else{
+                    alert('您没有输入内容')
+                }
+            }
+            rightinto.onclick = function () {
+                if(inpt.value != ""){
+                    var li = document.createElement('li');
+                    var txt = document.createTextNode(inpt.value);
+                    li.appendChild(txt);
+                    ulBox.appendChild(li);
+                }
+                else{
+                    alert('您没有输入内容')
+                }
+            }
+            leftout.onclick = function () {
+                if(ulBox.firstChild != null){ //判断第一个元素是不是空
+                    if(ulBox.firstChild.nodeType != 1) {   //1代表元素节点 2代表属性节点 3代表文本节点
+                        ulBox.removeChild(ulBox.firstChild);
+
+                    }
+                    ulBox.removeChild(ulBox.firstChild);
+                }
+            }
+            rightout.onclick = function () {
+                if(ulBox.firstChild != null){ //判断第一个元素是不是空
+                    if(ulBox.firstChild.nodeType != 1) {   //1代表元素节点 2代表属性节点 3代表文本节点
+                        ulBox.removeChild(ulBox.lastChild);
+
+                    }
+                    ulBox.removeChild(ulBox.lastChild);
+                }
+
+            }
+        })();
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 01</title>
+</head>
+<body>
+
+<ul id="source">
+    <li>北京空气质量：<b>90</b></li>
+    <li>上海空气质量：<b>70</b></li>
+    <li>天津空气质量：<b>80</b></li>
+    <li>广州空气质量：<b>50</b></li>
+    <li>深圳空气质量：<b>40</b></li>
+    <li>福州空气质量：<b>32</b></li>
+    <li>成都空气质量：<b>90</b></li>
+</ul>
+
+<ul id="resort">
+    <!--
+    <li>第一名：北京空气质量：<b>90</b></li>
+    <li>第二名：北京空气质量：<b>90</b></li>
+    <li>第三名：北京空气质量：<b>90</b></li>
+     -->
+
+</ul>
+
+<button id="sort-btn">排序</button>
+
+<script type="text/javascript">
+
+    /**
+     * getData方法
+     * 读取id为source的列表，获取其中城市名字及城市对应的空气质量
+     * 返回一个数组，格式见函数中示例
+     */
+    function getData() {
+        /*
+         coding here
+         */
+
+        /*
+         data = [
+         ["北京", 90],
+         ["北京", 90]
+         ……
+         ]
+         */
+        var source = document.getElementById('source').getElementsByTagName('li');;
+        var data = new Array();  //创建个一维数组
+        for(var i = 0; i < source.length; i++){
+            data[i] = new Array();  //此时是个二维数组
+            data[i][0] = source[i].innerHTML.slice(0,2);  //因为innerHTML都是string类型，利用slice裁剪字符串。
+            data[i][1] = Number(source[i].getElementsByTagName('b')[0].innerHTML); //getElementsByTagName('b')是数组组所以要带[0]，用Number转换为数值类型。
+
+        }
+        return data;
+    }
+
+    /**
+     * sortAqiData
+     * 按空气质量对data进行从小到大的排序
+     * 返回一个排序后的数组
+     */
+    function sortAqiData(data) {
+        data.sort(function(a,b){ //利用数组sort函数（b - a）从小到大排序
+           return a[1] - b[1];
+        });
+        return data;
+    }
+
+    /**
+     * render
+     * 将排好序的城市及空气质量指数，输出显示到id为resort的列表中
+     * 格式见ul中的注释的部分
+     */
+    function render(data) {
+        var exp = document.getElementById('resort');
+        var ranking = ["一","二","三","四","五","六","七"];
+        data.forEach(function (v, i, a) {       //通过forEach循环遍历数组，参数为一个回调函数，当前元素，元素索引，整个数组
+            var li = document.createElement('li');
+            var b = document.createElement('b');
+            li.innerHTML = "第" +  ranking[i] + "名： " + a[i][0] + "空气质量：";
+            b.innerHTML = a[i][1];
+            li.appendChild(b);
+            exp.append(li);
+        });
+    }
+
+    function btnHandle() {
+        var aqiData = getData();
+        aqiData = sortAqiData(aqiData);
+        render(aqiData);
+    }
+
+    function init() {
+        // 在这下面给sort-btn绑定一个点击事件，点击时触发btnHandle函数
+        var con = 1;
+        document.getElementById('sort-btn').onclick = function () { if(con){btnHandle(); con = 0} };//限制函数只能执行一次
+    }
+
+    init();
+
+</script>
+</body>
+</html>
