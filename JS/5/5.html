@@ -68,6 +68,9 @@
             color:#000;
             text-align:center;
         }
+        #btns{
+            width: 205px;
+        }
     </style>
 </head>
 <body>
@@ -169,17 +172,17 @@
         for(var i = 0; i < arr.length; i++){
             var smallBox = document.createElement("div");
             smallBox.className = "small-box";
-            smallBox.style.height = arr[i] * 3 + 'px';
-            smallBox.style.backgroundColor = "hsl(" + Math.floor(arr[i] * 2.5) +",70%,80%)";
+            smallBox.style.height = arr[i] * 3 + 'px';    //生成高度等于自身值*3
+            smallBox.style.backgroundColor = "hsl(" + Math.floor(arr[i] * 2.5) +",70%,80%)";  //生成颜色等于自身*2.5,70%明亮度 80%饱和度
             smallBox.innerText = arr[i];
-            showBox.appendChild(smallBox);
+            showBox.appendChild(smallBox);  //追加在smallBox中
         }
     }
 
     //可视化排序
-    $('btns').onclick = function(event) {
-        var btnClass = event.target.className;
-        switch (btnClass){
+    $('btns').onclick = function(event) {  //这里event通过点击btns里的排序按钮 获取按钮自身
+        var btnClass = event.target.className;         //获取被点击按钮的className
+        switch (btnClass){                              //通过switch判断classname从而判断执行什么排序函数
             case "bubbleSort":
                 var getData = bubbleSort();
                 break;
@@ -190,6 +193,8 @@
                 var getData = insertionSort();
                 break;
         }
+
+        //排序可视化 setInterval
         timeH = setInterval(function(){
             //getData.next()每调用一次, 其值都会改变, 故设一个临时变量存储其值
             var temp = getData.next().value;
@@ -198,8 +203,57 @@
             }else if(temp=="ending"){
                 clearInterval("timeH");
             }
-        },50);
+        },30);
 
+    }
+
+    //输入框验证
+    $("numInput").onblur = function () {
+        var txt = this.value;
+        if(parseInt(txt) == txt){
+            console.log('整数')
+            if(parseInt(txt) < 10){
+                alert('请输入大于10的数字');
+            }
+            else if(parseInt(txt) > 100) {
+                alert('请输入小于100的数字')
+            }
+        }
+        else{
+            console.log('ss')
+        }
+    }
+
+    //左侧入
+    $("left-into").onclick = function () {
+        var txt = $('numInput').value;
+        if(parseInt(txt) == txt && parseInt(txt) > 10 && parseInt(txt) < 100){
+            var num = parseInt(txt);
+            data.unshift(num);
+            showData(data);
+        }
+    }
+
+    //右侧入
+    $("right-into").onclick = function () {
+        var txt = $('numInput').value;
+        if(parseInt(txt) == txt && parseInt(txt) > 10 && parseInt(txt) < 100){
+            var num = parseInt(txt);
+            data.push(num);
+            showData(data);
+        }
+    }
+    
+    //左侧出
+    $("left-out").onclick = function () {
+        data.shift();
+        showData(data);
+    }
+
+    //右侧出
+    $("right-out").onclick = function () {
+        data.pop();
+        showData(data);
     }
 
     //生成数据数组
@@ -211,65 +265,6 @@
         rdData();
         showData(data);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    var inpt = $("inpt");
-//
-//    (function () {
-//        $("left-into").onclick = function () {
-//            if(inpt.value != ""){
-//                var li = document.createElement('li');
-//                var txt = document.createTextNode(inpt.value);
-//                li.appendChild(txt);
-//                ulBox.insertBefore(li,ulBox.childNodes[0]);
-//            }
-//            else{
-//                alert('您没有输入内容')
-//            }
-//        }
-//        $("right-into").onclick = function () {
-//            if(inpt.value != ""){
-//                var li = document.createElement('li');
-//                var txt = document.createTextNode(inpt.value);
-//                li.appendChild(txt);
-//                ulBox.appendChild(li);
-//            }
-//            else{
-//                alert('您没有输入内容')
-//            }
-//        }
-//        $("left-out").onclick = function () {
-//            if(ulBox.firstChild != null){ //判断第一个元素是不是空
-//                if(ulBox.firstChild.nodeType != 1) {   //1代表元素节点 2代表属性节点 3代表文本节点
-//                    ulBox.removeChild(ulBox.firstChild);
-//
-//                }
-//                ulBox.removeChild(ulBox.firstChild);
-//            }
-//        }
-//        $("right-out").onclick = function () {
-//            if(ulBox.firstChild != null){ //判断第一个元素是不是空
-//                if(ulBox.firstChild.nodeType != 1) {   //1代表元素节点 2代表属性节点 3代表文本节点
-//                    ulBox.removeChild(ulBox.lastChild);
-//
-//                }
-//                ulBox.removeChild(ulBox.lastChild);
-//            }
-//
-//        }
-//    })();
 
 </script>
 </body>
