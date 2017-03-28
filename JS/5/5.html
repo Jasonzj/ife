@@ -4,12 +4,23 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-        .f-cb:after,.f-cbli li:after{display:block;clear:both;visibility:hidden;height:0;overflow:hidden;content:".";}
-        .f-cb,.f-cbli li{zoom:1;}
+        .f-cb:after, .f-cbli li:after {
+            display: block;
+            clear: both;
+            visibility: hidden;
+            height: 0;
+            overflow: hidden;
+            content: ".";
+        }
+
+        .f-cb, .f-cbli li {
+            zoom: 1;
+        }
+
         html, body, div, span,
         h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-        a, abbr, acronym, address, big, cite, code,  img, ins, kbd, q, s, samp,  small, strike, strong,
-        dl, dt, dd, ol, ul, li,  fieldset, form, label, legend,
+        a, abbr, acronym, address, big, cite, code, img, ins, kbd, q, s, samp, small, strike, strong,
+        dl, dt, dd, ol, ul, li, fieldset, form, label, legend,
         table, caption, tbody, tfoot, thead, tr, th, td {
             margin: 0;
             padding: 0;
@@ -19,56 +30,68 @@
             vertical-align: baseline;
             background: transparent;
         }
+
         body {
             line-height: 1;
         }
+
         ol, ul {
             list-style: none;
         }
+
         blockquote, q {
             quotes: none;
         }
-        blockquote:before, blockquote:after,  q:before, q:after {
+
+        blockquote:before, blockquote:after, q:before, q:after {
             content: '';
             content: none;
         }
+
         table {
             border-collapse: collapse;
             border-spacing: 0;
         }
+
         /*****************index*******************************/
-        body{
-            width:80%;
-            margin:0 auto;
+        body {
+            width: 80%;
+            margin: 0 auto;
         }
-        fieldset, p{
-            margin:20px auto;
-            text-align:center;
+
+        fieldset, p {
+            margin: 20px auto;
+            text-align: center;
         }
-        .normal{
-            color:#000;
+
+        .normal {
+            color: #000;
         }
-        .warn{
-            color:#e23e3e;
+
+        .warn {
+            color: #e23e3e;
         }
-        .show-box{
-            min-height:350px;
-            display:flex;
-            flex-direction:row;
-            flex-wrap:nowrap;
-            justify-content:center;
-            align-items:flex-end;
+
+        .show-box {
+            min-height: 350px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: flex-end;
         }
-        .small-box{
-            border:1px solid black;
-            margin:0 3px;
-            width:10px;
-            background-color:#ccc;
-            font-size:10px;
-            color:#000;
-            text-align:center;
+
+        .small-box {
+            border: 1px solid black;
+            margin: 0 3px;
+            width: 10px;
+            background-color: #ccc;
+            font-size: 10px;
+            color: #000;
+            text-align: center;
         }
-        #btns{
+
+        #btns {
             width: 205px;
         }
     </style>
@@ -96,7 +119,7 @@
 
 <script type="text/javascript">
     //简化byid
-    function $(id){
+    function $(id) {
         return document.getElementById(id);
     }
 
@@ -105,29 +128,29 @@
     //生成50个随机数给数组
     function rdData() {
         data = [];
-        for(var i = 0; i < 50; i++){
+        for (var i = 0; i < 50; i++) {
             data[i] = Math.floor(Math.random() * 91 + 10);
         }
     }
 
     //数组内两个值互换
-    function swap(arr,index1,index2){
+    function swap(arr, index1, index2) {
         var temp = arr[index1];
         arr[index1] = arr[index2];
         arr[index2] = temp;
     }
 
     //冒泡排序
-    function* bubbleSort(){
-         var arr = data;
-         for(var j = 0; j < arr.length; j++){   //进行len趟选择(循环),第一趟循环会选出最j个最大记录
-             for(var i = 0; i < arr.length - j; i++){       //因为j循环已经拿到了最后的数值，j循环一次拿到一次最大的数值所以减j
-                 if(arr[i] > arr[i+1]){             //比较相邻的数值，如果第一个比第二个大就交换他们。
-                     swap(arr,i,i+1);
-                     yield arr;
-                 }
-             }
-         }
+    function* bubbleSort() {
+        var arr = data;
+        for (var j = 0; j < arr.length; j++) {         //进行len趟选择(循环),第一趟循环会选出最j个最大记录
+            for (var i = 0; i < arr.length - j; i++) { //因为j循环已经拿到了最后的数值，j循环一次拿到一次最大的数值所以减j，j = 已被排序好的数值数量
+                if (arr[i] > arr[i + 1]) {             //比较相邻的数值，如果第一个比第二个大就交换他们。 交换到最后最大数值排在数组最后
+                    swap(arr, i, i + 1);
+                    yield arr;
+                }
+            }
+        }
         return "ending";
     }
 
@@ -135,15 +158,15 @@
     function* selectionSort() {
         var arr = data;
         var len = arr.length, min;
-        for(var i = 0; i <= len ; i++){ //进行len - 1趟选择(循环)，选择第i个最小记录。
+        for (var i = 0; i <= len; i++) { //进行len - 1趟选择(循环)，选择第i个最小记录。
             min = i;
-            for(var j = i + 1; j <= len; j++){      //因为i循环已经拿了最前面的数值 所以j循环复制拿后面的数值和进行对比。
-                if(arr[j] < arr[min]){                 //第一次循环次数的min = 1
+            for (var j = i + 1; j <= len; j++) {      //因为i循环已经拿了最前面的数值 所以j循环复制拿后面的数值和进行对比。
+                if (arr[j] < arr[min]) {                 //第一次循环次数的min = 1
                     min = j;                //选择第i个小记录的下标赋值给min，arr[min]为最小数值
                 }
             }
-            if(i != min){          //与第i个小记录交换  i和min相同代表已经排序完毕
-                swap(arr,i,min);
+            if (i != min) {          //与第i个小记录交换  i和min相同代表已经排序完毕
+                swap(arr, i, min);
             }
             yield arr;
         }
@@ -154,9 +177,9 @@
     function* insertionSort() {
         var arr = data;
         var len = arr.length, value;
-        for(var i = 0; i < len; i++){           //循环len趟，外层循环顺序是从数组的第一位到最后一位
+        for (var i = 0; i < len; i++) {           //循环len趟，外层循环顺序是从数组的第一位到最后一位
             value = arr[i];                     //每趟循环拿到第i的数值赋值给Value
-            for(j = i - 1; j > -1 && arr[j] > value; j--){    //内层顺序是从后往前 j = i - 1会跳过已经排好序的部分。比较后面的数值是否大于前面的数值
+            for (j = i - 1; j > -1 && arr[j] > value; j--) {    //内层顺序是从后往前 j = i - 1会跳过已经排好序的部分。比较后面的数值是否大于前面的数值
                 arr[j + 1] = arr[j];            //满足条件直接交换
                 yield arr;
             }
@@ -169,20 +192,20 @@
     function showData(arr) {
         var showBox = $("showBox");
         showBox.innerHTML = "";
-        for(var i = 0; i < arr.length; i++){
+        for (var i = 0; i < arr.length; i++) {
             var smallBox = document.createElement("div");
             smallBox.className = "small-box";
             smallBox.style.height = arr[i] * 3 + 'px';    //生成高度等于自身值*3
-            smallBox.style.backgroundColor = "hsl(" + Math.floor(arr[i] * 2.5) +",70%,80%)";  //生成颜色等于自身*2.5,70%明亮度 80%饱和度
+            smallBox.style.backgroundColor = "hsl(" + Math.floor(arr[i] * 2.5) + ",70%,80%)";  //生成颜色等于自身*2.5,70%明亮度 80%饱和度
             smallBox.innerText = arr[i];
             showBox.appendChild(smallBox);  //追加在smallBox中
         }
     }
 
     //可视化排序
-    $('btns').onclick = function(event) {  //这里event通过点击btns里的排序按钮 获取按钮自身
+    $('btns').onclick = function (event) {  //这里event通过点击btns里的排序按钮 获取按钮自身
         var btnClass = event.target.className;         //获取被点击按钮的className
-        switch (btnClass){                              //通过switch判断classname从而判断执行什么排序函数
+        switch (btnClass) {                              //通过switch判断classname从而判断执行什么排序函数
             case "bubbleSort":
                 var getData = bubbleSort();
                 break;
@@ -195,31 +218,31 @@
         }
 
         //排序可视化 setInterval
-        timeH = setInterval(function(){
+        timeH = setInterval(function () {
             //getData.next()每调用一次, 其值都会改变, 故设一个临时变量存储其值
             var temp = getData.next().value;
-            if(temp!=undefined && temp!="ending"){
+            if (temp != undefined && temp != "ending") {
                 showData(temp);
-            }else if(temp=="ending"){
+            } else if (temp == "ending") {
                 clearInterval("timeH");
             }
-        },30);
+        }, 30);
 
     }
 
     //输入框验证
     $("numInput").onblur = function () {
         var txt = this.value;
-        if(parseInt(txt) == txt){
+        if (parseInt(txt) == txt) {
             console.log('整数')
-            if(parseInt(txt) < 10){
+            if (parseInt(txt) < 10) {
                 alert('请输入大于10的数字');
             }
-            else if(parseInt(txt) > 100) {
+            else if (parseInt(txt) > 100) {
                 alert('请输入小于100的数字')
             }
         }
-        else{
+        else {
             console.log('ss')
         }
     }
@@ -227,7 +250,7 @@
     //左侧入
     $("left-into").onclick = function () {
         var txt = $('numInput').value;
-        if(parseInt(txt) == txt && parseInt(txt) > 10 && parseInt(txt) < 100){
+        if (parseInt(txt) == txt && parseInt(txt) > 10 && parseInt(txt) < 100) {
             var num = parseInt(txt);
             data.unshift(num);
             showData(data);
@@ -237,13 +260,13 @@
     //右侧入
     $("right-into").onclick = function () {
         var txt = $('numInput').value;
-        if(parseInt(txt) == txt && parseInt(txt) > 10 && parseInt(txt) < 100){
+        if (parseInt(txt) == txt && parseInt(txt) > 10 && parseInt(txt) < 100) {
             var num = parseInt(txt);
             data.push(num);
             showData(data);
         }
     }
-    
+
     //左侧出
     $("left-out").onclick = function () {
         data.shift();
@@ -257,11 +280,11 @@
     }
 
     //生成数据数组
-    $("randomArr").onclick=function(){
+    $("randomArr").onclick = function () {
         rdData();
         showData(data);
     };
-    window.onload = function(){
+    window.onload = function () {
         rdData();
         showData(data);
     }
