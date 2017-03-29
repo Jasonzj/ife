@@ -143,8 +143,8 @@
     //冒泡排序
     function* bubbleSort() {
         var arr = data;
-        for (var j = 0; j < arr.length; j++) {         //进行len趟选择(循环),第一趟循环会选出最j个最大记录
-            for (var i = 0; i < arr.length - j; i++) { //因为j循环已经拿到了最后的数值，j循环一次拿到一次最大的数值所以减j，j = 已被排序好的数值数量
+        for (var j = 0; j < arr.length - 1; j++) {         //进行len趟选择(循环),第一趟循环会选出最j个最大记录
+            for (var i = 0; i < arr.length - 1 - j; i++) { //因为j循环已经拿到了最后的数值，j循环一次拿到一次最大的数值所以减j，j = 已被排序好的数值数量
                 if (arr[i] > arr[i + 1]) {             //比较相邻的数值，如果第一个比第二个大就交换他们。 交换到最后最大数值排在数组最后
                     swap(arr, i, i + 1);
                     yield arr;
@@ -162,7 +162,7 @@
             min = i;
             for (var j = i + 1; j <= len; j++) {      //因为i循环已经拿了最前面的数值 所以j循环复制拿后面的数值和进行对比。
                 if (arr[j] < arr[min]) {                 //第一次循环次数的min = 1
-                    min = j;                //选择第i个小记录的下标赋值给min，arr[min]为最小数值
+                    min = j;                //将最小数的索引保存，选择第i个小记录的下标赋值给min，arr[min]为最小数值
                 }
             }
             if (i != min) {          //与第i个小记录交换  i和min相同代表已经排序完毕
@@ -179,6 +179,7 @@
         var len = arr.length, value;
         for (var i = 0; i < len; i++) {           //循环len趟，外层循环顺序是从数组的第一位到最后一位
             value = arr[i];                     //每趟循环拿到第i的数值赋值给Value
+
             for (j = i - 1; j > -1 && arr[j] > value; j--) {    //内层顺序是从后往前 j = i - 1会跳过已经排好序的部分。比较后面的数值是否大于前面的数值
                 arr[j + 1] = arr[j];            //满足条件直接交换
                 yield arr;
