@@ -223,6 +223,7 @@
         timeH = setInterval(function () {
             //getData.next()每调用一次, 其值都会改变, 故设一个临时变量存储其值
             var temp = getData.next().value;
+            console.log(temp);
             if (temp != undefined && temp != "ending") {
                 showData(temp);
             } else if (temp == "ending") {
