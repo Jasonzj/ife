@@ -7,6 +7,7 @@
 		#output div{
 			display: block;
 			float: left;
+			margin-top: 10px;
 			padding: 5px 10px;
 			margin-right: 15px;
 			text-align: center;
@@ -33,43 +34,34 @@
 				return document.getElementById(id);
 			}
 
-			var arrData = [];
+			var data = [];
 
 			var insertBtn = $('insertBtn');
 			var searchBtn = $('searchBtn');
 			var textArea = $('textArea');
 			var searchInput = $('searchInput');
 
-			
+			function render (str) {
+				$('output').innerHTML = data.map(function (e) {
+					if (str !== undefined) {
+						e = e.replace(new RegExp(str, "g"), "<span class='result'>" + str + "</span>");
+					}
+					return "<div>"+ e +"</div>";
+				}).join('');
+			}
+
+			insertBtn.onclick = function () {
+				var str = textArea.value.trim();
+				data = str.split(/[^0-9a-zA-Z\u4e00-\u9fa5]+/).filter(function (e) {
+					return e.length !== 0;
+				});
+				render();
+			}
 
 			searchBtn.onclick = function () {
 				var str = searchInput.value.trim();
 				render(str);
 			}
-
-			insertBtn.onclick = function () {
-				var str = textArea.value.trim();
-				var data = str.split("/[^0-9a-zA-Z\u4e00-\u9fa5]+/").filter(function (e) {
-					if(e!= null && e.length > 0) {
-						return true;
-					}
-					else{
-						return false;
-					}
-				});
-				arrData = arrData.concat(data)
-				render();
-			}
-
-			function render (searchStr) {
-				$('output').innerHTML = arrData.map(function(index) {
-					if (searchStr !== undefined) {
-						index = index.replace(new RegExp(searchStr, 'g'), "<span class='result'>" + searchStr + "</span>");
-					}
-					return '<div>'+ index + '</div>'
-				}).join('');
-			}
-
 		</script>
 </body>
 </html>
