@@ -13,8 +13,8 @@ var aqiSourceData = {
 function addEvent (element, event, hanlder) {
 	if (element.addEventListener) {
 		element.addEventListener(event, hanlder, false);
-	} else if (ele.attachEvent) {
-		ele.attachEvent("on" + event, hanlder);
+	} else if (element.attachEvent) {
+		element.attachEvent("on" + event, hanlder);
 	} else {
 		element["on" + event] = hanlder;
 	}

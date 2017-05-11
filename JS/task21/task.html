@@ -4,33 +4,40 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<style>
-		#output div{
-			display: block;
-			float: left;
+		#tagBox, #output {
+
+		}
+		.smallbox{
+			display: inline-block;
+			/*float: left;*/
 			margin-top: 10px;
 			padding: 5px 10px;
 			margin-right: 15px;
 			text-align: center;
 			color: #fff;
-			background: #999;
+			background: #1abc9c;
+			cursor: pointer;
+		}
+		.smallbox:hover {
+			background: red;
 		}
 		.tag{
 			margin-bottom: 20px;
 		}
 		.result{
-			background: red;
+			background: #E74C3C;
 		}
 	</style>
 </head>
 <body>
 		<div class="tag">
-			<label for="#"></label>
+			<label for="#">Tag:</label>
 			<input type="text" id="tagInp">
 			<div id="tagBox">
 				
 			</div>
 		</div>
-
+		<label for="#">兴趣/爱好:</label>
 		<div id="like">
 			<textarea id="textArea" cols="30" rows="5" placeholder="请输入字符并用不同符号分隔"></textarea><br>
 			<button id="subLike">确认</button>
