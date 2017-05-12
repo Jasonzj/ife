@@ -14,7 +14,7 @@
 	function Queue (input, output, button) {
 		//公有属性
 		this.input = document.getElementById(input);
-		this.output = document.getElementsByClassName(output)[0];
+		this.output = document.getElementById(output);
 		this.button = document.getElementById(button);
 		this.Regular = /[^0-9a-zA-Z\u4e00-\u9fa5]+/;
 		this.Regular2 = /[&\|\\\*^%'".+_=,;}{?><~`$#@\s/-]/ig;
@@ -78,35 +78,29 @@
  			num = 0;
  		},
 
- 		//添加删除文本
- 		setText: function (e) {
-	 		if (e.target && e.target.nodeName === "SPAN") {	 	
-		 			e.target.textContent = '删除:' + e.target.textContent; 				
-	 		}
- 		},
-
- 		//去除删除文本
- 		delText: function (e) {
-	 		if (e.target && e.target.nodeName === "SPAN") {	
-				e.target.textContent = e.target.textContent.replace('删除:','');
-	 		}
- 		},
-
  		/** 
- 		* 点击删除自身
- 		* @param {event} - event
- 		* @param {Element} - output 输出框的id
- 		* @param {Array} - data 删除数组
+ 		* 判断事件类型，处理盒子的删除。
+ 		* @param {event} - e
  		*/
 
- 		delSelf: function (ev, arr) {
- 			var self = this;
- 			self.output.removeChild(ev);
- 			var index = ev.getAttribute('index');
- 			console.log(arr);
- 			arr.splice(index, 1);
- 			self.setRender(self.arr);
- 			console.log(arr);
+ 		setText: function (e) {	 	
+	 		if (e.target && e.target.nodeName === "SPAN") {	
+		 		switch (e.type) {
+		 			case "mouseover":	
+					 			e.target.textContent = '删除:' + e.target.textContent; 				
+		 				break;
+		 			case "mouseout":
+		 					e.target.textContent = e.target.textContent.replace('删除:','');
+		 				break;
+		 			case "click" : 	
+			 				var self = this;
+			 				self.output.removeChild(e.target);
+			 				var index = e.target.getAttribute('index');
+			 				self.arr.splice(index, 1);
+			 				self.setRender(self.arr);
+		 				break;
+		 		}
+		 	}
  		},
 
  		/** 
@@ -131,8 +125,8 @@
 
  		addHobby: function () {
  			var self = this;
- 			var str = textArea.value.trim();
- 			textArea.value = '';
+ 			var str = self.input.value.trim();
+ 			self.input.value = '';
  			var data = str.split(self.Regular).filter( (e) => e.length !== 0 );
  			Array.prototype.push.apply(self.arr, data); 
  			self.arr = self.arr.unique();	
@@ -147,23 +141,13 @@
  		setQueue: function (type) {
  			var self = this;
  			addEvent(self.output, 'mouseover', self.setText);
- 			addEvent(self.output, 'mouseout', self.delText);
- 		 	addEvent(self.output, 'click', function (e) {
- 		 		if (e.target && e.target.nodeName === "SPAN") {	 			
- 		 			self.delSelf(e.target, self.arr);
- 		 		}
- 		 	});
+ 			addEvent(self.output, 'mouseout', self.setText);
+ 		 	addEvent(self.output, 'click', self.setText.bind(this));
  		 	
  		 	if(type === 'buttonEvent') {
- 		 		// addEvent(self.button, 'click', self.addHobby);
- 		 		self.button.onclick = function() {
- 		 			self.addHobby();
- 		 		}
+ 		 		addEvent(self.button, 'click', self.addHobby.bind(this));
  		 	} else if (type === 'keyEvent') {
- 		 		// addEvent(self.button, 'keyup', self.addTag);
- 		 		self.input.onkeyup = function() {
- 		 			self.addTag(event);
- 		 		}
+ 		 		addEvent(self.input, 'keyup', self.addTag.bind(this));
  		 	}
  		}
 
@@ -196,6 +180,8 @@
 })();
 
 //创建新实例
-new Queue('textArea', 'output', 'subLike');
-new Queue('tagInp', 'tagBox');
-
+new Queue("textArea", "output", "subLike");
+new Queue("textArea2", "output2", "subLike2");
+new Queue("textArea3", "output3", "subLike3");
+new Queue("tagInp", "tagBox");
+new Queue("tagInp2", "tagBox2");
