@@ -23,7 +23,6 @@
 		this.arr = [];
 
 		//初始化
-		// this.init();
 		this.button ? this.init('buttonEvent') : this.init('keyEvent');
 	}
 
@@ -132,16 +131,12 @@
  		*/
 
  		addHobby: function () {
- 			// console.log('1');
  			var self = this;
  			var str = textArea.value.trim();
  			textArea.value = '';
  			var data = str.split(self.Regular).filter( (e) => e.length !== 0 );
  			Array.prototype.push.apply(self.arr, data); 
  			self.arr = self.arr.unique();	
- 			// console.log(arr);
- 		  // console.log(typeof self.setRender);
-
  			self.setRender(self.arr);
  		},
 
@@ -171,11 +166,7 @@
  		 			self.addTag(event);
  		 		}
  		 	}
-
-
  		}
-
-
 
  	}
 
@@ -186,9 +177,7 @@
  	//数组去重
 	Array.prototype.unique = function () {
  		var res = [];
- 		this.forEach((item, i) => {
- 			res.indexOf(item) === -1 ? res.push(item) : ''
- 		})
+ 		this.forEach( (item, i) => res.indexOf(item) === -1 ? res.push(item) : '' )
  		return res;
  	}
 
@@ -207,6 +196,7 @@
  	window.Queue = Queue;
 })();
 
+//创建新实例
 new Queue('textArea', 'output', 'subLike');
 new Queue('tagInp', 'tagBox');
 
