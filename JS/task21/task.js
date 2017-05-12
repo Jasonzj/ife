@@ -8,7 +8,6 @@
  * @param {String} - button 按钮的id, 可选， 如果不选默认触发键盘事件
  */
 
-
 (function() {	
 
 	//构造函数
