@@ -35,6 +35,13 @@
  	//给数组添加去重方法
  	Array.prototype.unique = function () {
  		var res = [];
+ 		// var json = {};
+ 		// for(var i = 0; i < this.length; i++) {
+ 		// 	if(!json[this[i]]){
+ 		// 		res.push(this[i]);
+ 		// 		json[this[i]] = 1;
+ 		// 	}
+ 		// }
  		this.forEach((item,i) => {
  			res.indexOf(item) === -1 ? res.push(item) : ''
  		})
@@ -43,6 +50,7 @@
 
  	//数组队列函数
  	function setData (arr2, num, boxId) {
+ 		// arr.shift();
  		arr2.splice(0, num);
  		console.log(arr2);
  		render(arr2, boxId);
@@ -50,13 +58,15 @@
 
  	//渲染函数
  	function render (arr2, boxId) {
+ 		// var box = $(boxId);
  		var num = 0;
  		boxId.innerHTML = '';
  		for (var i = 0; i < arr2.length; i++) {
- 			if(i > 9){	
- 				num++;		
+ 			if(i > 9){	//如果大于10就执行setData()去掉数组第一项
+ 				num++;		//数组10以后的项数
  				if(i === arr2.length - 1) {
  					console.log(num);
+ 					// state = 0;
  					setData(arr2, num, boxId);
  				}
  			} else {
@@ -64,16 +74,23 @@
  			}
  		} 
  		num = 0;
+ 		/*data.map(function (v, i, a) {
+ 			if(i >= 10){
+ 				setData(data);
+ 			}else {
+ 				return "<div>"+ v +"</div>";
+ 			}
+ 		}).join('');*/
  	}
 
  	//添加Tag
  	function addTag (e) {
- 		if(/[,\s\n]+/.test(e.target.value) || e.keyCode == 13){		
+ 		if(/[,\s\n]+/.test(e.target.value) || e.keyCode == 13){		//判断按键逗号，回车和空格
  			var str = e.target.value.trim();
- 			str = str.replace(',', '');	
- 			tagArr.push(str);		
- 			tagArr = tagArr.filter( (index) => index );  
- 			tagArr = tagArr.unique();		
+ 			str = str.replace(',', '');	//过滤逗号
+ 			tagArr.push(str);		//推入数组
+ 			tagArr = tagArr.filter( (index) => index );   //过滤空值
+ 			tagArr = tagArr.unique();		//数组去重
  			e.target.value = '';
  			render(tagArr, tagBox);
  		}
@@ -85,9 +102,11 @@
  		
  		var data = str.split(/[^0-9a-zA-Z\u4e00-\u9fa5]+/).filter( (e) => e.length !== 0 );
 
- 		Array.prototype.push.apply(arr, data);
+ 		Array.prototype.push.apply(arr, data); //合并数组
 
- 		arr = arr.unique();
+ 		// arr = [...new Set(arr)];  //数组去重ES6
+
+ 		arr = arr.unique();	//数组去重
 
  		console.log(arr);
 
@@ -95,12 +114,12 @@
  	}
 
  	//删除当前的Tag
- 	function delSpan (ev) {
- 		tagBox.removeChild(ev);
+ 	function delSpan (ev, outbox, data) {
+ 		outbox.removeChild(ev);
  		var index = ev.getAttribute('index');
- 		console.log(tagArr);
- 		tagArr.splice(index, 1);
- 		console.log(tagArr);
+
+ 		data.splice(index, 1);
+
  		console.log(index);
  	}
 
@@ -125,10 +144,17 @@
  		 	addEvent(tagBox, 'mouseout', delTagText);
  		 	addEvent(tagBox, 'click', function (e) {
  		 		if (e.target && e.target.nodeName === "SPAN") {	 			
- 		 			delSpan(e.target);
+ 		 			delSpan(e.target, tagBox, tagArr);
  		 		}
  		 	});
 
+ 		 	addEvent(output, 'mouseover', addTagText);
+ 		 	addEvent(output, 'mouseout', delTagText);
+ 		 	addEvent(output, 'click', function (e) {
+ 		 		if (e.target && e.target.nodeName === "SPAN") {	 			
+ 		 			delSpan(e.target, output, arr);
+ 		 		}
+ 		 	});
 
  		 	//tagInp事件
  		 	addEvent(tagInp, 'keyup', addTag);
