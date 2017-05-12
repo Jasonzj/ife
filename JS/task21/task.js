@@ -16,9 +16,6 @@
 		this.input = document.getElementById(input);
 		this.output = document.getElementById(output);
 		this.button = document.getElementById(button);
-		this.Regular = /[^0-9a-zA-Z\u4e00-\u9fa5]+/;
-		this.Regular2 = /[&\|\\\*^%'".+_=,;}{?><~`$#@\s/-]/ig;
-		this.Regular3 = /[,\s\n]+/;
 		this.arr = [];
 
 		//初始化
@@ -31,6 +28,11 @@
 
  	Queue.prototype = {
  		constructor: Queue,
+
+ 		Regular : /[^0-9a-zA-Z\u4e00-\u9fa5]+/,
+		Regular2 : /[&\|\\\*^%'".+_=,;}{?><~`$#@\s/-]/ig,
+		Regular3 : /[,\s\n]+/,
+
 
  		/** 
  		* 初始化
