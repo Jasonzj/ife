@@ -106,55 +106,54 @@
 		})
 
 		function preOrder (node) {
-			if(node) {
+			if (node) {
 				arr.push(node);
 				preOrder(node.firstElementChild);
 				preOrder(node.lastElementChild);
-			}
+			}		
 		}
 
 		function inOrder (node) {
-			if(node) {
-				preOrder(node.firstElementChild);
+			if (node) {
+				inOrder(node.firstElementChild);
 				arr.push(node);
-				preOrder(node.lastElementChild);
+				inOrder(node.lastElementChild);
 			}
 		}
 
 		function postOrder (node) {
-			if(node) {
-				preOrder(node.firstElementChild);
-				preOrder(node.lastElementChild);
+			if (node) {
+				postOrder(node.firstElementChild);
+				postOrder(node.lastElementChild);
 				arr.push(node);
 			}
 		}
 
 		function renan () {
 			var i = 0;
-			timer =  setInterval(function() {
+			arr[i].style.backgroundColor = '#1abc9c';
+			timer = setInterval(function() {
 				i++;
-				if(i < arr.length) {
+				if (i < arr.length) {
 					arr[i - 1].style.backgroundColor = '#fff';
 					arr[i].style.backgroundColor = '#1abc9c';
 				} else {
 					clearInterval(timer);
-					arr[arr.length-1].style.backgroundColor = '#fff';
+					arr[arr.length - 1].style.backgroundColor = '#fff';
 				}
-			}, 500)
+			}, 500);
 		}
-
+		
 		function reset () {
 			arr = [];
 			clearInterval(timer);
 			var divs = document.getElementsByTagName('div');
-			for (var i = 0; i < divs.length; i++) {
-					divs[i].style.backgroundColor = '#fff';
+			for (var i = divs.length - 1; i >= 0; i--) {
+				divs[i].style.backgroundColor = '#fff';
 			}
 		}
 
-
 	})();
-		
 	</script>
 </body>
 </html>
