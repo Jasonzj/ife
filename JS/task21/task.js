@@ -10,6 +10,11 @@
 
 (function() {
 
+	//私有属性
+	var Regular = /[^0-9a-zA-Z\u4e00-\u9fa5]+/;
+	var Regular2 = /[&\|\\\*^%'".+_=,;}{?><~`$#@\s/-]/ig;
+	var Regular3 = /[,\s\n]+/;
+
 	//构造函数
 	function Queue (input, output, button) {
 		//公有属性
@@ -28,11 +33,6 @@
 
  	Queue.prototype = {
  		constructor: Queue,
-
- 		Regular : /[^0-9a-zA-Z\u4e00-\u9fa5]+/,
-		Regular2 : /[&\|\\\*^%'".+_=,;}{?><~`$#@\s/-]/ig,
-		Regular3 : /[,\s\n]+/,
-
 
  		/**
  		* 初始化
@@ -111,8 +111,8 @@
 
  		addTag: function (e) {
  			var self = this;
- 			if(self.Regular3.test(e.target.value) || e.keyCode == 13){		//判断按键逗号，回车和空格
- 				var str = e.target.value.replace(self.Regular2,'');
+ 			if(Regular3.test(e.target.value) || e.keyCode == 13){		//判断按键逗号，回车和空格
+ 				var str = e.target.value.replace(Regular2,'');
  				self.arr.push(str);
  				self.arr = self.arr.filter( (index) => index );
  				self.arr = self.arr.unique();
@@ -129,7 +129,7 @@
  			var self = this;
  			var str = self.input.value.trim();
  			self.input.value = '';
- 			var data = str.split(self.Regular).filter( (e) => e.length !== 0 );
+ 			var data = str.split(Regular).filter( (e) => e.length !== 0 );
  			Array.prototype.push.apply(self.arr, data);
  			self.arr = self.arr.unique();
  			self.setRender(self.arr);
