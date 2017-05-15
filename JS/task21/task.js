@@ -52,7 +52,6 @@
 
  		setArr: function (arr, num) {
  			arr.splice(0, num);
- 			console.log(arr);
  			this.setRender(arr);
  		},
 
@@ -67,10 +66,9 @@
  			var num = 0;
  			self.output.innerHTML = '';
  			for (var i = 0; i < arr.length; i++) {
- 				if(i > 9){
+ 				if (i > 9) {
  					num++;
- 					if(i === arr.length - 1) {
- 						console.log(num);
+ 					if (i === arr.length - 1) {
  						self.setArr(arr, num);
  					}
  				} else {
@@ -81,7 +79,7 @@
  		},
 
  		/**
- 		* 判断事件类型，处理盒子的删除。
+ 		* 判断鼠标事件类型，处理盒子的删除。
  		* @param {event} - e
  		*/
 
@@ -89,17 +87,17 @@
 	 		if (e.target && e.target.nodeName === "SPAN") {
 		 		switch (e.type) {
 		 			case "mouseover":
-					 			e.target.textContent = '删除:' + e.target.textContent;
+					 	e.target.textContent = '删除:' + e.target.textContent;
 		 				break;
 		 			case "mouseout":
-		 					e.target.textContent = e.target.textContent.replace('删除:','');
+		 				e.target.textContent = e.target.textContent.replace('删除:','');
 		 				break;
-		 			case "click" :
-			 				var self = this;
-			 				self.output.removeChild(e.target);
-			 				var index = e.target.getAttribute('index');
-			 				self.arr.splice(index, 1);
-			 				self.setRender(self.arr);
+		 			case "click":
+		 				var self = this;
+		 				self.output.removeChild(e.target);
+		 				var index = e.target.getAttribute('index');
+		 				self.arr.splice(index, 1);
+		 				self.setRender(self.arr);
 		 				break;
 		 		}
 		 	}
@@ -111,10 +109,9 @@
 
  		addTag: function (e) {
  			var self = this;
- 			if(Regular3.test(e.target.value) || e.keyCode == 13){		//判断按键逗号，回车和空格
+ 			if (Regular3.test(e.target.value) || e.keyCode == 13) {		//判断按键逗号，回车和空格
  				var str = e.target.value.replace(Regular2,'');
  				self.arr.push(str);
- 				self.arr = self.arr.filter( (index) => index );
  				self.arr = self.arr.unique();
  				e.target.value = '';
  				self.setRender(self.arr);
@@ -146,7 +143,7 @@
  			addEvent(self.output, 'mouseout', self.setText);
  		 	addEvent(self.output, 'click', self.setText.bind(this));
 
- 		 	if(type === 'buttonEvent') {
+ 		 	if (type === 'buttonEvent') {
  		 		addEvent(self.button, 'click', self.addHobby.bind(this));
  		 	} else if (type === 'keyEvent') {
  		 		addEvent(self.input, 'keyup', self.addTag.bind(this));
@@ -179,6 +176,7 @@
 
  	//外部接口
  	window.Queue = Queue;
+
 })();
 
 //创建新实例
