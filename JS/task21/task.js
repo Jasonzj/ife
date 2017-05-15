@@ -1,5 +1,5 @@
 /**
- * 
+ *
  * @authors Jason (jason925645402@gmail.com)
  * @date    2017-05-10 23:20:25
  * 创建可复用的对象
@@ -8,7 +8,7 @@
  * @param {String} - button 按钮的id, 可选， 如果不选默认触发键盘事件
  */
 
-(function() {	
+(function() {
 
 	//构造函数
 	function Queue (input, output, button) {
@@ -22,7 +22,7 @@
 		this.button ? this.init('buttonEvent') : this.init('keyEvent');
 	}
 
- 	/** 
+ 	/**
  	* 原型方法
  	*/
 
@@ -34,7 +34,7 @@
 		Regular3 : /[,\s\n]+/,
 
 
- 		/** 
+ 		/**
  		* 初始化
  		* @param {String} - type 判断按钮的类型选择不同的初始化方式
  		*/
@@ -44,7 +44,7 @@
 			self.setQueue(type);
  		},
 
- 		/** 
+ 		/**
  		* 删除数组模拟队列，通过num判断大于10的项一次性推出num项并重新渲染，每次插入只会渲染一次
  		* @param {Array} - arr 渲染数组
  		* @param {Number} - num 大于10的项的长度, 用来删除数组前面的项
@@ -56,7 +56,7 @@
  			this.setRender(arr);
  		},
 
- 		/** 
+ 		/**
  		* 渲染函数
  		* @param {Array} - arr 渲染数组
  		* @param {Element} - output 输出框的id
@@ -67,8 +67,8 @@
  			var num = 0;
  			self.output.innerHTML = '';
  			for (var i = 0; i < arr.length; i++) {
- 				if(i > 9){	
- 					num++;		
+ 				if(i > 9){
+ 					num++;
  					if(i === arr.length - 1) {
  						console.log(num);
  						self.setArr(arr, num);
@@ -76,25 +76,25 @@
  				} else {
  					self.output.innerHTML += "<span class='smallbox' index="+ i +">"+ arr[i] +"</span>";
  				}
- 			} 
+ 			}
  			num = 0;
  		},
 
- 		/** 
+ 		/**
  		* 判断事件类型，处理盒子的删除。
  		* @param {event} - e
  		*/
 
- 		setText: function (e) {	 	
-	 		if (e.target && e.target.nodeName === "SPAN") {	
+ 		setText: function (e) {
+	 		if (e.target && e.target.nodeName === "SPAN") {
 		 		switch (e.type) {
-		 			case "mouseover":	
-					 			e.target.textContent = '删除:' + e.target.textContent; 				
+		 			case "mouseover":
+					 			e.target.textContent = '删除:' + e.target.textContent;
 		 				break;
 		 			case "mouseout":
 		 					e.target.textContent = e.target.textContent.replace('删除:','');
 		 				break;
-		 			case "click" : 	
+		 			case "click" :
 			 				var self = this;
 			 				self.output.removeChild(e.target);
 			 				var index = e.target.getAttribute('index');
@@ -105,7 +105,7 @@
 		 	}
  		},
 
- 		/** 
+ 		/**
  		* 添加tag,如果type是keyEvent,执行addTag
  		*/
 
@@ -113,15 +113,15 @@
  			var self = this;
  			if(self.Regular3.test(e.target.value) || e.keyCode == 13){		//判断按键逗号，回车和空格
  				var str = e.target.value.replace(self.Regular2,'');
- 				self.arr.push(str);		
- 				self.arr = self.arr.filter( (index) => index );   
- 				self.arr = self.arr.unique();		
+ 				self.arr.push(str);
+ 				self.arr = self.arr.filter( (index) => index );
+ 				self.arr = self.arr.unique();
  				e.target.value = '';
  				self.setRender(self.arr);
  			}
  		},
 
- 		/** 
+ 		/**
  		* 添加爱好,如果type是buttonEvent,执行addTag
  		*/
 
@@ -130,12 +130,12 @@
  			var str = self.input.value.trim();
  			self.input.value = '';
  			var data = str.split(self.Regular).filter( (e) => e.length !== 0 );
- 			Array.prototype.push.apply(self.arr, data); 
- 			self.arr = self.arr.unique();	
+ 			Array.prototype.push.apply(self.arr, data);
+ 			self.arr = self.arr.unique();
  			self.setRender(self.arr);
  		},
 
- 		/** 
+ 		/**
  		* 绑定事件方法
  		* @param {String} - type 判断按钮的类型选择不同的初始化方式
  		*/
@@ -145,7 +145,7 @@
  			addEvent(self.output, 'mouseover', self.setText);
  			addEvent(self.output, 'mouseout', self.setText);
  		 	addEvent(self.output, 'click', self.setText.bind(this));
- 		 	
+
  		 	if(type === 'buttonEvent') {
  		 		addEvent(self.button, 'click', self.addHobby.bind(this));
  		 	} else if (type === 'keyEvent') {
@@ -155,7 +155,7 @@
 
  	}
 
- 	/** 
+ 	/**
  	* 私有方法
  	*/
 
