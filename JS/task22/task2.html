@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .root,
+        .child_1,
+        .child_2,
+        .child_3 {
+            display: flex;
+            padding: 20px;
+            justify-content: space-between;
+            border: 1px solid #000;
+        }
+        
+        .root {
+            width: 1000px;
+            height: 300px;
+            margin: 100px auto;
+            margin-bottom: 10px;
+        }
+        
+        .child_1 {
+            width: 450px;
+            height: 260px;
+        }
+        
+        .child_2 {
+            width: 170px;
+            height: 220px;
+        }
+        
+        .child_3 {
+            width: 35px;
+            height: 180px;
+        }
+        
+        input {
+            margin-left: 100px;
+            width: 50px;
+            height: 40px;
+            font-size: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="root">
+        <div class="child_1">
+            <div class="child_2">
+                <div class="child_3"></div>
+                <div class="child_3"></div>
+            </div>
+            <div class="child_2">
+                <div class="child_3"></div>
+                <div class="child_3"></div>
+            </div>
+        </div>
+        <div class="child_1">
+            <div class="child_2">
+                <div class="child_3"></div>
+                <div class="child_3"></div>
+            </div>
+            <div class="child_2">
+                <div class="child_3"></div>
+                <div class="child_3"></div>
+            </div>
+        </div>
+    </div>
+    <div id="buttonBox">
+        <input class="button1" type="button" value="前序">
+        <input class="button2" type="button" value="中序">
+        <input class="button3" type="button" value="后序">
+    </div>
+
+    <script>
+        (function() {
+
+            function addEvent(element, event, hanlder) {
+                if (element.addEventListener) {
+                    element.addEventListener(event, hanlder, false);
+                } else if (ele.attachEvent) {
+                    ele.attachEvent("on" + event, hanlder);
+                } else {
+                    element["on" + event] = hanlder;
+                }
+            }
+
+            var buttonBox = document.getElementById("buttonBox");
+            var root = document.getElementsByClassName('root')[0];
+            var arr = [];
+            var timer = null;
+
+            addEvent(buttonBox, 'click', function(e) {
+                if (e.target && e.target.nodeName === 'INPUT') {
+                    switch (e.target.className) {
+                        case "button1":
+                            reset();
+                            preOrder(root);
+                            render();
+                            break;
+                        case "button2":
+                            reset();
+                            inOrder(root);
+                            render();
+                            break;
+                        case "button3":
+                            reset();
+                            postOrder(root);
+                            render();
+                            break;
+                    }
+                }
+            })
+
+            function preOrder(node) {
+                if (node) {
+                    arr.push(node);
+                    preOrder(node.firstElementChild);
+                    preOrder(node.lastElementChild);
+                }
+            }
+
+            function inOrder(node) {
+                if (node) {
+                    inOrder(node.firstElementChild);
+                    arr.push(node);
+                    inOrder(node.lastElementChild);
+                }
+            }
+
+            function postOrder(node) {
+                if (node) {
+                    postOrder(node.firstElementChild);
+                    postOrder(node.lastElementChild);
+                    arr.push(node);
+                }
+            }
+
+            function render() {
+                var i = 0;
+                arr[i].style.backgroundColor = '#1abc9c';
+                timer = setInterval(function() {
+                    i++;
+                    if (i < arr.length) {
+                        arr[i - 1].style.backgroundColor = '#fff';
+                        arr[i].style.backgroundColor = '#1abc9c';
+                    } else {
+                        clearInterval(timer);
+                        arr[arr.length - 1].style.backgroundColor = '#fff';
+                    }
+                }, 500)
+            }
+
+            function reset() {
+                arr = [];
+                clearInterval(timer);
+                var divs = document.getElementsByTagName('div');
+                for (var i = 0; i < divs.length; i++) {
+                    divs[i].style.backgroundColor = '#fff';
+                }
+            }
+
+        })();
+    </script>
+</body>
+
+</html>
