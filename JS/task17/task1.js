@@ -158,6 +158,7 @@ var aqiSourceData = {
 			var tarCity = self.pageState['nowSelectCity'];
 			var tarTime = self.pageState['noweGraTime'];
 			var tarData = self.chartData[tarTime][tarCity];
+			var fragment = document.createDocumentFragment();
 			var num = 0;
 
 			self.wrap.innerHTML = '';
@@ -170,8 +171,11 @@ var aqiSourceData = {
 				smallBox.style.height = tarData[item] * 0.8 + 'px';
 				smallBox.style.backgroundColor = "hsl(" + Math.floor(tarData[item] * 2.5) + ",70%,80%)";
 				// smallBox.innerText = tarData[item];
-				self.wrap.appendChild(smallBox);
+				fragment.appendChild(smallBox);				
 			}
+			
+			self.wrap.appendChild(fragment);
+
 			var box = document.getElementsByClassName('small-box');
 			for(var i = 0; i < box.length; i++) {
 				box[i].style.width = 1000 / num + 'px';		
