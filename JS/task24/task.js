@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-05-31 21:04:43 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-02 12:07:55
+ * @Last Modified time: 2017-06-02 13:02:47
  */
 
 /**
@@ -183,7 +183,7 @@
         setReset () {
             var self = this;
 
-            var divs = self.root.getElementsByTagName('div');
+            var divs = self.treeBox.getElementsByTagName('div');
             divs = [].slice.call(divs);
 
             divs.forEach(function(item) {
@@ -250,6 +250,15 @@
             }
         }
 
+        setSelect (e) {
+            var self = this,
+                target = e.target;
+            
+            self.setReset();
+            target.addClass("active");
+
+        }
+
         /**
          * 绑定事件方法
          */
@@ -258,6 +267,7 @@
             var self = this;
 
             addEvent(self.btnBox, 'click', self.setClick.bind(self));
+            addEvent(self.treeBox, 'click', self.setSelect.bind(self));
         }
     }
 

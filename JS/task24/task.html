@@ -17,13 +17,16 @@
 			border: 1px solid #000;
 			width: 80%;
 			height: 80%;
+			background: #fff;
 		}
 		.root {width: 90%;height: 80%;margin: 100px auto;margin-bottom: 10px;}
 		.buttonBox{width: 880px;margin: 0 auto;}
 		.buttonBox .btn{margin-right: 20px;width: 120px;height: 40px;background: #1abc9c;border: none;color: #fff;font-size: 17px;cursor: pointer;}
 		input{display: block;width: 200px;height: 30px;margin: 30px auto;border: 2px solid #1abc9c;}
-		.active {background: #1abc9c;}
-		.current {background: red;}
+		.root div.active,
+		.root.active{background: #1abc9c;}
+		.root div.current {background: red;}
+		
 		.place{text-align: center}
 	</style>
 </head>
