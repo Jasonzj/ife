@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-05-31 21:04:43 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-02 18:51:07
+ * @Last Modified time: 2017-06-02 19:11:34
  */
 
 /**
@@ -264,11 +264,17 @@
             }
         }
 
+        /**
+         * 渲染新添加节点方法
+         * @param {Array} data 需要渲染到当前节点的数组
+         * @param {Boolean} add (可选)true为添加，默认为删除
+         */
+
         nodeRender (data, add) {
             var self = this,
                 current = self.current;
 
-            if (add === "true") {
+            if (add) {
                 current.innerHTML += data.map(function(e) {
                     return "<div>" + e + "</div>";
                 }).join('');
@@ -278,6 +284,11 @@
             }
         }
 
+        /**
+         * 添加删除节点处理方法
+         * @param {String} btnName 当前点击按钮的类名
+         */
+        
         setNode (btnName) {
             var self = this,
                 str = self.addInp.value.trim();
@@ -294,7 +305,7 @@
                     return
                 }
                 data = data.unique();
-                self.nodeRender(data, "true");
+                self.nodeRender(data, true);
             } else if (btnName.indexOf("remove") > -1) {
                 self.nodeRender(data);
             }
