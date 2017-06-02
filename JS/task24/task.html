@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.box{height: 250px;width: 100%;}
+		.root,
+		.root div{
+			display: flex;
+			padding: 20px;
+			flex-flow: row;
+			align-items: center;
+			justify-content: center;
+			margin-left: 20px;
+			border: 1px solid #000;
+			width: 80%;
+			height: 80%;
+		}
+		.root {width: 90%;height: 80%;margin: 100px auto;margin-bottom: 10px;}
+		.buttonBox{width: 880px;margin: 0 auto;}
+		.buttonBox .btn{margin-right: 20px;width: 120px;height: 40px;background: #1abc9c;border: none;color: #fff;font-size: 17px;cursor: pointer;}
+		input{display: block;width: 200px;height: 30px;margin: 30px auto;border: 2px solid #1abc9c;}
+		.active {background: #1abc9c;}
+		.current {background: red;}
+		.place{text-align: center}
+	</style>
+</head>
+
+<body>
+	<div class="box">
+		<!--<div class="root">
+			<div class="child">
+				Cor
+				<div class="child">
+					Jason
+					<div class="child">Apple</div>
+					<div class="child">coc</div>
+				</div>
+				<div class="child">
+					boot
+					<div class="child">abc
+						<div class="child">bgril</div>
+					</div>
+					<div class="child">teach</div>
+					<div class="child">abcd</div>
+				</div>
+			</div>
+			<div class="child">
+				dsadas
+				<div class="child">
+					bba
+					<div class="child">kill</div>
+				</div>
+				<div class="child">
+					das
+					<div class="child">ssl</div>
+					<div class="child">qian</div>
+				</div>
+			</div>
+			<div class="child">
+				Bboy
+			</div>
+		</div>-->
+	</div>
+
+	<input type="text" class="inp" placeholder="请输入搜索内容">
+	<input type="text" class="add" placeholder="请输入插入节点文本">
+	<p class="place">(当增加多个节点的时候 需要以逗号分隔)</p>
+	<div class="buttonBox">
+		<button type="button" class="btn" name="DFSsearch">深度搜索</button>
+		<button type="button" class="btn" name="BFSsearch">广度搜索</button>
+		<button type="button" class="btn" name="DFS">深度遍历</button>
+		<button type="button" class="btn" name="BFS">广度遍历</button>
+		<button type="button" class="btn" name="addNode">添加节点</button>
+		<button type="button" class="btn" name="removeNode">删除选中节点</button>
+	</div>
+	<div id="jsonBox" ></div>
+	<script src="./task.js"></script>
+	<script>
+		new Tree(".root", ".box", ".buttonBox", ".inp", data);
+	</script>
+</body>
+
+</html>
