@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-05-31 21:04:43 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-02 13:02:47
+ * @Last Modified time: 2017-06-02 18:51:07
  */
 
 /**
@@ -20,16 +20,20 @@
 (window => {
 
     class Tree {
-
+        
         //构造函数
-        constructor(root, treeBox, btnBox, searchInp, data) {
+        constructor(root, treeBox, btnBox, searchInp, addInp, data) {
             this.treeBox = document.querySelector(treeBox);
             this.btnBox = document.querySelector(btnBox);
-            this.inp = document.querySelector(searchInp);
-            this.data = data;
-            this.timer = null;
-            this.BFindex = 0;
-            this.arr = [];
+            this.searchInpt = document.querySelector(searchInp);
+            this.addInp = document.querySelector(addInp);
+            this.data = data;   
+
+            this.nodeState = false;  //记录当前节点选中状态
+            this.current = null;     //记录当前点击的节点
+            this.timer = null;       //动画定时器
+            this.BFindex = 0;        //记录广度优先计数
+            this.arr = [];           //遍历后存放的数组
 
             //初始化
             this.init(root);
@@ -183,6 +187,8 @@
         setReset () {
             var self = this;
 
+            self.nodeState = false;    //设置当前节点选中状态
+
             var divs = self.treeBox.getElementsByTagName('div');
             divs = [].slice.call(divs);
 
@@ -224,7 +230,9 @@
         
         setClick (e) {
             var self = this,
-                text = self.inp.value;
+                text = self.searchInpt.value;
+
+            if(e.target.nodeName !== "BUTTON") return;
 
             switch (e.target.name) {
                 case "DFSsearch":
@@ -247,16 +255,73 @@
                 case "BFS":
                     self.clickHandle(text, "traverseBF", false);
                     break;
+                case "addNode":
+                    self.setNode(e.target.name);
+                    break;
+                case "removeNode":
+                    self.setNode(e.target.name);
+                    break;
             }
         }
 
+        nodeRender (data, add) {
+            var self = this,
+                current = self.current;
+
+            if (add === "true") {
+                current.innerHTML += data.map(function(e) {
+                    return "<div>" + e + "</div>";
+                }).join('');
+            } else {
+                var parent = current.parentNode;
+                parent.removeChild(current);
+            }
+        }
+
+        setNode (btnName) {
+            var self = this,
+                str = self.addInp.value.trim();
+                data = str.split(Regular);
+            
+            if (!self.nodeState) {
+                alert("未选中节点");
+                return;
+            }
+
+            if (btnName.indexOf("add") > -1) {
+                if (str === "") {
+                    alert("插入节点值不能为空");
+                    return
+                }
+                data = data.unique();
+                self.nodeRender(data, "true");
+            } else if (btnName.indexOf("remove") > -1) {
+                self.nodeRender(data);
+            }
+        }
+
+        /**
+         * 点击节点处理方法(点击节点选中)
+         * @param {Event} e  
+         */
+        
         setSelect (e) {
             var self = this,
                 target = e.target;
             
-            self.setReset();
-            target.addClass("active");
-
+            switch (e.type) {
+                case "click":
+                    self.setReset();
+                    self.current = target;    //设置当前点击的节点
+                    target.addClass("active");
+                    self.nodeState = true;    //设置当前节点选中状态
+                    break;
+            
+                case "dblclick":
+                    target.removeClass("active");
+                    self.nodeState = false;    //设置当前节点选中状态
+                    break;
+            }
         }
 
         /**
@@ -268,15 +333,19 @@
 
             addEvent(self.btnBox, 'click', self.setClick.bind(self));
             addEvent(self.treeBox, 'click', self.setSelect.bind(self));
+            addEvent(self.treeBox, 'dblclick', self.setSelect.bind(self));
         }
     }
+
+    //私有属性
+    var Regular = /[^0-9a-zA-Z\u4e00-\u9fa5]+/;
 
     //外部接口
     window.Tree = Tree;
 
 })(window);
 
-/* 
+/**
 * 跨浏览器事件绑定
 */
 
@@ -290,7 +359,31 @@ function addEvent(element, event, hanlder) {
     }
 };
 
-/* 
+/**
+ *  数组去重
+ */
+
+Array.prototype.unique = function() {
+    var i, len, item,
+        key = null,
+		_arr = [],
+		hash = {};
+
+    for (i = 0, len = this.length; i < len; i++) {
+        item = this[i];
+        key = typeof(item) + item;
+
+        if (hash[key] !== 1) {
+            _arr.push(item);
+            hash[key] = 1;
+        }
+        
+    }
+    
+    return _arr;
+}
+
+/**
 * 给Element对象添加操作class的方法
 */
 

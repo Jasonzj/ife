@@ -317,7 +317,8 @@ $red: #e74f4d;
   %cen{
     position: relative;
     top: 50%;
-    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
   }
 
 .m-word{
@@ -497,9 +498,14 @@ $red: #e74f4d;
     font-size: 14px;
   }
   .vol-voe{
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-wrap:wrap;
-    justify-content: space-between;
+    -ms-flex-wrap:wrap;
+        flex-wrap:wrap;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
   }
 }
 
@@ -545,9 +551,14 @@ $red: #e74f4d;
   .ft-icon{
     width: 200px;
     margin: 30px auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-wrap:wrap;
-    justify-content: space-between;
+    -ms-flex-wrap:wrap;
+        flex-wrap:wrap;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
     li{
       float:left;
       a{
@@ -559,7 +570,8 @@ $red: #e74f4d;
   }
   .ft-bot{
     position: relative;
-    transform: translateY(230%);
+    -webkit-transform: translateY(230%);
+            transform: translateY(230%);
     height: 18px;
     padding: 20px 6%;
     background: #2f3038;

@@ -119,7 +119,7 @@
  		},
 
  		/**
- 		* 添加爱好,如果type是buttonEvent,执行addTag
+ 		* 添加爱好,如果type是buttonEvent,执行addHobby
  		*/
 
  		addHobby: function () {
