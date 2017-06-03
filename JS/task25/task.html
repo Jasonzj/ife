@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+	<div class="box">
+	</div>
+
+	<input type="text" class="inp" placeholder="请输入搜索内容">
+	<div class="buttonBox">
+		<button type="button" class="btn" name="DirSearch">搜索</button>
+	</div>
+	<div id="jsonBox" ></div>
+	<script src="./task.js"></script>
+	<script>
+		new DirTree({
+			root: ".tree-body",
+			treeBox: ".box",
+			btnBox: ".buttonBox",
+			searchInp: ".inp",
+			data: data,
+			directory: true		
+		})
+	</script>
+</body>
+
+</html>

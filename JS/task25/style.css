@@ -1,0 +1,83 @@
+body {
+  font-family: Menlo, Consolas, monospace;
+  color: #444;
+}
+
+/* layout */
+
+.box {
+    width: 100%;
+}
+
+.tree-body{
+    margin: 10px 25px;
+}
+
+.tree-body div {
+    display: none;
+}
+
+
+.tree-body.show {
+    display: block;
+}
+
+.tree-header{
+    position: relative;
+    cursor: pointer;
+}
+
+.tree-header:hover .operation{
+    display: block;
+}
+
+.operation{
+    position: absolute;
+    right: -165px;
+    top: -2px;
+    padding-left: 10px;
+}
+
+.operation a {
+    margin-right: 10px;
+}
+
+/* btn */
+
+.buttonBox {
+    display: flex;
+    justify-content: center;
+}
+
+.buttonBox .btn {
+    margin-right: 20px;
+    padding: 5px 20px;
+    background: #1abc9c;
+    border: none;
+    color: #fff;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+input {
+    display: block;
+    width: 200px;
+    height: 30px;
+    margin: 30px auto;
+    border: 2px solid #1abc9c;
+}
+
+.tree-body div.active,
+.tree-body.active label {
+    color: #1abc9c;
+    font-weight: bold;
+}
+
+.tree-body label span.current {
+    color: red;
+    font-weight: bold;
+}
+
+.place {
+    text-align: center;
+}

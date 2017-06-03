@@ -48,21 +48,27 @@
 
 	<input type="text" class="inp" placeholder="请输入搜索内容">
 	<input type="text" class="add" placeholder="请输入插入节点文本">
-	<p class="place">(当增加多个节点的时候 需要以逗号分隔)</p>
+	<p class="place">(当增加多个节点的时候 需要以符号，空格分隔)</p>
 	<div class="buttonBox">
-		<button type="button" class="btn" name="DFSsearch">深度搜索</button>
-		<button type="button" class="btn" name="BFSsearch">广度搜索</button>
-		<button type="button" class="btn" name="DFS">深度遍历</button>
-		<button type="button" class="btn" name="BFS">广度遍历</button>
-		<button type="button" class="btn" name="DFS2">非递归深度遍历</button>
-		<button type="button" class="btn" name="BFS2">非递归广度遍历</button>
+		<button type="button" class="btn" name="DFS">深度优先遍历</button>
+		<button type="button" class="btn" name="BFS">广度优先遍历</button>
+		<button type="button" class="btn" name="DFSsearch">深度优先遍历搜索</button>
+		<button type="button" class="btn" name="BFSsearch">广度优先遍历搜索</button>
 		<button type="button" class="btn" name="addNode">添加节点</button>
 		<button type="button" class="btn" name="removeNode">删除选中节点</button>
 	</div>
 	<div id="jsonBox" ></div>
 	<script src="./task.js"></script>
 	<script>
-		new Tree(".root", ".box", ".buttonBox", ".inp", ".add", data);
+		// new Tree(".root", ".box", ".buttonBox", ".inp", ".add", data);
+		new Tree({
+			root: ".root",
+			treeBox: ".box",
+			btnBox: ".buttonBox",
+			searchInp: ".inp",
+			addInp: ".add",
+			data: data
+		})
 	</script>
 </body>
 
