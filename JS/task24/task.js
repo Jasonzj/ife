@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-05-31 21:04:43 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-02 19:11:34
+ * @Last Modified time: 2017-06-03 12:32:03
  */
 
 /**
@@ -85,6 +85,46 @@
                         this.RenderTree(data[key], treeView);
                     }
                 }
+            }
+        }
+
+        /**
+         * 非递归广度优先遍历方法
+         * @param {Element} node 需要遍历的根节点
+         */
+
+        traverseBF2 (node) {
+            var self = this;
+            var queue = [];
+
+            while (node != null) {
+                self.arr.push(node);
+                if (node.children.length != 0) {
+                    for (var i = 0; i < node.children.length; i++) {
+                        queue.push(node.children[i]);
+                    }
+                }
+                node = queue.shift();
+            }
+        }
+
+        /**
+         * 非递归深度优先遍历方法
+         * @param {Element} node 需要遍历的根节点
+         */
+
+        traverseDF2 (node) {
+            var self = this;
+            var queue = [];
+
+            while (node != null) {
+                self.arr.push(node);
+                if (node.children.length != 0) {
+                    for (var i = node.children.length - 1; i >= 0; i--) {
+                        queue.push(node.children[i]);
+                    }
+                }
+                node = queue.pop();
             }
         }
 
@@ -260,6 +300,12 @@
                     break;
                 case "removeNode":
                     self.setNode(e.target.name);
+                    break;
+                case "DFS2":
+                    self.clickHandle(text, "traverseDF2", false);
+                    break;
+                case "BFS2":
+                    self.clickHandle(text, "traverseBF2", false);
                     break;
             }
         }

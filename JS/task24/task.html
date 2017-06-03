@@ -31,8 +31,8 @@
 			padding: 20px;
 			border: 1px solid #000;
 		}
-		.buttonBox{width: 880px;margin: 0 auto;}
-		.buttonBox .btn{margin-right: 20px;width: 120px;height: 40px;background: #1abc9c;border: none;color: #fff;font-size: 17px;cursor: pointer;}
+		.buttonBox{display: flex; justify-content: center;}
+		.buttonBox .btn{margin-right: 20px;padding: 0 20px;height: 40px;background: #1abc9c;border: none;color: #fff;font-size: 17px;cursor: pointer;}
 		input{display: block;width: 200px;height: 30px;margin: 30px auto;border: 2px solid #1abc9c;}
 		.root div.active,
 		.root.active{background: #1abc9c;}
@@ -54,6 +54,8 @@
 		<button type="button" class="btn" name="BFSsearch">广度搜索</button>
 		<button type="button" class="btn" name="DFS">深度遍历</button>
 		<button type="button" class="btn" name="BFS">广度遍历</button>
+		<button type="button" class="btn" name="DFS2">非递归深度遍历</button>
+		<button type="button" class="btn" name="BFS2">非递归广度遍历</button>
 		<button type="button" class="btn" name="addNode">添加节点</button>
 		<button type="button" class="btn" name="removeNode">删除选中节点</button>
 	</div>
