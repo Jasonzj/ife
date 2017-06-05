@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-05-31 21:04:43 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-03 20:59:08
+ * @Last Modified time: 2017-06-05 13:11:52
  */
 
 /**
@@ -80,7 +80,7 @@
          */
 
         renderDirectoryTree (data, parentElement) {
-            var key,
+            var key, i = 0,
                 label,
                 treeView;
 
@@ -89,7 +89,6 @@
                     treeView = document.createElement('div');
                     treeView.className = "tree-body";
                     label = document.createElement('label');
-                    // label.innerHTML = "<span>" + key + "</span>" + "<span class='state' name='0'> [+] </span>";
                     label.innerHTML = `
                     <span> ${key} </span>
                     <span class='state' name='0'> [+] </span> 
@@ -98,8 +97,10 @@
                         <a class="remove">删除</a>
                         <a class="rename">重命名</a>
                     </div>`;
-
+                    
                     label.className = "tree-header";
+
+                    //判断如果是空对象表示没有子节点
                     if (isEmptyObject(data[key])) {
                         label.innerHTML = `
                         <span> ${key} </span>
@@ -109,6 +110,7 @@
                             <a class="rename">重命名</a>
                         </div>`;
                     }
+                    
                     treeView.appendChild(label);
                     parentElement.appendChild(treeView);
                     this.renderDirectoryTree(data[key], treeView);
@@ -283,7 +285,7 @@
 
             var divs = self.treeBox.getElementsByTagName('div');
             divs = [].slice.call(divs);
-
+            console.log(divs);
             divs.forEach(function(item) {
                 item.removeClass("active");
                 item.removeClass("current");
@@ -477,6 +479,10 @@
             this.dirInit();
         }
 
+        /**
+         * 初始化
+         */
+        
         dirInit() {
             this.setDirTreeEvent();
         }
@@ -502,7 +508,7 @@
 
         show (iconState, lists) {
             var self = this;
-
+            
             if (iconState) {
                 iconState.innerHTML = " [-] ";
                 iconState.setAttribute("name", 1);
@@ -564,34 +570,65 @@
             }
         }
 
+        dirReset(span) {
+            var self = this,
+                box = self.treeBox.getElementsByTagName("span");
+            
+            box = [].slice.call(box);
+            box.forEach(item => {
+                item.removeClass("current");
+            })
+        }
+
         dirSearch (e) {
-            var self = this;
+            var self = this,
+                i = 0;
             if (e.target.name === "DirSearch") {
                 var text = self.searchInpt.value.trim();
+
                 if (text == "") {
                     alert("不能输入空值");
                     return;
                 }
+
                 self.traverseDF2(self.root);
                 var index = self.setSearch(text);
-                self.arr[index].addClass("current");
+                if (index) {
+                    self.dirReset();
+                    self.arr[index].addClass("current");
+                } else {
+                    alert("没查询到");
+                    return;
+                }
+                
+
                 function listShow (node) {
-                    if(node.parentNode.className == "tree-body") {
-                        // var lists = [node.parentNode.parentNode];
-                        // self.show(null, lists); 
-                        // for (var i = 0; i < node.parentNode.children.length; i++) {
-                        //     node.parentNode.parentNode.children[i].style.display = "block";
-                        // }
-                        // console.log(node.parentNode.children);
-                        listShow(node.parentNode.parentNode);
+                    var lists = [],
+                        iconState,
+                        parents = node.parentNode.parentNode;
+
+                    if(parents.className.indexOf("tree-body") > -1) {
+                        lists = siblings(parents);
+
+                        if (i !== 0) iconState = parents.querySelector(".state");
+                        
+                        i++;
+                        
+                        self.show(iconState, lists); 
+                        listShow(node.parentNode);
                     } else {
                         return node;
                     }
+
                 }
                 listShow(self.arr[index]);
             }
         }
 
+        /**
+         * 绑定事件方法
+         */
+        
         setDirTreeEvent () {
             var self = this;
             addEvent(self.treeBox, 'click', self.setShow.bind(self));
@@ -610,6 +647,9 @@
 
 })(window);
 
+/**
+* 判断空对象
+*/
 
 function isEmptyObject(e) {  
     var t;  
@@ -617,6 +657,21 @@ function isEmptyObject(e) {
         return !1;  
     return !0  
 } 
+
+/**
+* 获取所有兄弟节点(包括自身)
+*/
+
+function siblings (ele) {
+    var i, len,
+        arr = [],
+        children = ele.parentNode.children;
+    for (i = 0, len = children.length; i < len; i++) {
+        arr.push(children[i]);
+    }
+
+    return arr;
+}
 
 /**
 * 跨浏览器事件绑定
