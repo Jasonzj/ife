@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-05-31 21:04:43 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-05 18:41:55
+ * @Last Modified time: 2017-06-05 18:53:34
  */
 
 /**
@@ -696,13 +696,34 @@
         }
 
         /**
+         * 处理按钮点击方法
+         * @param {Event} e 
+         */
+        
+        setBtn (e) {
+            var self = this;
+
+            if (e.target.nodeName === "BUTTON") {
+                switch (e.target.name) {
+                    case "DirSearch":
+                        self.dirSearch(e);
+                        break;
+                
+                    case "cleanSearch":
+                        self.dirReset("span");
+                        break;
+                }
+            }
+        }
+
+        /**
          * 绑定事件方法
          */
         
         setDirTreeEvent () {
             var self = this;
             addEvent(self.treeBox, 'click', self.setOpEvent.bind(self));
-            addEvent(self.btnBox, 'click', self.dirSearch.bind(self));
+            addEvent(self.btnBox, 'click', self.setBtn.bind(self));
         }
 
 
