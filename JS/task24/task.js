@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-05-31 21:04:43 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-05 14:37:14
+ * @Last Modified time: 2017-06-05 18:41:55
  */
 
 /**
@@ -237,13 +237,13 @@
                 }
 
                 if (!search) {
-                    if (i === index) {
+                    if (i === index[0]) {
                         self.setReset();
                         lists[i].className = "current";
                         setTimeout(function() {
                             alert("查询到了");
                         }, 100);
-                    } else if (i !== index && i === lists.length) {
+                    } else if (i !== index[0] && i === lists.length) {
                         alert("没查询到");
                     }
                 } 
@@ -258,20 +258,21 @@
          */
         
         setSearch (text) {
-            var i, len, index,
+            var i, len, 
+                indexs = [],
                 self = this,
                 arr = self.arr;
             
             for (i = 0, len = arr.length; i < len; i++) {
                 if (arr[i].childNodes[0].nodeValue) {
                     if (arr[i].childNodes[0].nodeValue.trim() === text) {
-                        index = i;
+                        indexs.push(i);
                     }
                 }
                 
             }
 
-            return index;
+            return indexs;
         }
 
         /**
@@ -615,6 +616,7 @@
             var self = this,
                 box = self.treeBox.getElementsByTagName(span);
             
+            self.arr = [];
             box = [].slice.call(box);
             box.forEach(item => {
                 item.removeClass("current");
@@ -630,7 +632,7 @@
         dirSearch (e) {
             var self = this,
                 text = "",
-                index,  //下标
+                index = [],  //下标
                 i = 0;  //存储当前遍历到的层次
 
             if (e.target.name === "DirSearch") {
@@ -641,18 +643,29 @@
                     return;
                 }
 
+                self.dirReset("span");
                 self.traverseDF2(self.root);
                 index = self.setSearch(text);  //获取查询到的结果在数组中的下标
 
-                if (index) {    //查询到了
-                    self.dirReset("span");
+                if (index.length === 1) {    //查询到了
+
                     self.arr[index].addClass("current");
+                    self.listShow(self.arr[index], i);  //执行匹配展开
+
+                } else if (index.length > 1) {
+                    
+                    index.forEach((item) => {
+                        self.arr[item].addClass("current");
+                        self.listShow(self.arr[item], i);  //执行匹配展开
+                    });
+                    alert("找到" + (index.length) + "个同名文件");
+
                 } else {        //没查询到
+
                     alert("没查询到");
                     return;
-                }
 
-                self.listShow(self.arr[index], i);  //执行匹配展开
+                }
             }
         }
 
