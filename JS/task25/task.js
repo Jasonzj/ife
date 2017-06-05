@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-05-31 21:04:43 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-05 13:11:52
+ * @Last Modified time: 2017-06-05 14:36:27
  */
 
 /**
@@ -254,7 +254,7 @@
         /**
          * 搜索方法
          * @param {String} text 需要查询的字符串(搜索框的值)
-         * @returns 返回查询到的元素在数组中的下标 i 
+         * @returns 返回查询到的元素在数组中的下标 index 
          */
         
         setSearch (text) {
@@ -285,7 +285,6 @@
 
             var divs = self.treeBox.getElementsByTagName('div');
             divs = [].slice.call(divs);
-            console.log(divs);
             divs.forEach(function(item) {
                 item.removeClass("active");
                 item.removeClass("current");
@@ -430,7 +429,7 @@
          * @param {Event} e  
          */
         
-        setShow (e) {
+        setSelect (e) {
             var self = this,
                 target = e.target;
             
@@ -487,7 +486,12 @@
             this.setDirTreeEvent();
         }
         
-        setShow (e) {
+        /**
+         * 设置点击事件方法
+         * @param {Event} e 
+         */
+        
+        setOpEvent (e) {
             var self = this,
                 parent = e.target.parentNode.parentNode,
                 lists = Array.prototype.slice.call(parent.children),
@@ -506,16 +510,28 @@
             self.setOperation(e);
         }
 
+        /**
+         * 目录显示方法
+         * @param {Element} iconState 需要改变的状态Element
+         * @param {Array} lists 需要显示的Element集合
+         */
+
         show (iconState, lists) {
             var self = this;
             
-            if (iconState) {
+            if (iconState) {      
                 iconState.innerHTML = " [-] ";
                 iconState.setAttribute("name", 1);
             }
             self.setClass(lists, "addClass");
         }
 
+        /**
+         * 目录隐藏方法
+         * @param {Element} iconState 需要改变的状态Element
+         * @param {Array} lists 需要隐藏的Element集合
+         */
+        
         hidden (iconState, lists) {
             var self = this;
             
@@ -524,6 +540,12 @@
             self.setClass(lists, "removeClass");   
         }
 
+        /**
+         * 设置类名方法(用于显示和隐藏)
+         * @param {Array} lists 需要显示的元素集合 
+         * @param {String} operation 方法值，(addClass,removeClass)
+         */
+        
         setClass (lists, operation) {
             lists.forEach(function(item) {
                 if (item.className != "tree-header") {
@@ -532,10 +554,22 @@
             }) 
         }
 
+        /**
+         * 获取重命名和添加的文本值
+         * @param {String} text 弹出框的字符
+         * @param {String} reText 弹出框的初始值
+         * @returns 用户输入的值
+         */
+        
         getText (text, reText) {
             return prompt(text, reText).trim();
         }
 
+        /**
+         * 目录文件夹操作方法(添加，删除重命名)
+         * @param {Event} e 
+         */
+        
         setOperation (e) {
             var self = this,
                 text = "",  //存储当前添加文本值
@@ -548,13 +582,15 @@
 
             switch (e.target.className) {   
                 case "add":
-                    text = self.getText("请输入添加节点的名称");
-                    self.nodeRender(text, true, "tree-body");
-                    iconState = parent.querySelector('.state');
-                    if (!iconState) {
+                    text = self.getText("请输入添加节点的名称");  //获取添加节点的值
+                    self.nodeRender(text, true, "tree-body");  //调用添加节点方法
+                    iconState = parent.querySelector('.state'); //存储添加节点的父节点状态Element
+
+                    if (!iconState) {  //如果状态Element不存在就添加状态Element
                         parent.innerHTML += "<span class='state' name='1'> [-] </span> "
                     } 
-                    lists = Array.prototype.slice.call(self.current.children); 
+
+                    lists = Array.prototype.slice.call(self.current.children); //转换数组
                     self.show(iconState, lists);  
                     break;
 
@@ -563,16 +599,21 @@
                     break;
 
                 case "rename":
-                    renameText = parent.children[0].innerHTML.trim();
-                    var result = self.getText("请输入修改节点的名称", renameText)
-                    parent.children[0].innerHTML = result;
+                    renameText = parent.children[0].innerHTML.trim();   //获取需要重命名节点的值
+                    var result = self.getText("请输入修改节点的名称", renameText)  //获取重命名后的值
+                    parent.children[0].innerHTML = result;  //重命名
                     break;
             }
         }
 
+        /**
+         * 目录初始化搜索高亮方法
+         * @param {String} span 需要初始化的标签
+         */
+
         dirReset(span) {
             var self = this,
-                box = self.treeBox.getElementsByTagName("span");
+                box = self.treeBox.getElementsByTagName(span);
             
             box = [].slice.call(box);
             box.forEach(item => {
@@ -580,11 +621,20 @@
             })
         }
 
+        /**
+         * 目录搜索点击处理方法
+         * @param {Event} e 
+         * @returns 
+         */
+        
         dirSearch (e) {
             var self = this,
-                i = 0;
+                text = "",
+                index,  //下标
+                i = 0;  //存储当前遍历到的层次
+
             if (e.target.name === "DirSearch") {
-                var text = self.searchInpt.value.trim();
+                text = self.searchInpt.value.trim();
 
                 if (text == "") {
                     alert("不能输入空值");
@@ -592,36 +642,43 @@
                 }
 
                 self.traverseDF2(self.root);
-                var index = self.setSearch(text);
-                if (index) {
-                    self.dirReset();
+                index = self.setSearch(text);  //获取查询到的结果在数组中的下标
+
+                if (index) {    //查询到了
+                    self.dirReset("span");
                     self.arr[index].addClass("current");
-                } else {
+                } else {        //没查询到
                     alert("没查询到");
                     return;
                 }
+
+                self.listShow(self.arr[index], i);  //执行匹配展开
+            }
+        }
+
+        /**
+         * 目录展开方法(匹配搜索展开)
+         * @param {Element} node 查询到的节点
+         * @param {Number} i 存储当前遍历到的层次
+         */
+
+        listShow (node, i) {
+            var lists = [],
+                self = this,
+                iconState,  //需要改变的状态Element
+                parents = node.parentNode.parentNode;
+
+            if(parents.className.indexOf("tree-body") > -1) {   //如果匹配到的父节点类名包含tree-body
+                lists = siblings(parents);      //获取节点的所有兄弟元素(包括自身)
+
+                if (i !== 0) iconState = parents.querySelector(".state");   //跳过目标节点
                 
-
-                function listShow (node) {
-                    var lists = [],
-                        iconState,
-                        parents = node.parentNode.parentNode;
-
-                    if(parents.className.indexOf("tree-body") > -1) {
-                        lists = siblings(parents);
-
-                        if (i !== 0) iconState = parents.querySelector(".state");
-                        
-                        i++;
-                        
-                        self.show(iconState, lists); 
-                        listShow(node.parentNode);
-                    } else {
-                        return node;
-                    }
-
-                }
-                listShow(self.arr[index]);
+                i++;
+                
+                self.show(iconState, lists);    //显示并改变状态
+                self.listShow(node.parentNode); //递归匹配
+            } else {
+                return node;
             }
         }
 
@@ -631,7 +688,7 @@
         
         setDirTreeEvent () {
             var self = this;
-            addEvent(self.treeBox, 'click', self.setShow.bind(self));
+            addEvent(self.treeBox, 'click', self.setOpEvent.bind(self));
             addEvent(self.btnBox, 'click', self.dirSearch.bind(self));
         }
 
@@ -646,6 +703,9 @@
     window.DirTree = DirTree;
 
 })(window);
+
+
+
 
 /**
 * 判断空对象
