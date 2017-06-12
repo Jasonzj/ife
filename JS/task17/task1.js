@@ -150,7 +150,7 @@ var aqiSourceData = {
 			self.chartData.day = day;
 			self.chartData.week = week;
 			self.chartData.month = month;
-
+			
 		}
 
 		renderChart() {

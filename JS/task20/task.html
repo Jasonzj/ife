@@ -50,7 +50,7 @@
 					return "<div>"+ e +"</div>";
 				}).join('');
 			}
-
+			
 			insertBtn.onclick = function () {
 				var str = textArea.value.trim();
 				data = str.split(/[^0-9a-zA-Z\u4e00-\u9fa5]+/).filter(function (e) {
