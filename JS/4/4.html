@@ -105,7 +105,15 @@
                     }
                     ulBox.removeChild(ulBox.lastChild);
                 }
+            }
 
+            ulBox.onmouseover = function () {
+                var lis = document.getElementsByTagName('li');
+                for (let i = 0, li; li = lis[i++];) {
+                    li.onclick = function () {
+                        ulBox.removeChild(li);
+                    }
+                }
             }
         })();
 
