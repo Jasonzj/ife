@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-14 19:36:13 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-14 21:42:32
+ * @Last Modified time: 2017-06-14 22:25:49
  */
 
 ;
@@ -107,25 +107,25 @@
 		 * @param {class} spaceship   飞船
 		 */
 		const drawSpaceship = (_ctx, spaceship) => {
-			var spaceshipImg = new Image();
+			const spaceshipImg = new Image();
 			spaceshipImg.src = 'img/min-iconfont-rocket-active.png';
 			spaceshipImg.onload = function() {
 
-				// _ctx.save();
 				// _ctx.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+				// _ctx.save();
 				// _ctx.translate(SCREEN_CENTER_X, SCREEN_CENTER_Y);
 				// _ctx.rotate(spaceship.deg * 8 * Math.PI / 180);
 				// _ctx.beginPath();
 				// _ctx.drawImage(spaceshipImg, spaceship.orbit - SPACE_SIZE / 2, 0, SPACE_SIZE, SPACE_SIZE); 
 				// _ctx.closePath();
 				// _ctx.restore();
-				
+				// shipCtx.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 				// shipCtx.drawImage(cacheCanvas, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-
+				
 				_ctx.save();
 				_ctx.translate(SCREEN_CENTER_X, SCREEN_CENTER_Y);
 				_ctx.rotate(spaceship.deg * 8 * Math.PI / 180);
-
+				
 				//画电量条，根据电量状态改变颜色
 				_ctx.beginPath();
 				if (spaceship.power > 60) {
@@ -148,13 +148,38 @@
 			}
 		}
 		
-		for (var i = 0; i < 4; i++) {
-			drawSpaceship(cacheCtx, {
-				deg: i,
-				orbit: i * 45 + 200,
-				power: 100
-			});
+		// for (var i = 0; i < 4; i++) {
+		// 	drawSpaceship(cacheCtx, {
+		// 		deg: i,
+		// 		orbit: i * 45 + 200,
+		// 		power: 100
+		// 	});
+		// }
+
+		var s1 = {
+			id: 2,
+			deg: 1,
+			orbit: 2 * 45 + 200,
+			power: 100
+		};
+
+		var s2 = {
+			id: 3,
+			deg: 1,
+			orbit: 3 * 45 + 200,
+			power: 100
+		};
+
+		drawSpaceship(cacheCtx, s1);
+		drawSpaceship(cacheCtx, s2);
+
+		const anlo = function() {
+			requestAnimationFrame(anlo);
+			drawSpaceship(cacheCtx, s1);
+			s1.deg -= 0.1;
 		}
+
+		anlo();
 
 		const init = (function() {
 			drawPlanet(planet_ctx);
