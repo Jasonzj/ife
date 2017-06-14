@@ -1,5 +1,63 @@
-.nav{
-    .div {
-        display: flex;
-    } 
+@import './reset.scss';
+
+body {
+    background: #02071d;
+}
+
+%pos{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+/**************** canvas ****************/
+
+/* 轨道 */
+#planet{
+    @extend %pos;
+    display: block;
+    margin: 0 auto;
+}
+
+/* 飞船 */
+#ship{
+    @extend %pos;
+    display: block;
+    margin: 0 auto;
+}
+
+
+
+/**************** 控制台 ****************/
+
+.control{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    display: flex;
+    width: 90%;
+    height: 180px;
+    margin: 0 auto;
+    border: 2px dotted #3b3f58;
+    border-radius: 10px;
+
+    /* 命令台 */
+    .command {  
+        flex: 7;
+    }
+
+    /* 控制台 */
+    .console{
+        flex: 3;
+        margin: 0 20px;
+        width: 300px;
+        height: 180px;
+        padding: 0 10px;
+        line-height: 16px;
+        border-left: 2px dotted #3b3f58;
+        color: #32a39d;
+        font-size: .75rem;
+    }
 }

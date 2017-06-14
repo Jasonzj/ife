@@ -180,7 +180,7 @@
         var len = arr.length, value;
         for (var i = 0; i < len; i++) {           //循环len趟，外层循环顺序是从数组的第一位到最后一位
             value = arr[i];                     //每趟循环拿到第i的数值赋值给Value
-
+            
             for (j = i - 1; j > -1 && arr[j] > value; j--) {    //内层顺序是从后往前 j = i - 1会跳过已经排好序的部分。比较后面的数值是否大于前面的数值
                 arr[j + 1] = arr[j];            //满足条件直接交换
                 yield arr;
@@ -223,7 +223,6 @@
         timeH = setInterval(function () {
             //getData.next()每调用一次, 其值都会改变, 故设一个临时变量存储其值
             var temp = getData.next().value;
-            console.log(temp);
             if (temp != undefined && temp != "ending") {
                 showData(temp);
             } else if (temp == "ending") {
