@@ -13,6 +13,16 @@ body {
     margin: 0 auto;
 }
 
+%btn{
+    display: block;
+    padding: 0 20px;
+    height: 30px;
+    border: 0;
+    background: #2980B9;
+    color: #fff;
+    border-radius: 5px;
+}
+
 /**************** canvas ****************/
 
 /* 轨道 */
@@ -37,7 +47,39 @@ body {
 
     /* 命令台 */
     .command {  
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
         flex: 7;
+        .create {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            @extend %btn;
+        }
+    }
+
+    .shipCommand{
+        width: 150px;
+        height: 110px;
+        margin-top: 30px;
+        padding: 5px 0;
+        border-radius: 5px;
+        background: #3498DB;
+        p{
+            display: block;
+            float: left;
+            width: 70px;
+            line-height: 110px;
+            text-align: center;
+            color: #fff;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        button {
+            margin-top: 5px;
+            @extend %btn;
+        }
     }
 
     /* 控制台 */
@@ -49,7 +91,8 @@ body {
         padding: 0 10px;
         line-height: 16px;
         border-left: 2px dotted #3b3f58;
-        color: #32a39d;
+        color: #fff;
         font-size: .75rem;
+        overflow: auto;
     }
 }

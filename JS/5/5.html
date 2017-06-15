@@ -159,7 +159,7 @@
     function* selectionSort() {
         var arr = data;
         var len = arr.length, min;
-        for (var i = 0; i <= len; i++) { //进行len - 1趟选择(循环)，选择第i个最小记录。
+        for (var i = 0; i < len - 1; i++) {  //进行len - 1趟选择(循环)，选择第i个最小记录。
             min = i;
             for (var j = i + 1; j <= len; j++) {      //因为i循环已经拿了最前面的数值 所以j循环复制拿后面的数值和进行对比。
                 if (arr[j] < arr[min]) {                 //第一次循环次数的min = 1

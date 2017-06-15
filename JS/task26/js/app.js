@@ -2,13 +2,13 @@
  * @Author: Jason 
  * @Date: 2017-06-14 19:36:13 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-15 15:42:24
+ * @Last Modified time: 2017-06-15 22:18:21
  */
 
 ;
 (window => {
 	
-	const SPACE_SPEED = 2,		  // 飞船飞行速度
+	const SPACE_SPEED = 1,  // 飞船飞行速度
 		  SPACE_SIZE = 40,		  // 飞船大小
 		  SPACE_COUNT = 4,		  // 飞船数量
 		  SPACE_CHAGE = 0.3,	  // 飞船充电速度
@@ -33,26 +33,255 @@
 	 * [Spaceship 飞船类]
 	 * @class Spaceship
 	 */
-	class Spaceship {
+	const Spaceship = (function() {
+		class Spaceship {
 
-		constructor (id) {
-			this.id = id;	
-			this.deg = 0;
-			this.power = 100;
-			this.state = "stop";
-			this.orbit = 200 + 45 * id;
+			constructor (id) {
+				this.id = id;	
+				this.deg = 0;
+				this.power = 100;
+				this.state = "stop";
+				this.orbit = 200 + 45 * id;
+				this.timer = null;
+				
+			}
+
+			/**
+			 * [engineSystem 飞船动力系统(引擎) 控制飞船的飞行和停止]
+			 * @returns {Object} fly(飞行)方法，stop(停止)方法
+			 */
+			engineSystem () {
+				const self = this;
+
+				const fly = function () {
+					if (self.power > 0) {	// 如果电量大于0则可飞行
+						self.timer = setInterval(function() {
+							self.deg += SPACE_SPEED;
+							if (self.deg >= 360) self.deg = 0;
+						}, 20);
+						miniConsole.log(`飞船${self.id + 1} 号起飞`);
+					}
+				};
+
+				const stop = function() {
+					clearInterval(self.timer);	
+					miniConsole.log(`飞船${self.id + 1} 号停止`);
+				};
+
+				return {
+					fly,
+					stop
+				}
+
+			}
+
+			/**
+			 * [powerSystem 飞船能源系统 控制飞船的充电和放电]
+			 * @returns {Object} charge(充电)方法，discharge(放电)方法
+			 */
+			powerSystem () {
+				const self = this;
+
+				/**
+				 * [charge 飞船充电方法]
+				 */
+				const charge = function() {
+					var timer = setInterval(function() {
+						if (self.state === 'fly' || self.state === 'destroy') {
+							clearInterval(timer);
+							return false;
+						}
+						if (self.power >= 100) {
+							clearInterval(timer);
+							self.power = 100;
+							return false;
+						}
+
+						self.power += SPACE_CHAGE;
+						return true;
+					}, 20);
+					miniConsole.log(`飞船${self.id + 1} 号充电`);
+				}
+
+				/**
+				 * [charge 飞船放电方法]
+				 */
+				const discharge = function() {
+					var timer = setInterval(function() {
+						if (self.state === 'stop' || self.state === 'destroy') {
+							clearInterval(timer);
+							return false;
+						}
+						if (self.power <= 0) {
+							clearInterval(timer);
+							self.power = 0;
+							self.stateSystem().changeState('stop');
+							return false;
+						}
+
+						self.power -= SPACE_DISCHARGE;
+						return true;
+
+					}, 20);
+					miniConsole.log(`飞船${self.id + 1} 号放电`);
+				}
+
+				return {
+					charge,
+					discharge
+				}
+			}
+
+			/**
+			 * [stateSystem 飞船状态系统，管理飞船状态]
+			 * @returns changeState方法，接受指令改变飞船状态
+			 */
+			stateSystem () {
+				const self = this,
+					  states = {	// 状态对象
+						  fly () {
+							  self.state = 'fly';
+							  self.engineSystem().fly();
+							  self.powerSystem().discharge();
+						  },
+						  stop () {
+							  self.state = 'stop';
+							  self.engineSystem().stop();
+							  self.powerSystem().charge();
+						  },
+						  destroy () {
+							  self.state = 'destroy';
+							  Mediator.destroy(self);
+						  }
+					  }
+
+				// 切换状态方法
+				const changeState = function(state) {	
+					states[state] && states[state]();
+					miniConsole.log(`飞船${self.id + 1} 状态为 ${self.state}`);
+				}
+
+				return {
+					changeState
+				}
+			}
+
+			/**
+			 * [signalSystem 飞船信号系统，接受来自太空的信号，并通知状态系统完成状态切换]
+			 * @param {Object} msg 指令
+			 */
+			signalSystem (msg) {
+				var self = this;
+
+				if (self.state !== msg.commond && msg.id === self.id) {
+					self.stateSystem().changeState(msg.commond);
+				}
+
+			}
+
+			/**
+			 * 指令格式: {
+			 *     id: 0,
+			 * 	   commond: 'fly'
+			 * }
+			 */
+ 		}
+
+		return Spaceship;
+	})();
+
+	/**
+	 * [Mediator 传播消息，专门负责让不同对象之间进行消息传递，并保存飞船队列]
+	 * @return self
+	 */
+	const Mediator = (() => {
+
+		var spaceshipQueue = [];	//存储飞船队列
+
+		/**
+		 * [createSpaceship 创建飞船]
+		 * @param {Number} id 飞船的id
+		 */
+		const createSpaceship = (id) => {
+			if (id === false) return false;
+			var newSpaceship  = new Spaceship(id);	    // 新建飞船实例
+			spaceshipQueue.push(newSpaceship)			// 将新飞船实例压进数组
+			Animate.drawSpaceship(newSpaceship);		// 画飞船
+			miniConsole.log(`创建飞船${id + 1}成功`);
 		}
 
-		init () {
-			
+		/**
+		 * [send 传播消息方法，采用广播传播消息的方式]
+		 * @param {Object} msg 指令消息
+		 */
+		const send = (msg) => {
+			if (msg.commond === "create") {		// 如果命名是创建飞船则执行创建飞船
+				Mediator.createSpaceship(msg.id);
+			} else {
+				var success = Math.random() > FAILURE_RATE ? true : false; //若随机数大于发送失败率则执行消息发送
+				setTimeout(function() {
+					if (success) {		// 按30%的丢包率发送消息
+						spaceshipQueue.forEach((item) => {
+							item.signalSystem(msg);
+						});
+					} else {
+						miniConsole.log('指令丢包啦!');
+					}
+				}, 1000);
+			}
 		}
 
-	}
+		const destroy = (spaceship) => {
+			if (spaceship instanceof Spaceship) {
+				delete spaceshipQueue[spaceship.id];
+				miniConsole.log(`飞船${spaceship.id + 1}自爆啦`);
+			}
+		}
+
+		/**
+		 * [getspaceshipQueue 获取飞船队列]
+		 * @returns {Array} spaceshipQueue(飞船队列)
+		 */
+		const getspaceshipQueue = () => {
+			return spaceshipQueue;
+		}
+
+		return {
+			createSpaceship,
+			getspaceshipQueue,
+			destroy,
+			send
+		}
+
+	})();
+
+	/**
+	 * [Commander 指挥官]
+	 * @return self
+	 */
+	const Commander = (() => {
+
+		const commander = {
+			id: 'Jason',
+			rank: 'admiral',
+			msgs: [],
+			mediator: Mediator
+		};
+		
+		commander.send = function(msgs) {
+			this.msgs.push(msg);
+			this.mediator.send(msg);
+		}
+
+		return commander;
+
+	})();
 
 	/**
 	 * [Animate 动画工具，canvas绘制]
 	 */
-	const Animate = (function() {
+	const Animate = (() => {
+
 		const ship = document.getElementById('ship');
 		      shipCtx = ship.getContext('2d'),
 			  planet = document.getElementById('planet'),
@@ -106,14 +335,15 @@
 		 * @param {Object} spaceship  飞船实例
 		 * @return {Boolean}          绘画成功返回true，失败返回false
 		 */
-		const drawSpaceship = (_ctx, spaceship) => {
-			const spaceshipImg = new Image();
+		const drawSpaceship = (spaceship) => {
+			const spaceshipImg = new Image(),
+				  _ctx = cacheCtx;
 			spaceshipImg.src = 'img/min-iconfont-rocket-active.png';
 			spaceshipImg.onload = function() {			
 				try {
 					_ctx.save();	// 保存画布原有状态
 					_ctx.translate(SCREEN_CENTER_X, SCREEN_CENTER_Y);	// 更改画布坐标系，将画布原点移到画布中心
-					_ctx.rotate(spaceship.deg * 8 * Math.PI / 180);		// 飞船角度
+					_ctx.rotate(-spaceship.deg * Math.PI / 180);		// 飞船角度
 					
 					//画电量条，根据电量状态改变颜色
 					_ctx.beginPath();
@@ -147,15 +377,20 @@
 		 * @param {Array} spaceships 飞船队列
 		 */
 		const refreshShip = spaceships => {
-			cacheCtx.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT); 
-			for (var i = 0, ship; ship = spaceships[i++];) {
-				drawSpaceship(cacheCtx, ship);
+			if (spaceships.length > 0) {
+				cacheCtx.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT); 
+				for (var i = 0, ship; ship = spaceships[i++];) {
+					drawSpaceship(ship);
+				}
+			} else {
+				shipCtx.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);	// 清空飞船画布
 			}
+			
 		}
 
 		const animateLoop = () => {
 			requestAnimationFrame(animateLoop);
-			refreshShip(spaceships);
+			refreshShip(Mediator.getspaceshipQueue());
 		}
 
 		/**
@@ -164,6 +399,7 @@
 		const init = (() => {
 			drawPlanet(planet_ctx);
 			drawOrbit(planet_ctx);
+			animateLoop();
 		})();
 
 		return {
@@ -173,83 +409,117 @@
 		}
 
 	})();
-	
+
+	/**
+	 * [message 生成消息命令格式]
+	 * @param {Number} id 飞船id
+	 * @param {String} commond 飞船命令
+	 * @returns 
+	 */
+	const message = function(id, commond) {
+		return {
+			id: id,
+			commond: commond
+		}
+	}
+
+	const buttonHandel = (function() {
+
+		var command = document.querySelector('.command'),
+			ships = Array.apply(null, Array(SPACE_COUNT)).map((item, i) => i + 1);	
+		
+
+		function createBtn () {
+
+			ships = ships.sort((a, b) => a - b);
+
+			var id = ships.shift();
+
+			if (!id) {
+				miniConsole.log(`飞船总数超过总数量${SPACE_COUNT}了`)
+				return false;
+			}
+
+			command.innerHTML += `
+				<div class="shipCommand" data-id="${id}">
+					<p>飞船${id}</p>
+					<button class="fly">飞行</button>
+					<button class="stop">停止</button>
+					<button class="destroy">销毁</button>
+				</div>
+			`
+			
+			return id - 1;
+		}
+
+		function btnEvent (e) {
+			const target = e.target,
+				  parent = target.parentNode;
+			
+			var id = parseInt(parent.getAttribute('data-id')) - 1,
+				cmd = target.className;
+				msg = message(id, cmd);
+			
+			if (target.nodeName === 'BUTTON') {
+				switch (target.className) {
+					case 'create':
+						id = createBtn();
+						msg = message(id, cmd);
+						Commander.send(msg);
+						break;
+					case 'fly':
+					case 'stop':
+						Commander.send(msg);
+						break;
+					case 'destroy':
+						Commander.send(msg);
+						ships.unshift(id);
+						command.removeChild(parent);
+						break;
+				}
+			}
+		}
+
+		addEvent(command, 'click', btnEvent);
+
+	})();
+
+	/**
+	 * [miniConsole 控制台]
+	 * @return {Function} log方法
+	 */
+	const miniConsole = (() => {
+		const consoleBox = document.querySelector('.console');
+		const log = function(value) {
+			consoleBox.innerHTML += `
+				<p>${value}</p>
+			`;
+			consoleBox.scrollTop = consoleBox.scrollHeight;
+		}
+
+		return {
+			log
+		}
+	})();
+
 })(window);
 
 
-// var Animate = (() => {
+//跨浏览器事件绑定
+function addEvent(element, event, hanlder) {
+    if (element.addEventListener) {
+        addEvent = function(element, event, hanlder) {
+            element.addEventListener(event, hanlder, false);
+        }
+    } else if (element.attachEvent) {
+        addEvent = function(element, event, hanlder) {
+            element.attachEvent("on" + event, hanlder);
+        }
+    } else {
+        addEvent = function(element, event, hanlder) {
+            element["on" + event] = hanlder;
+        }
+    }
 
-//     const canvas = document.getElementById('planet'),
-//           ctx = canvas.getContext("2d"),
-// 		  canvas2 = document.getElementById('ship'),
-//           ctx2 = canvas2.getContext("2d");
-	
-// 	canvas.width = 700;
-// 	canvas.height = 700;
-
-// 	const centerX = Math.floor(canvas.width / 2),
-//           centerY = Math.floor(canvas.height / 2);
-
-//     for (var i = 0; i < 4; i++) {
-//         ctx.strokeStyle = "#3e4059";
-//         ctx.lineWidth = 3;
-//         ctx.beginPath();
-//         ctx.arc(350, 350, 200 + 45 * i, 0, 2 * Math.PI, false);
-//         ctx.closePath();
-//         ctx.stroke();
-//     }
-
-//     const circle = (color, x, y, w) => {    
-//         ctx.fillStyle = color;
-//         ctx.beginPath();
-//         ctx.arc(x, y, w, 0, Math.PI * 2, true);
-//         ctx.closePath();
-//         ctx.fill();
-//     }
-
-//     circle('#ec5d4a', 350, 350, 150);
-//     circle('#c83b38', 380, 440, 40);
-//     circle('#c83b38', 320, 320, 25);
-//     circle('#c83b38', 280, 250, 15);
-
-// 	var spaceships = [],
-//         vr = 0.05,
-//         angle = 0,
-//      	radius = 235,
-// 		cos = Math.cos(vr),
-// 		sin = Math.sin(vr),
-// 		time = 1;
-
-//     function Spaceship(x, y, radius, speed) {
-// 		this.x = x;
-// 		this.y = y;
-// 		this.radius = radius;
-// 		this.angle = 0;
-// 		this.speed = speed;
-//     }
-
-// 	var spaceshipImg = new Image(); //创建飞船贴图
-//         spaceshipImg.src = "./img/min-iconfont-rocket-active.png";
-	
-// 	function animation () {
-		
-// 		ctx2.clearRect(0, 0, canvas.width, canvas.height);
-// 			ctx2.save();
-// 			ctx2.translate(centerX, centerY);
-// 			ctx2.rotate(angle * 8 * Math.PI / 180);
-// 			ctx2.beginPath();
-// 			ctx2.drawImage(spaceshipImg, 223, 0, 40, 40); 
-// 			ctx.closePath();
-// 			ctx2.restore();
-// 			angle = angle - vr;
-// 			requestAnimationFrame(animation);
-// 	}
-
-// 	window.onload = function() {
-// 		// spaceships.push(new Spaceship(centerX - 50,centerY - 50,10));
-// 		new Spaceship(centerX - 50,centerY - 50,10)
-// 		animation();
-// 	};
-    
-// })();
-
+    addEvent(element, event, hanlder);
+}
