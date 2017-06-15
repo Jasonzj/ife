@@ -9,25 +9,17 @@ body {
     top: 0;
     left: 0;
     right: 0;
+    display: block;
+    margin: 0 auto;
 }
 
 /**************** canvas ****************/
 
 /* 轨道 */
-#planet{
-    @extend %pos;
-    display: block;
-    margin: 0 auto;
-}
+#planet{ @extend %pos; }
 
 /* 飞船 */
-#ship{
-    @extend %pos;
-    display: block;
-    margin: 0 auto;
-}
-
-
+#ship{ @extend %pos; }
 
 /**************** 控制台 ****************/
 
