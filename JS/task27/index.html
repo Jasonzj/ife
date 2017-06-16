@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+	<!-- 轨道背景 -->
+    <canvas id="planet"></canvas>
+	<!-- 飞船 -->
+    <canvas id="ship" width="700" height="700"></canvas>
+	
+	<!-- 指挥台 -->
+	<section class="control">
+		<div class="command">
+			<button class="create">新建飞船</button>
+			<div class="system">
+				<fieldset>
+					<legend>动力系统选择:</legend>
+					<input type="radio" value="1" name="shipType1" checked="checked">
+					<span>无动力模式</span>
+					<input type="radio" value="2" name="shipType1">
+					<span>巡航模式</span>
+					<input type="radio" value="3" name="shipType1">
+					<span>高速模式</span>
+				</fieldset>
+				<fieldset>
+					<legend>能源系统选择:</legend>
+					<input type="radio" value="4" name="shipType2" checked="checked">
+					<span>慢回复<span>
+					<input type="radio" value="5" name="shipType2">
+					<span>快速回复</span>
+					<input type="radio" value="6" name="shipType2">
+					<span>光能驱动永久型</span>
+				</fieldset>
+			</div>
+		</div>
+		<div class="console"></div>
+	</section>
+	
+	<script src="./js/app.js"></script>
+</body>
+</html>
