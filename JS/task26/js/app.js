@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-14 19:36:13 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-15 22:18:21
+ * @Last Modified time: 2017-06-16 11:29:23
  */
 
 ;
@@ -25,10 +25,17 @@
 		  SCREEN_CENTER_X = SCREEN_WIDTH / 2,	// canvas X轴中心坐标
 		  SCREEN_CENTER_Y = SCREEN_HEIGHT / 2,	// canvas Y轴中心坐标
 
-		  PLANET_RADIUS = 150,	// 行星半径
-		  ORBIT_COUNT = 4,		// 轨道数量
-		  FAILURE_RATE = 0.3;	// 消息丢包率
-
+		  PLANET_RADIUS = 150,	     // 行星半径
+		  PLANET_MCOLOR = "#3498DB"; // 行星主色调
+		  PLANET_COLOR = "#2980B9";  // 行星副色调
+		  ORBIT_COUNT = 4,		     // 轨道数量
+		  FAILURE_RATE = 0.3,		 // 消息丢包率
+		  
+		  // requestAnimationFrame兼容
+		  requestAnimationFrame = window.requestAnimationFrame 	
+							   || window.mozRequestAnimationFrame 
+							   || window.webkitRequestAnimationFrame 
+							   || window.msRequestAnimationFrame;
 	/**
 	 * [Spaceship 飞船类]
 	 * @class Spaceship
@@ -41,7 +48,7 @@
 				this.deg = 0;
 				this.power = 100;
 				this.state = "stop";
-				this.orbit = 200 + 45 * id;
+				this.orbit = 150 + 45 * id;
 				this.timer = null;
 				
 			}
@@ -59,13 +66,13 @@
 							self.deg += SPACE_SPEED;
 							if (self.deg >= 360) self.deg = 0;
 						}, 20);
-						miniConsole.log(`飞船${self.id + 1} 号起飞`);
+						miniConsole.log(`飞船${self.id} 号起飞`);
 					}
 				};
 
 				const stop = function() {
 					clearInterval(self.timer);	
-					miniConsole.log(`飞船${self.id + 1} 号停止`);
+					miniConsole.log(`飞船${self.id} 号停止`);
 				};
 
 				return {
@@ -100,7 +107,7 @@
 						self.power += SPACE_CHAGE;
 						return true;
 					}, 20);
-					miniConsole.log(`飞船${self.id + 1} 号充电`);
+					miniConsole.log(`飞船${self.id} 号充电`);
 				}
 
 				/**
@@ -123,7 +130,7 @@
 						return true;
 
 					}, 20);
-					miniConsole.log(`飞船${self.id + 1} 号放电`);
+					miniConsole.log(`飞船${self.id} 号放电`);
 				}
 
 				return {
@@ -158,7 +165,7 @@
 				// 切换状态方法
 				const changeState = function(state) {	
 					states[state] && states[state]();
-					miniConsole.log(`飞船${self.id + 1} 状态为 ${self.state}`);
+					miniConsole.log(`飞船${self.id} 状态为 ${self.state}`);
 				}
 
 				return {
@@ -172,6 +179,8 @@
 			 */
 			signalSystem (msg) {
 				var self = this;
+
+				// msg.id -= 1;	// 因为收到的指令是
 
 				if (self.state !== msg.commond && msg.id === self.id) {
 					self.stateSystem().changeState(msg.commond);
@@ -207,7 +216,21 @@
 			var newSpaceship  = new Spaceship(id);	    // 新建飞船实例
 			spaceshipQueue.push(newSpaceship)			// 将新飞船实例压进数组
 			Animate.drawSpaceship(newSpaceship);		// 画飞船
-			miniConsole.log(`创建飞船${id + 1}成功`);
+			miniConsole.log(`创建飞船${id}成功`);
+		}
+
+		/**
+		 * [destroy 飞船自爆]
+		 * @param {Object} spaceship 飞船实例
+		 */
+		const destroy = (spaceship) => {
+			if (spaceship instanceof Spaceship) {
+				// spaceshipQueue.splice(spaceship.id - 1, 1);
+				delete spaceshipQueue[spaceship.id - 1];
+				console.log(spaceshipQueue);
+				console.log(spaceshipQueue.length);
+				miniConsole.log(`飞船${spaceship.id}自爆啦`);
+			}
 		}
 
 		/**
@@ -215,7 +238,7 @@
 		 * @param {Object} msg 指令消息
 		 */
 		const send = (msg) => {
-			if (msg.commond === "create") {		// 如果命名是创建飞船则执行创建飞船
+			if (msg.commond === "create") {		// 如果指令是创建飞船则执行创建飞船
 				Mediator.createSpaceship(msg.id);
 			} else {
 				var success = Math.random() > FAILURE_RATE ? true : false; //若随机数大于发送失败率则执行消息发送
@@ -228,13 +251,6 @@
 						miniConsole.log('指令丢包啦!');
 					}
 				}, 1000);
-			}
-		}
-
-		const destroy = (spaceship) => {
-			if (spaceship instanceof Spaceship) {
-				delete spaceshipQueue[spaceship.id];
-				miniConsole.log(`飞船${spaceship.id + 1}自爆啦`);
 			}
 		}
 
@@ -308,10 +324,10 @@
 				_ctx.closePath();
 				_ctx.fill();
 			}
-			circle('#ec5d4a', SCREEN_CENTER_X, SCREEN_CENTER_Y, PLANET_RADIUS);	 // 创建行星
-			circle('#c83b38', 380, 440, 40);
-			circle('#c83b38', 320, 320, 25);
-			circle('#c83b38', 280, 250, 15);
+			circle(PLANET_MCOLOR, SCREEN_CENTER_X, SCREEN_CENTER_Y, PLANET_RADIUS);	 // 创建行星
+			circle(PLANET_COLOR, 380, 440, 40);
+			circle(PLANET_COLOR, 320, 320, 25);
+			circle(PLANET_COLOR, 280, 250, 15);
 		}
 
 		/**
@@ -319,11 +335,11 @@
 		 * @param {Canvas} _ctx 目标画布
 		 */
 		const drawOrbit = (_ctx) => {
-			for (var i = 0; i < ORBIT_COUNT; i++) {
+			for (var i = 1; i < ORBIT_COUNT + 1; i++) {
 				_ctx.strokeStyle = "#3e4059";
 				_ctx.lineWidth = 3;
 				_ctx.beginPath();
-				_ctx.arc(SCREEN_CENTER_X, SCREEN_CENTER_Y, 200 + 45 * i, 0, 2 * Math.PI, false);
+				_ctx.arc(SCREEN_CENTER_X, SCREEN_CENTER_Y, 150 + 45 * i, 0, 2 * Math.PI, false);
 				_ctx.closePath();
 				_ctx.stroke();
 			}
@@ -377,17 +393,23 @@
 		 * @param {Array} spaceships 飞船队列
 		 */
 		const refreshShip = spaceships => {
-			if (spaceships.length > 0) {
-				cacheCtx.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT); 
-				for (var i = 0, ship; ship = spaceships[i++];) {
-					drawSpaceship(ship);
+			if (spaceships !== undefined 
+				|| spaceships.forEach(item => item !== undefined)
+			) {
+				cacheCtx.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);   // 清空缓存画布
+				for (var i = 0; i < spaceships.length; i++) {
+					if (spaceships[i] !== undefined) {
+						drawSpaceship(spaceships[i]);
+					}
 				}
 			} else {
 				shipCtx.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);	// 清空飞船画布
 			}
-			
 		}
 
+		/**
+		 * [animateLoop canvas绘制循环]
+		 */
 		const animateLoop = () => {
 			requestAnimationFrame(animateLoop);
 			refreshShip(Mediator.getspaceshipQueue());
@@ -423,19 +445,23 @@
 		}
 	}
 
+	/**
+	 * [buttonHandel 按钮事件绑定]
+	 */
 	const buttonHandel = (function() {
 
 		var command = document.querySelector('.command'),
-			ships = Array.apply(null, Array(SPACE_COUNT)).map((item, i) => i + 1);	
+			ships = Array.apply(null, Array(SPACE_COUNT)).map((item, i) => i + 1);	// 创建按飞船数量排列的数组，如[1, 2, 3, 4];
 		
-
+		/**
+		 * [createBtn 创建按钮飞船对呀控制按钮]
+		 * @returns {Number} 飞船id
+		 */
 		function createBtn () {
+			ships = ships.sort((a, b) => a - b);	// 数组排序
+			var id = ships.shift();					// 拿出数组第一项
 
-			ships = ships.sort((a, b) => a - b);
-
-			var id = ships.shift();
-
-			if (!id) {
+			if (!id) {	// 如果id不存在
 				miniConsole.log(`飞船总数超过总数量${SPACE_COUNT}了`)
 				return false;
 			}
@@ -449,14 +475,14 @@
 				</div>
 			`
 			
-			return id - 1;
+			return id;
 		}
 
 		function btnEvent (e) {
 			const target = e.target,
 				  parent = target.parentNode;
 			
-			var id = parseInt(parent.getAttribute('data-id')) - 1,
+			var id = parseInt(parent.getAttribute('data-id')),
 				cmd = target.className;
 				msg = message(id, cmd);
 			
@@ -467,14 +493,17 @@
 						msg = message(id, cmd);
 						Commander.send(msg);
 						break;
+
+					case 'destroy':
+						ships.unshift(id);
+						console.log(ships);
+						command.removeChild(parent);
+						Commander.send(msg);
+						break;
+
 					case 'fly':
 					case 'stop':
 						Commander.send(msg);
-						break;
-					case 'destroy':
-						Commander.send(msg);
-						ships.unshift(id);
-						command.removeChild(parent);
 						break;
 				}
 			}
@@ -489,7 +518,9 @@
 	 * @return {Function} log方法
 	 */
 	const miniConsole = (() => {
+
 		const consoleBox = document.querySelector('.console');
+		
 		const log = function(value) {
 			consoleBox.innerHTML += `
 				<p>${value}</p>
@@ -500,6 +531,7 @@
 		return {
 			log
 		}
+
 	})();
 
 })(window);

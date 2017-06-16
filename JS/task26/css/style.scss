@@ -48,7 +48,6 @@ body {
     /* 命令台 */
     .command {  
         display: flex;
-        justify-content: space-between;
         padding: 20px;
         flex: 7;
         .create {
@@ -62,8 +61,8 @@ body {
     .shipCommand{
         width: 150px;
         height: 110px;
-        margin-top: 30px;
         padding: 5px 0;
+        margin: 30px 20px 0 0;
         border-radius: 5px;
         background: #3498DB;
         p{
@@ -87,12 +86,12 @@ body {
         flex: 3;
         margin: 0 20px;
         width: 300px;
-        height: 180px;
-        padding: 0 10px;
+        height: 160px;
+        padding: 10px;
         line-height: 16px;
         border-left: 2px dotted #3b3f58;
         color: #fff;
         font-size: .75rem;
-        overflow: auto;
+        overflow: hidden;
     }
 }
