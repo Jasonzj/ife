@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-14 19:36:13 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-19 12:06:47
+ * @Last Modified time: 2017-06-19 15:40:05
  */
 
 ;
@@ -16,7 +16,7 @@
 		  SPACE_CHAGE = 0.3,	  // 飞船充电速度
 		  SPACE_CHAGE2 = 0.6,	  // 飞船充电速度
 		  SPACE_CHAGE3 = 1,		  // 飞船充电速度
-		  SPACE_DISCHARGE = 0.2,  // 飞船放电速度
+		  SPACE_DISCHARGE = 1,  // 飞船放电速度
 
 		  POWERBAR_POS_OFFSET = 5, 			 // 电量条位置位移
 		  POWERBAR_COLOR_GOOD = "#70ed3f",    // 电量良好状态颜色
@@ -37,9 +37,9 @@
 		  
 		  // requestAnimationFrame兼容
 		  requestAnimationFrame = window.requestAnimationFrame 	
-		  || window.mozRequestAnimationFrame 
-		  || window.webkitRequestAnimationFrame 
-		  || window.msRequestAnimationFrame;
+							   || window.mozRequestAnimationFrame 
+							   || window.webkitRequestAnimationFrame 
+							   || window.msRequestAnimationFrame;
 		  
 	/**
 	 * [Spaceship 飞船类]
@@ -51,7 +51,7 @@
 			constructor (id, speed, powerSpeed) {
 				this.id = id;	
 				this.deg = 0;
-				this.power = 100;
+				this.power = 99.9;
 				this.state = "stop";
 				this.orbit = 150 + 45 * id;
 				this.timer = null;
@@ -100,7 +100,7 @@
 				 */
 				const charge = function() {
 					var timer = setInterval(function() {
-						if (self.state === 'fly' || self.state === 'destroy') {
+						if (self.state === 'destroy') {
 							clearInterval(timer);
 							return false;
 						}
@@ -132,7 +132,7 @@
 							return false;
 						}
 
-						self.power -= SPACE_DISCHARGE;
+						self.power -= SPACE_DISCHARGE;					
 						return true;
 
 					}, 20);
@@ -156,11 +156,11 @@
 							  self.state = 'fly';
 							  self.engineSystem().fly();
 							  self.powerSystem().discharge();
+							  self.powerSystem().charge();
 						  },
 						  stop () {
 							  self.state = 'stop';
 							  self.engineSystem().stop();
-							  self.powerSystem().charge();
 						  },
 						  destroy () {
 							  self.state = 'destroy';
@@ -184,12 +184,32 @@
 			 * @param {Object} msg 指令
 			 */
 			signalSystem (msg) {
-				var self = this;
-
-				if (self.state !== msg.commond && msg.id === self.id) {
-					self.stateSystem().changeState(msg.commond);
+				const self = this,
+					  command = self.adapter(msg); 	// 将二进制命令格式解码转换成JSON格式
+				
+				if (self.state !== command.commond && command.id === self.id) {
+					self.stateSystem().changeState(command.commond);
 				}
 
+			}
+
+			/**
+			 * [adapter 命令解码器]
+			 * @param {Number} msg 
+			 * @returns {Object} JSON指令 { id: 0, commadn: ""}
+			 */
+			adapter (msg) {
+				const command = { id: "", commond: "" };
+				
+				command.id = parseInt(msg.substr(0, 4).substr(command.id.length - 1, 1));	 // 截取前4位字符串的最后一个字符
+
+				switch (msg.substr(4, 4)) {		// 截取命令后四位
+					case "0001": command.commond = "fly"; break;
+					case "0010": command.commond = "stop"; break;
+					case "1100": command.commond = "destroy"; break;
+				}
+
+				return command;
 			}
 
 			/**
@@ -242,15 +262,15 @@
 		return {
 			pushShip,
 			removeShip,
-			getQueue,
 			getSystem,
+			getQueue
 		}
 
 	})();
 
 	/**
-	 * [Mediator 传播消息，专门负责让不同对象之间进行消息传递，并保存飞船队列]
-	 * @return self
+	 * [BUS 传播消息，专门负责让不同对象之间进行消息传递，并保存飞船队列, BUS介质非常先进，可以创建飞船和控制飞船自爆]
+	 * @return {Object} createSpaceship(创建飞船) destroy(飞船自毁) send(广播指令)
 	 */
 	const BUS = (() => {
 
@@ -294,24 +314,54 @@
 			if (msg.commond === "create") {		// 如果指令是创建飞船则执行创建飞船
 				BUS.createSpaceship(msg);
 			} else {
-				const success = Math.random() > FAILURE_RATE ? true : false;  // 若随机数大于发送失败率则执行消息发送
-				
+				const success = Math.random() > FAILURE_RATE ? true : false,  // 若随机数大于发送失败率则执行消息发送
+					  command = adapter(msg);
+
 				// 传递信息有多次重试机会在10%的丢包率下保证传递成功
 				var timer = setInterval(function() {	
 					if (success) {
 						clearInterval(timer);
 						spaceshipQueue.forEach((item) => {
-							item.signalSystem(msg);
+							item.signalSystem(command);
 						});
 					} 
 				}, 300);
 			}
 		}
 
-		// const adapter = (msg) => {
-		// 	const id = msg.id.toString().repeate(2);
-		// 	console.log(id);
-		// }
+		/**
+		 * [adapter 命令加密器]
+		 * @param {Object} msg 指挥官传送的指令
+		 * @returns {Number} message 加密后的二进制的指令
+		 */
+		const adapter = (msg) => {
+			let message = null;
+
+			switch (msg.id) {
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+					message = "000" + msg.id;
+					break;
+			}
+			
+			switch (msg.commond) {
+				case "fly":
+					message += "0001";
+					break;
+				
+				case "stop":
+					message += "0010";
+					break;				
+
+				case "destroy":
+					message += "1100";
+					break;
+			}
+
+			return message;
+		}
 
 		return {
 			createSpaceship,
@@ -505,13 +555,14 @@
 			return command;
 		}
 
-		const getMessage = () => {
-			return command;
+		const init = () => {
+			command.engine = "1";
+			command.energy = "4";
 		}
 
 		return {
-			getMessage,
-			setMessage
+			setMessage,
+			init
 		}
 	})();
 
@@ -557,17 +608,18 @@
 			const target = e.target,
 				  parent = target.parentNode;
 			
-			var id = parseInt(parent.getAttribute('data-id')),	// 获取按钮指令对应的id
+			let id = parseInt(parent.getAttribute('data-id')),	// 获取按钮指令对应的id
 				cmd = target.className;							// 获取按钮指令对应的class(指令)
 				msg = Message.setMessage("id", id, "commond", cmd);	// 设置msg的id和commond
 			
 			// 控制台按钮
 			if (target.nodeName === 'BUTTON') {		
 				switch (target.className) {
-					case 'create':
+					case 'create':		
 						id = createBtn();	// 获取新创建的id
 						msg = Message.setMessage("id", id);
 						Commander.send(msg);
+						Message.init();
 						break;
 
 					case 'destroy':
@@ -601,7 +653,6 @@
 			}
 
 		}
-
 
 		// 初始化绑定事件
 		const init = (() => {
