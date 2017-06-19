@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-14 19:36:13 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-19 16:02:39
+ * @Last Modified time: 2017-06-19 20:22:49
  */
 
 ;
@@ -244,7 +244,7 @@
          * @param {Object} spaceship 飞船实例(要压入的飞船)
          */
         const pushShip = spaceship => {
-            spaceshipQueue.push(spaceship);
+            spaceshipQueue[spaceship.id - 1] = spaceship;
         }
 
         /**

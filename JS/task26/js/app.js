@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-14 19:36:13 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-16 11:53:14
+ * @Last Modified time: 2017-06-19 20:24:53
  */
 
 ;
@@ -213,8 +213,7 @@
 		const createSpaceship = (id) => {
 			if (id === false) return false;
 			var newSpaceship  = new Spaceship(id);	    // 新建飞船实例
-			spaceshipQueue.push(newSpaceship)			// 将新飞船实例压进数组
-			Animate.drawSpaceship(newSpaceship);		// 画飞船
+			spaceshipQueue[id - 1] = newSpaceship;   // 将新飞船实例压进数组
 			miniConsole.log(`创建飞船${id}成功`);
 		}
 
@@ -225,8 +224,6 @@
 		const destroy = (spaceship) => {
 			if (spaceship instanceof Spaceship) {
 				delete spaceshipQueue[spaceship.id - 1];
-				console.log(spaceshipQueue);
-				console.log(spaceshipQueue.length);
 				miniConsole.log(`飞船${spaceship.id}自爆啦`);
 			}
 		}
@@ -494,7 +491,6 @@
 
 					case 'destroy':
 						ships.unshift(id);
-						console.log(ships);
 						command.removeChild(parent);
 						Commander.send(msg);
 						break;
