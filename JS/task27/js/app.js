@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-14 19:36:13 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-16 17:42:48
+ * @Last Modified time: 2017-06-19 12:06:47
  */
 
 ;
@@ -14,8 +14,8 @@
 		  SPACE_SIZE = 40,		  // 飞船大小
 		  SPACE_COUNT = 4,		  // 飞船数量
 		  SPACE_CHAGE = 0.3,	  // 飞船充电速度
-		  SPACE_CHAGE2 = 0.6,
-		  SPACE_CHAGE3 = 1,
+		  SPACE_CHAGE2 = 0.6,	  // 飞船充电速度
+		  SPACE_CHAGE3 = 1,		  // 飞船充电速度
 		  SPACE_DISCHARGE = 0.2,  // 飞船放电速度
 
 		  POWERBAR_POS_OFFSET = 5, 			 // 电量条位置位移
@@ -208,7 +208,8 @@
 	 */
 	const SpaceshipGlobal = (() => {
 
-		var spaceshipQueue = [];	//存储飞船队列
+		let spaceshipQueue = [];	//存储飞船队列
+		let spaceshipSystem = [SPACE_SPEED, SPACE_SPEED2, SPACE_SPEED3, SPACE_CHAGE, SPACE_CHAGE2, SPACE_CHAGE3];  // 存储飞船引擎和能源系统
 
 		/**
 		 * [delete 删除飞船方法]
@@ -234,10 +235,15 @@
 			return spaceshipQueue;
 		}
 
+		const getSystem = () => {
+			return spaceshipSystem;
+		}
+
 		return {
 			pushShip,
 			removeShip,
-			getQueue
+			getQueue,
+			getSystem,
 		}
 
 	})();
@@ -253,13 +259,19 @@
 		 * @param {Number} id 飞船的id
 		 */
 		const createSpaceship = (msg) => {
+
 			if (msg.id === false) return false;
-			var newSpaceship  = null	// 新建飞船实例
-			newSpaceship = new Spaceship(msg.id, SPACE_SPEED, SPACE_CHAGE);
+
+			let newSpaceship  = null	
+				systems = SpaceshipGlobal.getSystem(),	// 获取能源和引擎数组
+				systemValues = ["无动力模式", "巡航模式", "高速模式", "慢回复", "快速回复", "光能驱动永久型"];
+
+			newSpaceship = new Spaceship(msg.id, systems[msg.engine - 1], systems[msg.energy - 1]); 	// 新建飞船实例，根据指令选择不同能源和引擎
 
 			SpaceshipGlobal.pushShip(newSpaceship);     // 将新飞船实例压进数组
-			Animate.animateLoop();
-			miniConsole.log(`创建飞船${msg.id}成功`);
+
+			miniConsole.log(`创建飞船${msg.id}成功, 引擎系统为${systemValues[msg.engine - 1]},能源系统为${systemValues[msg.energy - 1]}`);
+
 		}
 
 		/**
@@ -282,7 +294,7 @@
 			if (msg.commond === "create") {		// 如果指令是创建飞船则执行创建飞船
 				BUS.createSpaceship(msg);
 			} else {
-				var success = Math.random() > FAILURE_RATE ? true : false;  // 若随机数大于发送失败率则执行消息发送
+				const success = Math.random() > FAILURE_RATE ? true : false;  // 若随机数大于发送失败率则执行消息发送
 				
 				// 传递信息有多次重试机会在10%的丢包率下保证传递成功
 				var timer = setInterval(function() {	
@@ -319,7 +331,7 @@
 			id: 'Jason',	
 			rank: 'admiral',
 			msgs: [],	// 消息队列
-			bus: BUS	// Bus介质
+			bus: BUS	// Bus介质(Bus介质归指挥官拥有)
 		};
 		
 		commander.send = function(msgs) {
@@ -355,7 +367,7 @@
 		 * @param {Canvas} _ctx 目标画布
 		 */
 		const drawPlanet = (_ctx) => {
-			const circle = (color, x, y, w, ) => {    
+			const circle = (color, x, y, w) => {    
 				_ctx.fillStyle = color;
 				_ctx.beginPath();
 				_ctx.arc(x, y, w, 0, Math.PI * 2, true);
@@ -460,6 +472,7 @@
 		const init = (() => {
 			drawPlanet(planet_ctx);
 			drawOrbit(planet_ctx);
+			animateLoop();
 		})();
 
 		return {
@@ -544,16 +557,16 @@
 			const target = e.target,
 				  parent = target.parentNode;
 			
-			var id = parseInt(parent.getAttribute('data-id')),
-				cmd = target.className;
-				msg = Message.setMessage("id", id, "commond", cmd);
+			var id = parseInt(parent.getAttribute('data-id')),	// 获取按钮指令对应的id
+				cmd = target.className;							// 获取按钮指令对应的class(指令)
+				msg = Message.setMessage("id", id, "commond", cmd);	// 设置msg的id和commond
 			
-			if (target.nodeName === 'BUTTON') {
+			// 控制台按钮
+			if (target.nodeName === 'BUTTON') {		
 				switch (target.className) {
 					case 'create':
-						id = createBtn();
+						id = createBtn();	// 获取新创建的id
 						msg = Message.setMessage("id", id);
-						console.log(msg);
 						Commander.send(msg);
 						break;
 
@@ -569,19 +582,16 @@
 						break;
 				}
 			}
-		}
 
-		function chooseEvent (e) {
-			const target = e.target;
-			
+			// 控制台radio
 			if (target.nodeName === "INPUT") {
 				switch (target.value) {
 					case "1":
 					case "2":
 					case "3":
-						var msg = Message.setMessage("engine", target.value);
-						console.log('1');
+						Message.setMessage("engine", target.value);
 						break;
+
 					case "4":
 					case "5":
 					case "6":
@@ -589,11 +599,14 @@
 						break;
 				}
 			}
+
 		}
 
-		// 绑定事件
-		addEvent(command, 'click', btnEvent);
-		addEvent(system, 'change', chooseEvent);
+
+		// 初始化绑定事件
+		const init = (() => {
+			addEvent(command, 'click', btnEvent);
+		})();
 
 	})();
 
