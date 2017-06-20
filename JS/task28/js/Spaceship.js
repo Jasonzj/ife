@@ -1,3 +1,10 @@
+/*
+ * @Author: Jason 
+ * @Date: 2017-06-20 19:59:40 
+ * @Last Modified by: Jason
+ * @Last Modified time: 2017-06-20 20:09:26
+ */
+
 (window => {
 
     /**
@@ -37,7 +44,7 @@
                         self.deg += self.speed;
                         if (self.deg >= 360) self.deg = 0;
                     }, 20);
-                    Planet.miniConsole.log(`飞船${self.id} 号起飞`);
+                    Commander.miniConsole.log(`飞船${self.id} 号起飞`);
                 }
             };
 
@@ -46,7 +53,7 @@
              */
             const stop = function () {
                 clearInterval(self.timer);
-                Planet.miniConsole.log(`飞船${self.id} 号停止`);
+                Commander.miniConsole.log(`飞船${self.id} 号停止`);
             };
 
             return {
@@ -81,7 +88,7 @@
                     self.power += self.powerSpeed;
                     return true;
                 }, 20);
-                Planet.miniConsole.log(`飞船${self.id} 号充电`);
+                Commander.miniConsole.log(`飞船${self.id} 号充电`);
             }
 
             /**
@@ -104,7 +111,7 @@
                     return true;
 
                 }, 20);
-                Planet.miniConsole.log(`飞船${self.id} 号放电`);
+                Commander.miniConsole.log(`飞船${self.id} 号放电`);
             }
 
             return {
@@ -139,7 +146,7 @@
             // 切换状态方法
             const changeState = function (state) {
                 states[state] && states[state]();
-                Planet.miniConsole.log(`飞船${self.id} 状态为 ${self.state}`);
+                Commander.miniConsole.log(`飞船${self.id} 状态为 ${self.state}`);
             }
 
             return {

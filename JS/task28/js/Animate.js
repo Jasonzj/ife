@@ -1,3 +1,10 @@
+/*
+ * @Author: Jason 
+ * @Date: 2017-06-20 19:57:56 
+ * @Last Modified by:   Jason 
+ * @Last Modified time: 2017-06-20 19:57:56 
+ */
+
 (window => {
 
     /**

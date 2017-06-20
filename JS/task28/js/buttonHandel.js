@@ -1,3 +1,10 @@
+/*
+ * @Author: Jason 
+ * @Date: 2017-06-20 19:58:08 
+ * @Last Modified by:   Jason 
+ * @Last Modified time: 2017-06-20 19:58:08 
+ */
+
 (window => {
     /**
      * [message 生成消息命令格式]
@@ -135,23 +142,3 @@
     window.buttonHandel = buttonHandel;
 
 })(window);
-
-
-//跨浏览器事件绑定
-function addEvent(element, event, hanlder) {
-    if (element.addEventListener) {
-        addEvent = function (element, event, hanlder) {
-            element.addEventListener(event, hanlder, false);
-        }
-    } else if (element.attachEvent) {
-        addEvent = function (element, event, hanlder) {
-            element.attachEvent("on" + event, hanlder);
-        }
-    } else {
-        addEvent = function (element, event, hanlder) {
-            element["on" + event] = hanlder;
-        }
-    }
-
-    addEvent(element, event, hanlder);
-}

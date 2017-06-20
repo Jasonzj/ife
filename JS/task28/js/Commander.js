@@ -1,3 +1,10 @@
+/*
+ * @Author: Jason 
+ * @Date: 2017-06-20 19:59:05 
+ * @Last Modified by: Jason
+ * @Last Modified time: 2017-06-20 20:08:40
+ */
+
 (window => {
 
     /**
@@ -74,11 +81,11 @@
                 systemValues = SpaceshipGlobal.getSystem().spaceshipSystemValues;  // 获取能源和引擎字符串数组
 
             newSpaceship = new Spaceship( // 新建飞船实例，根据指令选择不同能源和引擎
-                msg.id, 
-                systems[msg.engine - 1], 
-                systems[msg.energy - 1],
-                msg.engine,
-                msg.energy
+                msg.id,     // 飞船编号
+                systems[msg.engine - 1],    // 飞船动力系统速度
+                systems[msg.energy - 1],    // 飞船能源系统速度
+                msg.engine,     // 飞船动力系统下标
+                msg.energy      // 飞船动力系统下标
             );
 
             SpaceshipGlobal.pushShip(newSpaceship); // 将新飞船实例压进数组
@@ -261,6 +268,10 @@
               tbody = document.querySelector('.monitor-body');
 
 
+        /**
+         * [dispose 处理收到的数据]
+         * @param {any} msg 
+         */
         const dispose = (msg) => {
             const message = Planet.adapter.decrypt(msg);
 
@@ -279,6 +290,10 @@
             monitorRender(data);
         }
 
+        /**
+         * [monitorRender 渲染数据显示]
+         * @param {Object} data 要显示地数据
+         */
         const monitorRender = (data) => {
             tbody.innerHTML = "";
             for (key in data) {
