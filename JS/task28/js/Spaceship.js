@@ -5,16 +5,18 @@
      * @class Spaceship
      */
     class Spaceship {
-        constructor(id, speed, powerSpeed) {
-            this.id = id; //飞船编号
-            this.deg = 0; //飞船初始角度
-            this.power = 100; //飞船初始能源
-            this.state = "stop"; //飞船初始状态
-            this.orbit = 150 + 45 * id; //飞船初始轨道
+        constructor(id, speed, powerSpeed, engine, energy) {
+            this.id = id;   //飞船编号
+            this.deg = 0;   //飞船初始角度
+            this.power = 100;       //飞船初始能源
+            this.state = "stop";    //飞船初始状态
+            this.orbit = 150 + 45 * id;     //飞船初始轨道
             this.timer = null;
-            this.speed = speed; //飞船速度
-            this.powerSpeed = powerSpeed; //飞船充电速度
-            this.adapter = Planet.adapter; //安装指令转换器
+            this.speed = speed;     //飞船速度
+            this.powerSpeed = powerSpeed;      //飞船充电速度
+            this.engine = engine;
+            this.energy = energy;
+            this.adapter = Planet.adapter;     //安装指令转换器
 
             this.signalsend();
         }
@@ -26,8 +28,11 @@
         engineSystem() {
             const self = this;
 
+            /**
+             * [fly 飞行方法]
+             */
             const fly = function () {
-                if (self.power > 0) { // 如果电量大于0则可飞行
+                if (self.power > 0) {   // 如果电量大于0则可飞行
                     self.timer = setInterval(function () {
                         self.deg += self.speed;
                         if (self.deg >= 360) self.deg = 0;
@@ -36,6 +41,9 @@
                 }
             };
 
+            /**
+             * [stop 停止方法]
+             */
             const stop = function () {
                 clearInterval(self.timer);
                 Planet.miniConsole.log(`飞船${self.id} 号停止`);
@@ -153,12 +161,29 @@
 
         }
 
+        /**
+         * [signalsend 飞船信号发射器]
+         */
         signalsend() {
             const self = this;
-                  
-            setInterval(function() {
-                const msg = self.adapter.encrypt(self.id, self.state, self.power);
-                BUS.send(msg, Planet);
+    
+            const timer = setInterval(function() {
+
+                const msg = self.adapter.encrypt(   // 将JSON格式状态指令转换成二进制
+                    self.id, 
+                    self.state, 
+                    self.power, 
+                    self.engine,
+                    self.energy
+                );  
+
+                BUS.send(msg, Planet);     // 利用BUS介质广播自身状态给行星
+
+                if (self.state === 'destroy') {
+                    clearInterval(timer);
+                    return false;
+                }
+
             }, 1000);
         }
 
@@ -168,6 +193,23 @@
          * 	   commond: 'fly'
          * }
          */
+
+        /**
+         * 状态指令格式(JSON): {
+         *     id: 0,
+         * 	   commond: 'fly',
+         *     power: 88,
+         *     engine: "无动力模式",
+         *     energy: "慢回复"
+         * }
+         */
+
+        /************************************ *
+         * 状态指令格式(二进制):                 *
+         * ********************************** *
+         * 0001   0010   0014           0088  *
+         * id    state   engine,energy  power *
+         * ********************************** */
     }
 
     /**

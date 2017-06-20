@@ -10,7 +10,7 @@
     <canvas id="planet"></canvas>
 	<!-- 飞船 -->
     <canvas id="ship" width="700" height="700"></canvas>
-	
+
 	<!-- 指挥台 -->
 	<section class="control">
 		<div class="command">
@@ -38,6 +38,20 @@
 		</div>
 		<div class="console"></div>
 	</section>
+	
+	<table class="monitor">
+		<thead>
+			<tr>
+				<th>飞船</th>
+				<th>动力系统</th>
+				<th>能源系统</th>
+				<th>当前飞行状态</th>
+				<th>剩余能耗</th>
+			</tr>
+		</thead>
+		<tbody class="monitor-body">
+		</tbody>
+	</table>
 	
 	<script src="./js/init.js"></script>
 	<script src="./js/Spaceship.js"></script>

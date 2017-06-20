@@ -113,3 +113,28 @@ body {
         }
     }
 }
+
+/* monitor */
+.monitor{
+    position: absolute;
+    right: 1px;
+    top:0;
+    display: table;
+    font-size: 14px;
+    color: #fff;
+    thead{
+        background: #3498DB;
+        th {
+            padding: 8px 18px;
+        }
+    }
+    tbody{
+        td {
+            padding: 8px 18px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-top: 0;
+        }
+    }
+}
+

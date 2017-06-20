@@ -73,12 +73,15 @@
                 systems = SpaceshipGlobal.getSystem().spaceshipSystem, // 获取能源和引擎数组
                 systemValues = SpaceshipGlobal.getSystem().spaceshipSystemValues;  // 获取能源和引擎字符串数组
 
-            newSpaceship = new Spaceship(msg.id, systems[msg.engine - 1], systems[msg.energy - 1]); // 新建飞船实例，根据指令选择不同能源和引擎
+            newSpaceship = new Spaceship( // 新建飞船实例，根据指令选择不同能源和引擎
+                msg.id, 
+                systems[msg.engine - 1], 
+                systems[msg.energy - 1],
+                msg.engine,
+                msg.energy
+            );
 
             SpaceshipGlobal.pushShip(newSpaceship); // 将新飞船实例压进数组
-
-            DC.setData(msg.id, "engine", systemValues[msg.engine - 1]);
-            DC.setData(msg.id, "energy", systemValues[msg.energy - 1]);
 
             Commander.miniConsole.log(`创建飞船${msg.id}成功, 引擎系统为${systemValues[msg.engine - 1]},能源系统为${systemValues[msg.energy - 1]}`);
         }
@@ -97,31 +100,32 @@
         /**
          * [send 传播消息方法，采用广播传播消息的方式]
          * @param {Object} msg 指令消息
+         * @param {Array||Object} from 广播目标
          */
         const send = (msg, from) => {
             if (msg.commond === "create") { // 如果指令是创建飞船则执行创建飞船
                 BUS.createSpaceship(msg);
-            } else {
+                return false;
+            } 
 
-                if (msg instanceof Object) {    // 如果是对象就加密
-                    msg = Adapter.encrypt(msg.id, msg.commond);
-                } 
+            if (msg instanceof Object) {    // 如果是对象就加密
+                msg = Adapter.encrypt(msg.id, msg.commond);
+            } 
 
-                // 传递信息有多次重试机会在10%的丢包率下保证传递成功
-                var timer = setInterval(function () {
-                    const success = Math.random() > FAILURE_RATE ? true : false; // 若随机数大于发送失败率则执行消息发送
-                    if (success) {
-                        clearInterval(timer);
-                        if (from instanceof Array) {    // 如果是数组则是行星广播飞船
-                            from.forEach((item) => {
-                                item.signalSystem(msg);
-                            });
-                            return false;
-                        }
-                        from.signalSystem(msg);         // 飞船广播行星           
-                    }
-                }, 300);
-            }
+            // 传递信息有多次重试机会在10%的丢包率下保证传递成功
+            var timer = setInterval(function () {
+                const success = Math.random() > FAILURE_RATE ? true : false; // 若随机数大于发送失败率则执行消息发送
+                if (success) {
+                    clearInterval(timer);
+                    if (from instanceof Array) {    // 如果是数组则是行星广播飞船
+                        from.forEach((item) => {
+                            item.signalSystem(msg);
+                        });
+                        return false;
+                    }          
+                    from.signalSystem(msg);         // 飞船广播行星           
+                }
+            }, 300);
         }
 
         return {
@@ -162,11 +166,21 @@
                     break;
             }
 
-            if (msg.length > 8) {
-                let power = parseInt(msg.substr(msg.length - 2, 2));
+            if (msg.length > 8) {   // 判断二进制大于八则表示有power指令
+                let engine = msg.substr(10, 1),
+                    energy = msg.substr(11, 1),
+                    power = parseInt(msg.substr(msg.length - 2, 2)),    // 截取最后2位
+                    systemValues = SpaceshipGlobal.getSystem().spaceshipSystemValues;  // 获取能源和引擎字符串数组
+                
+                // engine, energy 动力，能源
+                command.engine = systemValues[engine - 1];
+                command.energy = systemValues[energy - 1];
+
+                // power能耗
                 if (power == 00) {
                     power = 100;
                 }
+
                 command.power = power;
             }
 
@@ -178,7 +192,7 @@
          * @param {Object} msg 指挥官传送的指令
          * @returns {Number} message 加密后的二进制的指令
          */
-        const encrypt = (id, commond, power) => {
+        const encrypt = (id, commond, power, engine, energy) => {
             let message = null;
 
             switch (id) {
@@ -204,8 +218,9 @@
                     break;
             }
 
-            if (power) {
-                message += "000000" + Math.ceil(power);
+            if (power || engine || energy) {    
+                message += "00" + engine + energy;
+                message += "00" + ~~power;
             }
 
             return message;
@@ -237,27 +252,48 @@
 
     })();
 
+    /**
+     * [DC 数据处理中心]
+     */
     const DC = (() => {
         
-        let data = {};
+        const data = {},
+              tbody = document.querySelector('.monitor-body');
+
 
         const dispose = (msg) => {
             const message = Planet.adapter.decrypt(msg);
-            data[message.id] = message;
-            if (message.commond == "destroy") {
+
+            data[message.id] = {
+                id: message.id,
+                engine: message.engine,
+                energy: message.energy,
+                commond: message.commond,
+                power: message.power
+            }
+
+            if (message.commond == 'destroy') {     // 如果飞船毁灭则删除
                 delete data[message.id];
             }
-            console.log(data);
+
+            monitorRender(data);
         }
 
-        // const setData = (id, name, value) => {
-        //     data[id] = {};
-        //     data[id][name] = value;            
-        // }
+        const monitorRender = (data) => {
+            tbody.innerHTML = "";
+            for (key in data) {
+                const tr = document.createElement('tr');
+                for (attr in data[key]) {
+                    const td = document.createElement('td');
+                    td.innerHTML = data[key][attr];
+                    tr.appendChild(td);
+                }
+                tbody.appendChild(tr);
+            }
+        }
 
         return {
-            dispose,
-            setData
+            dispose
         }
 
     })();
