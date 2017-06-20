@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>task29</title>
+    <style>
+        .username {
+            display: inline-block;
+        }
+        .input_text {
+            display: inline-block;
+            height: 40px;
+            width: 300px;
+            margin-left: 20px;
+            padding-left: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .btn {
+            padding: 13px 20px;
+            border: 0;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #fff;
+            background: #2F79BA;
+        }
+        .prompt{
+            margin: 0 0 0 60px;
+            padding: 5px 0;
+            font-size: 14px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <label class="username">
+        名称
+        <input type="text" class="input_text">
+        <button class="btn">验证</button>
+        <p class="prompt">必填，长度为4~6个字符</p>
+    </label>
+    <script>
+        (() => {
+            const input = document.querySelector('.input_text'),
+                  btn = document.querySelector('.btn'),
+                  prompt = document.querySelector('.prompt')
+
+            const validation = () => {
+                const inputValue = input.value,
+                      len = getValueLen(inputValue)
+                
+                if (len === 0) {
+                    prompt.innerHTML = "姓名不能为空";
+                    prompt.style.color = "red";
+                    input.style.borderColor = "red";
+                    return false;
+                } else if (len >= 4 && len <= 16) {
+                    prompt.innerHTML = "格式正确";
+                    prompt.style.color = "#1abc9c";
+                    input.style.borderColor = "#1abc9c";
+                    return false;
+                }
+
+                prompt.innerHTML = "请输入长度为4~16位字符";
+                prompt.style.color = "red";
+                input.style.borderColor = "red";
+                
+            }
+
+            const getValueLen = str => {
+                let i, len = 0
+                for (i = str.length - 1; i >= 0; i--) {
+                    const strJudge = str[i].charCodeAt()
+                    if (strJudge > 255) len += 2
+                    if (strJudge >=0 && strJudge <= 128) len += 1
+                }
+                return len
+            }
+
+            btn.addEventListener('click', validation)
+        })()
+    </script>
+</body>
+</html>
