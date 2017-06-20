@@ -1,7 +1,7 @@
-let Commander = null,         // 指挥官
-    Planet = null;            // 行星
+// let Commander = null,         // 指挥官
+//     Planet = null;            // 行星
 
-const SPACE_SPEED = 0.5,  	// 飞船飞行速度
+var SPACE_SPEED = 0.5,  	// 飞船飞行速度
       SPACE_SPEED2 = 1,       // 飞船飞行速度
       SPACE_SPEED3 = 1.5,     // 飞船飞行速度
       SPACE_SIZE = 40,		// 飞船大小
@@ -33,4 +33,3 @@ const SPACE_SPEED = 0.5,  	// 飞船飞行速度
                            || window.mozRequestAnimationFrame 
                            || window.webkitRequestAnimationFrame 
                            || window.msRequestAnimationFrame;
-

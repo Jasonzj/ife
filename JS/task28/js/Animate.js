@@ -5,7 +5,7 @@
      */
     const Animate = (() => {
 
-        const ship = document.getElementById('ship');
+        const ship = document.getElementById('ship'),
             shipCtx = ship.getContext('2d'),
             planet = document.getElementById('planet'),
             planet_ctx = planet.getContext("2d"),

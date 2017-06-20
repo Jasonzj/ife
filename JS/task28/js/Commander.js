@@ -69,7 +69,7 @@
         const createSpaceship = (msg) => {
             if (msg.id === false) return false;
 
-            let newSpaceship = null
+            let newSpaceship = null,
                 systems = SpaceshipGlobal.getSystem().spaceshipSystem, // 获取能源和引擎数组
                 systemValues = SpaceshipGlobal.getSystem().spaceshipSystemValues;  // 获取能源和引擎字符串数组
 

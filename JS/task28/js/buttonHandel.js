@@ -75,8 +75,8 @@
                 parent = target.parentNode;
 
             let id = parseInt(parent.getAttribute('data-id')), // 获取按钮指令对应的id
-                cmd = target.className; // 获取按钮指令对应的class(指令)
-                msg = Message.setMessage("id", id, "commond", cmd); // 设置msg的id和commond
+                cmd = target.className, // 获取按钮指令对应的class(指令)
+                msg = Message.setMessage("id", id, "commond", cmd), // 设置msg的id和commond
                 spaceshipQueue = SpaceshipGlobal.getQueue();  // 从全局飞船管理获得飞船队列
 
             // 控制台按钮

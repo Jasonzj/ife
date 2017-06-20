@@ -1,0 +1,140 @@
+// @import './reset.scss';
+
+body {
+    background: #02071d;
+}
+
+%pos{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: block;
+    margin: 0 auto;
+}
+
+%btn{
+    display: block;
+    padding: 0 20px;
+    height: 30px;
+    border: 0;
+    background: #2980B9;
+    color: #fff;
+    border-radius: 5px;
+}
+
+/**************** canvas ****************/
+
+/* 轨道 */
+#planet{ @extend %pos; }
+
+/* 飞船 */
+#ship{ @extend %pos; }
+
+/**************** 控制台 ****************/
+
+.control{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    display: flex;
+    width: 90%;
+    height: 180px;
+    margin: 0 auto;
+    border: 2px dotted #3b3f58;
+    border-radius: 10px;
+
+    /* 命令台 */
+    .command {  
+        display: flex;
+        padding: 20px;
+        flex: 7;
+        .create {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            @extend %btn;
+        }
+    }
+
+    .shipCommand{
+        width: 150px;
+        height: 110px;
+        padding: 5px 0;
+        margin: 30px 20px 0 0;
+        border-radius: 5px;
+        background: #3498DB;
+        p{
+            display: block;
+            float: left;
+            width: 70px;
+            line-height: 110px;
+            text-align: center;
+            color: #fff;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        button {
+            margin-top: 5px;
+            @extend %btn;
+        }
+    }
+
+    /* 控制台 */
+    .console{
+        flex: 3;
+        margin: 0 20px;
+        width: 300px;
+        height: 160px;
+        padding: 10px;
+        line-height: 16px;
+        border-left: 2px dotted #3b3f58;
+        color: #fff;
+        font-size: .75rem;
+        overflow: hidden;
+    }
+}
+
+/* ststem */
+.system{
+    position: absolute;
+    top: -200px;
+    left: 0px;
+    fieldset {
+        padding: 20px 15px;
+        margin-bottom: 10px;
+        color: #fff;
+        border-radius: 5px;
+        border: 2px dotted #3b3f58;
+        legend {
+            font-size: 14px;
+            color: #fff;
+        }
+    }
+}
+
+/* monitor */
+.monitor{
+    position: absolute;
+    right: 1px;
+    top:0;
+    display: table;
+    font-size: 14px;
+    color: #fff;
+    thead{
+        background: #3498DB;
+        th {
+            padding: 8px 18px;
+        }
+    }
+    tbody{
+        td {
+            padding: 8px 18px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-top: 0;
+        }
+    }
+}
+
