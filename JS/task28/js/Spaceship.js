@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-20 19:59:40 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-21 15:08:48
+ * @Last Modified time: 2017-06-21 15:18:12
  */
 
 ;(window => {
@@ -280,5 +280,4 @@
     // 接口
     window.Spaceship = Spaceship
     window.SpaceshipGlobal = SpaceshipGlobal
-    
 })(window)

@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-20 19:58:08 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-21 15:14:24
+ * @Last Modified time: 2017-06-21 15:18:17
  */
 
 ;(window => {
@@ -139,6 +139,5 @@
         }
     })()
 
-    window.buttonHandel = buttonHandel
-    
+    window.buttonHandel = buttonHandel 
 })(window)

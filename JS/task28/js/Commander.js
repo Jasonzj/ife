@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-21 15:09:33 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-21 15:14:14
+ * @Last Modified time: 2017-06-21 15:18:13
  */
 
 ;(window => {
@@ -317,5 +317,4 @@
     window.God_Planet = God_Planet
     window.God_Commander = God_Commander
     window.BUS = BUS
-
 })(window);

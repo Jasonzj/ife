@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-20 19:57:56 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-21 15:10:54
+ * @Last Modified time: 2017-06-21 15:19:19
  */
 
 ;(window => {
@@ -102,8 +102,7 @@
                     )
                     _ctx.lineTo(
                         spaceship.orbit +
-                            SPACE_SIZE * (spaceship.power / 100) -
-                            SPACE_SIZE / 2,
+                        SPACE_SIZE * (spaceship.power / 100) - SPACE_SIZE / 2,
                         -POWERBAR_POS_OFFSET
                     )
                     _ctx.stroke()
