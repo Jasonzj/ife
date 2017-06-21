@@ -7,19 +7,103 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>task30</title>
     <style>
+        .box {
+            width: 405px;
+            margin: 0 auto;
+        }
 
+        label {
+            display: block;
+        }
+
+        .span_text {
+            line-height: 42px;
+            width: 70px;
+            float: left;
+            text-align: right;
+        }
+
+        .input_text {
+            display: inline-block;
+            height: 40px;
+            width: 300px;
+            margin-left: 20px;
+            padding-left: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .btn {
+            float: right;
+            padding: 13px 20px;
+            border: 0;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 16px;
+            background: #2F79BA;
+        }
+
+        .prompt {
+            margin: 0 0 0 100px;
+            padding: 10px 0;
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        .error .input_text {
+            border-color: red;
+        }
+
+        .error .prompt {
+            color: red;
+        }
+
+        .correct .input_text {
+            border-color: #1abc9c;
+        }
+
+        .correct .prompt {
+            color: #1abc9c;
+        }
     </style>
 </head>
 
 <body>
-    <label class="username">
-        名称
-        <input type="text" class="input_text">
-        <button class="btn">验证</button>
-        <p class="prompt">必填，长度为4~6个字符</p>
-    </label>
-    <script>
-    </script>
+    <div class="box">
+        <form id="registerForm">            
+            <label>
+                <span class="span_text">名称</span>
+                <input type="text" class="input_text" data-validation="false" name="username">
+                <p class="prompt"></p>
+            </label>
+            <label>
+                <span class="span_text">密码</span>
+                <input type="text" class="input_text" data-validation="false" name="password">
+                <p class="prompt"></p>
+            </label>
+            <label>
+                <span class="span_text">密码确认</span>
+                <input type="text" class="input_text" data-validation="false" name="passwordMore">
+                <p class="prompt"></p>
+            </label>
+            <label>
+                <span class="span_text">邮箱</span>
+                <input type="text" class="input_text" data-validation="false" name="mail">
+                <p class="prompt"></p>
+            </label>
+            <label>
+                <span class="span_text">手机</span>
+                <input type="text" class="input_text" data-validation="false" name="phone">
+                <p class="prompt"></p>
+            </label>
+            <button class="btn">提交</button>
+        </form>
+    </div>
+    
+
+    <script src="./validation.js"></script>
 </body>
 
 </html>
