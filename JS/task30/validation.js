@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-21 15:38:17 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-21 21:17:10
+ * @Last Modified time: 2017-06-21 21:26:17
  */
 
 ;(() => {
@@ -235,7 +235,7 @@
     const clickHandel = e => {
         e.preventDefault()
 
-        const state = [].every.call(inputs, function(item) {
+        const state = [].every.call(inputs, item => {
             let state = false,
                 data = item.getAttribute('data-validation')
 
