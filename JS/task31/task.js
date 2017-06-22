@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-22 15:07:38 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-22 16:23:39
+ * @Last Modified time: 2017-06-22 16:55:43
  */
 
 ;(() => {
@@ -40,13 +40,11 @@
             state = target.getAttribute('data') // 当前选中状态对应类名
             current = document.querySelector('.' + state);  // 根据类名查找到当前要切换的元素
 
-        switch (state) {
-            case 'inSchool':
-            case 'outSchool':
-                [].forEach.call(selects, item => item.removeClass('show'))
-                current.addClass('show')
-                break
-        }
+        if (state) 
+            [].forEach.call(selects, item => item.removeClass('show'))
+            current.addClass('show')
+        
+        
     })
 
     // 监听城市变化
