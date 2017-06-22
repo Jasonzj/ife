@@ -1,0 +1,60 @@
+$error: red;
+$correct: #1abc9c;
+$radius: 5px;
+
+.box {
+    width: 405px;
+    padding: 40px 20px;
+}
+
+label {
+    line-height: 42px;
+    width: 70px;
+    float: left;
+    text-align: right;
+}
+
+.input_text {
+    display: inline-block;
+    height: 40px;
+    width: 300px;
+    margin-left: 20px;
+    padding-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: $radius;
+    font-size: 16px;
+}
+
+.btn {
+    float: right;
+    padding: 13px 20px;
+    border: 0;
+    border-radius: $radius;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+    background: #2F79BA;
+}
+
+.prompt {
+    margin: 0 0 0 100px;
+    padding: 10px 0;
+    font-size: 14px;
+    color: #aaa;
+}
+
+.error .input_text {
+    border-color: $error;
+}
+
+.error .prompt {
+    color: $error;
+}
+
+.correct .input_text {
+    border-color: $correct;
+}
+
+.correct .prompt {
+    color: $correct;
+}
