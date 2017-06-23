@@ -2,6 +2,11 @@ $error: red;
 $correct: #1abc9c;
 $radius: 5px;
 
+body {
+    display: flex;
+    justify-content: space-around;
+}
+
 .box {
     width: 405px;
     padding: 40px 20px;
