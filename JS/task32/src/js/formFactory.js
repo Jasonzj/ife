@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-22 21:30:35 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-23 11:10:42
+ * @Last Modified time: 2017-06-23 11:23:25
  */
 
 import { ValControl } from './valControl'
@@ -52,7 +52,6 @@ export class FormFactory {
 
     /**
      * [createInput 创建input方法]
-     * 
      * @memberof FormFactory
      */
     createInput() {
