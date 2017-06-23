@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-22 22:01:00 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-23 11:13:57
+ * @Last Modified time: 2017-06-23 11:39:36
  */
 
 import { Validator } from './validation'
@@ -66,7 +66,9 @@ export class ValControl extends Validator{
 
         let rulsValue = ''
 
-        validator1 === 'isNowEmpty' ? rulsValue = '必填,' : rulsValue = '选填'
+        validator1 === 'isNowEmpty' 
+            ? rulsValue = '必填,' 
+            : rulsValue = '选填'
 
         if (validator2 && validator2.indexOf('lengthBetween') > -1) {
             const arr = validator2.split(':')
