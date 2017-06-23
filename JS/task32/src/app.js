@@ -41,13 +41,14 @@ const form1 = {
         type: 'text',
         validators: ['isEmpty'],
         success: '格式输入正确',
-        fail: ['手机号码不能为空']
+        fail: ['手机号码不能为空'],
+        noMust: true
     },
     submit: {
         id: 'validate1',
         value: '验证',
         type: 'button',
-        fail: '提交失败',
+        fail: '提交失败，请检查输入',
         success: '提交成功'
     }
 }

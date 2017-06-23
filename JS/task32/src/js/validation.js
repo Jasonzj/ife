@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-21 15:38:17 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-22 23:36:01
+ * @Last Modified time: 2017-06-23 11:13:36
  */
 
 import { getValueLen } from './function';
@@ -61,7 +61,7 @@ const Validator = (() => {
                     errorMsg = rule.errorMsg,   // 错误的文本
                     trueMsg = rule.trueMsg      // 正确的文本
     
-                self.cache.push(function(ele) {         // 将验证函数添加到缓存数组中           
+                self.cache.push(function() {         // 将验证函数添加到缓存数组中           
                     const strategy = strategyAry.shift()    // 截取验证策略
                     
                     if (dom.length > 1 && strategy === 'isSame') {  
@@ -75,16 +75,21 @@ const Validator = (() => {
                     strategyAry.push(errorMsg)
                     strategyAry.push(trueMsg)
 
-                    console.log(strategyAry);
                     return strategies[strategy].apply(dom, strategyAry)
                 })
             }
 
         }
 
-        start(ele) {
+        /**
+         * [start 开始验证]
+         * @param {any} ele 
+         * @returns 
+         * @memberof Validator
+         */
+        start() {
             for (let i = 0, validatorFunc; validatorFunc = this.cache[i++];) {
-                const msg = validatorFunc(ele);
+                const msg = validatorFunc();
                 if (msg) {
                     return msg 
                 }
