@@ -2,13 +2,19 @@
  * @Author: Jason 
  * @Date: 2017-06-23 22:56:18 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-24 18:22:30
+ * @Last Modified time: 2017-06-24 18:50:50
  */
 
 import robotImage from '../img/bot.png';
 import { addEvent } from './function';
 
 export class Robot {
+    /**
+     * Creates an instance of Robot.
+     * @param {String} selector robot对应类名
+     * @param {String} count 格子数量
+     * @memberof Robot
+     */
     constructor(selector, count) {
         this.ele = document.querySelector(selector)
         this.parentNode = this.ele.parentNode
@@ -81,7 +87,7 @@ export class Robot {
      * @memberof Robot
      */
     goto(position) {
-        this.checkPosition(position)
+        this.checkPosition(position, '无法移动到')
         this.ele.style.left = position[0] * this.width + 'px'
         this.ele.style.top = position[1] * this.height + 'px'
         this.x = position[0]
@@ -110,14 +116,14 @@ export class Robot {
      * @param {any} position 
      * @memberof Robot
      */
-    checkPosition(position, string = '无法移动到') {
-        if (
+    checkPosition(position, string) {
+        if (    
             position[0] < 1 
             || position[1] < 1
             || position[0] > this.mapCount
             || position[1] > this.mapCount
         ) {
-            throw `${string}[${position}]`
+            throw `${string}[${position}]`  
         }
         if (this.getWallMap(position)) {
             throw `前方有墙不能移动[${position}]`
@@ -125,12 +131,12 @@ export class Robot {
     }
 
     /**
-     * [checkPaint 检测粉刷非法]
+     * [checkWall 检查基于自身前方无墙则抛出错误]
      * @param {any} position 
      * @memberof Robot
      */
-    checkPaint(position) {
-        if (!this.getWallMap(position)) throw `前方无墙不能粉刷[${position}]`
+    checkWall(position, string) {
+        if (!this.getWallMap(position)) throw `前方无墙不能${string}[${position}]`
     }
 
     /**
@@ -149,7 +155,7 @@ export class Robot {
      * @memberof Robot
      */
     setWall(position) {
-        this.checkPosition(position, '超过建墙范围')
+        this.checkPosition(position, '超过建墙范围')  // 判断是否超过范围
 
         const wall = document.createElement('div')
         wall.className = 'wall'
@@ -170,7 +176,7 @@ export class Robot {
      * @memberof Robot
      */
     setWallColor(position, color) {
-        this.checkPaint(position)
+        this.checkWall(position, '粉刷')  // 判断前方有无墙无墙则抛出错误
         this.wallMap[position].style.background = color
     }
 
@@ -187,6 +193,7 @@ export class Robot {
      * @memberof Robot
      */
     splitWall() {
+        this.checkWall(this.getPosition(1), '拆墙')   // 判断前方有无墙无墙则抛出错误
         this.parentNode.removeChild(this.wallMap[this.getPosition(1)])
         delete this.wallMap[this.getPosition(1)]
     }
@@ -204,8 +211,8 @@ export class Robot {
      * @param {string} [direction='undefined'] 
      * @memberof Robot
      */
-    keyMove(direction = 'undefined') {
-        if (typeof direction != 'undefined') {
+    keyMove(direction) {
+        if (typeof direction !== 'undefined') {
             event.preventDefault()
             if (this.direction === direction) {
                 this.move(1)
@@ -221,10 +228,10 @@ export class Robot {
      * @memberof Robot
      */
     keyHandel(e) {
-        const direction = {37: 1, 38: 2, 39: 3, 40: 0}[e.keyCode],
-            eventFunc = {32: this.buildWall, 18: this.paintWall, 17: this.splitWall}[e.keyCode]
+        const direction = {37: 1, 38: 2, 39: 3, 40: 0}[e.keyCode],  // 对应方向
+            eventFunc = {32: this.buildWall, 18: this.paintWall, 17: this.splitWall}[e.keyCode] // 对应方法
 
-        eventFunc ? eventFunc.call(this, '#1abc9c') : this.keyMove(direction)
+        eventFunc ? eventFunc.call(this, '#1abc9c') : this.keyMove(direction) 
     }
 
     /**
@@ -233,7 +240,6 @@ export class Robot {
      */
     setEvent() {
         const self = this
-
         addEvent(document, 'keydown', self.keyHandel.bind(self))
     }
 
