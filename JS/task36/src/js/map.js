@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-23 14:59:41 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-23 23:34:38
+ * @Last Modified time: 2017-06-24 16:06:48
  */
 
 export class Map {
@@ -22,6 +22,7 @@ export class Map {
         this.maxWidth = this.width * this.count
         this.ctx = config.canvas.getContext('2d')
         this.config = config
+        this.cacheCanvasStack = []
 
         this.init(config)
     }
