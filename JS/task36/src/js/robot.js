@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-23 22:56:18 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-24 18:50:50
+ * @Last Modified time: 2017-06-24 21:47:57
  */
 
 import robotImage from '../img/bot.png';
@@ -113,7 +113,7 @@ export class Robot {
 
     /**
      * [checkPosition 检测移动位置是否非法]
-     * @param {any} position 
+     * @param {Array} position 坐标数组
      * @memberof Robot
      */
     checkPosition(position, string) {
@@ -132,7 +132,7 @@ export class Robot {
 
     /**
      * [checkWall 检查基于自身前方无墙则抛出错误]
-     * @param {any} position 
+     * @param {Array} position 坐标数组
      * @memberof Robot
      */
     checkWall(position, string) {
