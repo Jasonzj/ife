@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <main class="main">
+        <canvas class="map"></canvas>
+        <div class="robotBox">
+            <span class="robot"></span>
+        </div>
+        <div class="console">
+            <div class="console-btn">
+                <button class="run" type="button">运行</button>
+                <button class="reset" type="button">重置</button>
+                <button class="random" type="button">随机修墙</button>
+                <input type="file" class="image" title="选择图片文件">
+            </div>
+            <div class="console-line">
+                <span>1</span>
+            </div>
+            <textarea title="命令编辑器" class="console-editor" spellcheck="false">
+mov bot 2
+tun lef
+go
+tun bac
+tra bot 4
+mov rig 6
+biud
+mov bot
+mov rig
+tun lef
+bru #2980b9
+mov to 9,6
+            </textarea>
+        </div>
+    </main>
+    
+</body>
+</html>
