@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-23 22:56:18 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-24 21:47:57
+ * @Last Modified time: 2017-06-25 19:47:07
  */
 
 import robotImage from '../img/bot.png';
@@ -59,13 +59,34 @@ export class Robot {
     }
 
     /**
+     * [rotate 自身旋转]
+     * @param {Number} deg 角度
+     * @memberof Robot
+     */
+    rotate(deg, direction) {
+        this.deg += deg
+        this.changeDeg()
+        this.setDirection()
+    }
+
+    /**
+     * [setDirection 根据角度设置方向]
+     * @memberof Robot
+     */
+    setDirection() {
+        let angle = this.deg % 360
+        angle = angle >= 0 ? angle : angle + 360
+        this.direction = { 0: 0, 90: 1, 180: 2, 270: 3}[angle]
+    }
+
+    /**
      * [getOfficePosition 获取指定方向偏移的位置]
      * @param {Number} step 移动步数
      * @returns 偏移的[x,y]坐标值
      * @memberof Robot
      */
-    getOfficePosition(step) {
-        const position = { 0: [0, 1], 1: [-1, 0], 2: [0, -1], 3: [1, 0] }[this.direction]    
+    getOfficePosition(direction, step) {
+        const position = { 0: [0, 1], 1: [-1, 0], 2: [0, -1], 3: [1, 0] }[direction]    
         return [position[0] * step, position[1] * step]   
     }
 
@@ -75,9 +96,12 @@ export class Robot {
      * @returns 移动后的[x,y]坐标值
      * @memberof Robot
      */
-    getPosition(step) {
+    getPosition(direction, step) {
+        if (direction == null) {
+            direction = this.direction
+        }
         step = step || 0
-        const offsetPosition = this.getOfficePosition(step)
+        const offsetPosition = this.getOfficePosition(direction, step)
         return [this.x + offsetPosition[0], this.y + offsetPosition[1]]
     }
 
@@ -99,8 +123,29 @@ export class Robot {
      * @param {Number} step 步数
      * @memberof Robot
      */
-    move(step) {
-        this.goto(this.getPosition(step))
+    move(direction, step) {
+        this.checkPath(direction, step)
+        this.goto(this.getPosition(direction, step))
+    }
+
+    /**
+     * [go 基于当前位置移动指定部署]
+     * @param {any} step 
+     * @memberof Robot
+     */
+    go(step) {
+        this.goto(this.getPosition(this.direction, step))
+    }
+
+    /**
+     * [turnMove 旋转指定方向并移动]
+     * @param {Number} direction 移动方向
+     * @param {Number} step 移动步数
+     * @memberof Robot
+     */
+    turnMove(direction, step) {
+        this.turn(direction)
+        this.move(direction, step)
     }
 
     /**
@@ -125,8 +170,28 @@ export class Robot {
         ) {
             throw `${string}[${position}]`  
         }
+
         if (this.getWallMap(position)) {
             throw `前方有墙不能移动[${position}]`
+        }
+    }
+
+    /**
+     * [checkPath 检测移动路上是否有墙]
+     * @param {any} direction 
+     * @param {any} step 
+     * @memberof Robot
+     */
+    checkPath(direction, step) {
+        const offsetPosition = this.getOfficePosition(direction, 1)
+
+        for (var i = 1; i <= step; i++) {
+            var x = this.x + offsetPosition[0] * i
+            var y = this.y + offsetPosition[1] * i
+
+            if (this.getWallMap([x, y])) {
+                throw `路上有墙移动不了[${x}, ${y}]`
+            }
         }
     }
 
@@ -185,7 +250,7 @@ export class Robot {
      * @memberof Robot
      */
     buildWall() {
-        this.setWall(this.getPosition(1))
+        this.setWall(this.getPosition(this.direction, 1))
     }
 
     /**
@@ -193,9 +258,9 @@ export class Robot {
      * @memberof Robot
      */
     splitWall() {
-        this.checkWall(this.getPosition(1), '拆墙')   // 判断前方有无墙无墙则抛出错误
-        this.parentNode.removeChild(this.wallMap[this.getPosition(1)])
-        delete this.wallMap[this.getPosition(1)]
+        this.checkWall(this.getPosition(this.direction, 1), '拆墙')   // 判断前方有无墙无墙则抛出错误
+        this.parentNode.removeChild(this.wallMap[this.getPosition(this.direction, 1)])
+        delete this.wallMap[this.getPosition(this.direction, 1)]
     }
 
     /**
@@ -203,7 +268,17 @@ export class Robot {
      * @memberof Robot
      */
     paintWall(color) {
-        this.setWallColor(this.getPosition(1), color)
+        this.setWallColor(this.getPosition(this.direction, 1), color)
+    }
+
+    /**
+     * [randomWall 随机修墙]
+     * @memberof Robot
+     */
+    randomWall() {
+        const x = Math.floor(Math.random() * 20 + 1),
+            y = Math.floor(Math.random() * 20 + 1)
+        this.setWall([x, y])
     }
 
     /**
@@ -215,7 +290,7 @@ export class Robot {
         if (typeof direction !== 'undefined') {
             event.preventDefault()
             if (this.direction === direction) {
-                this.move(1)
+                this.go(1)
                 return false
             } 
             this.turn(direction)
@@ -228,10 +303,12 @@ export class Robot {
      * @memberof Robot
      */
     keyHandel(e) {
-        const direction = {37: 1, 38: 2, 39: 3, 40: 0}[e.keyCode],  // 对应方向
-            eventFunc = {32: this.buildWall, 18: this.paintWall, 17: this.splitWall}[e.keyCode] // 对应方法
+        if (e.target.tagName === 'BODY') {
+            const direction = { 37: 1, 38: 2, 39: 3, 40: 0 }[e.keyCode],  // 对应方向
+                eventFunc = { 32: this.buildWall, 18: this.paintWall, 17: this.splitWall }[e.keyCode] // 对应方法
 
-        eventFunc ? eventFunc.call(this, '#1abc9c') : this.keyMove(direction) 
+            eventFunc ? eventFunc.call(this, '#1abc9c') : this.keyMove(direction) 
+        }
     }
 
     /**

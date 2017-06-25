@@ -2,11 +2,10 @@
  * @Author: Jason 
  * @Date: 2017-06-24 17:34:47 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-24 19:16:27
+ * @Last Modified time: 2017-06-25 18:54:47
  */
 
 import { addEvent } from './function'
-
 export class Editor {
     /**
      * Creates an instance of Editor.
@@ -44,10 +43,11 @@ export class Editor {
      * @memberof Editor
      */
     update() {
-        const texts = this.textarea.value,
+        let texts = this.textarea.value,
             lines = texts.match(/\n/g)
         
-        lines.push('1')
+        lines ? lines.push(1) : lines = [1]
+
         this.lines.innerHTML = lines.map((item, i) => `<span>${i + 1}</span>`).join('')
     }
 
@@ -65,7 +65,7 @@ export class Editor {
      * @param {Number} lines 指定行
      * @memberof Editor
      */
-    scrollTo(lines) {
+    scrollTo(line) {
         this.textarea.scrollTop = line * 20
     }
 
@@ -89,7 +89,7 @@ export class Editor {
         if (line) {
             lines[line].className = ''
         } else {
-            lines.forEach(item => item.className = '')
+            [].forEach.call(lines, item => item.className = '')
         }
     }
 
@@ -104,12 +104,46 @@ export class Editor {
 
     /**
      * [setCodes 设置编辑器命令]
-     * @param {any} codes 
+     * @param {String} codes 命令字符串
      * @memberof Editor
      */
     setCodes(codes) {
         this.textarea.value = code
         this.update()
+    }
+
+    /**
+     * [parse 解析命令]
+     * @param {String} string 命令字符串
+     * @returns 
+     * @memberof Editor
+     */
+    parse(string) {
+        for (let i = 0, command; command = commands[i++];) {
+            const match = string.match(command.pattern)
+            if (match) {
+                match.shift()
+                return { 
+                    handler: command.handler, 
+                    params: match 
+                }
+            }
+        }
+        return false
+    }
+
+    /**
+     * [exec 运行命令]
+     * @param {Sring} string 命令字符串
+     * @returns 
+     * @memberof Editor
+     */
+    exec(context, string) {
+        const command = this.parse(string)
+        if (command) {
+            return command.handler.apply(context, command.params)
+        }
+        return false
     }
 
     /**
@@ -123,3 +157,42 @@ export class Editor {
         addEvent(self.textarea, 'scroll', self.scroll.bind(self))
     }
 }
+
+const commands = [
+    {
+        pattern: /^go(\s+)?(\d+)?$/i,
+        handler() {
+            return this.runQueue(this.robot.go, [arguments[1] || 1])
+        }
+    },
+    {
+        pattern: /^tun\s+(lef|rig|bac)$/i,
+        handler(direction) {
+            return this.runQueue(this.robot.rotate, [{ lef: -90, rig: 90, bac: 180 }[direction.toLowerCase()], direction])
+        }
+    },
+    {
+        pattern: /^tra\s+(bot|lef|rig|top)(\s+)?(\w+)?$/i,
+        handler(direction) {
+            return this.runQueue(this.robot.move, [this.directionMap[direction], arguments[2] || 1])
+        }
+    },
+    {
+        pattern: /^mov\s+(bot|lef|rig|top)(\s+)?(\w+)?$/i,
+        handler(direction) {
+            return this.runQueue(this.robot.turnMove, [this.directionMap[direction], arguments[2] || 1])
+        }
+    },
+    {
+        pattern: /^build$/i,
+        handler() {
+            return this.runQueue(this.robot.buildWall)
+        }
+    },
+    {
+        pattern: /^bru\s+(.*)$/i,
+        handler(color) {
+            return this.runQueue(this.robot.paintWall, [color])
+        }
+    }
+]
