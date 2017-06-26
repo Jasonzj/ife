@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-24 17:34:47 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-26 16:47:02
+ * @Last Modified time: 2017-06-26 17:04:56
  */
 
 import { addEvent } from './function'
@@ -16,7 +16,7 @@ export class Editor {
         this.ele = document.querySelector(selector)
         this.lines = this.ele.querySelector('.console-lines')
         this.textarea = this.ele.querySelector('.console-editor')
-        
+
         this.init()
     }
 
@@ -35,7 +35,7 @@ export class Editor {
      * @memberof Editor
      */
     scroll(e) {
-        this.lines.style.top = - e.target.scrollTop + 'px'
+        this.lines.style.top = -e.target.scrollTop + 'px'
     }
 
     /**
@@ -45,10 +45,12 @@ export class Editor {
     update() {
         let texts = this.textarea.value,
             lines = texts.match(/\n/g)
-        
-        lines ? lines.push(1) : lines = [1]
 
-        this.lines.innerHTML = lines.map((item, i) => `<span>${i + 1}</span>`).join('')
+        lines ? lines.push(1) : (lines = [1])
+
+        this.lines.innerHTML = lines
+            .map((item, i) => `<span>${i + 1}</span>`)
+            .join('')
     }
 
     /**
@@ -89,7 +91,7 @@ export class Editor {
         if (line) {
             lines[line].className = ''
         } else {
-            [].forEach.call(lines, item => item.className = '')
+            ;[].forEach.call(lines, item => (item.className = ''))
         }
     }
 
@@ -119,13 +121,13 @@ export class Editor {
      * @memberof Editor
      */
     parse(string) {
-        for (let i = 0, command; command = commands[i++];) {
+        for (let i = 0, command; (command = commands[i++]); ) {
             const match = string.match(command.pattern)
             if (match) {
                 match.shift()
-                return { 
-                    handler: command.handler, 
-                    params: match 
+                return {
+                    handler: command.handler,
+                    params: match
                 }
             }
         }
@@ -169,19 +171,28 @@ const commands = [
     {
         pattern: /^tun\s+(lef|rig|bac)$/i,
         handler(direction) {
-            return this.runQueue(this.robot.rotate, [{ lef: -90, rig: 90, bac: 180 }[direction.toLowerCase()], direction])
+            return this.runQueue(this.robot.rotate, [
+                { lef: -90, rig: 90, bac: 180 }[direction.toLowerCase()],
+                direction
+            ])
         }
     },
     {
         pattern: /^tra\s+(bot|lef|rig|top)(\s+)?(\w+)?$/i,
         handler(direction) {
-            return this.runQueue(this.robot.move, [this.directionMap[direction], arguments[2] || 1])
+            return this.runQueue(this.robot.move, [
+                this.directionMap[direction],
+                arguments[2] || 1
+            ])
         }
     },
     {
         pattern: /^mov\s+(bot|lef|rig|top)(\s+)?(\w+)?$/i,
         handler(direction) {
-            return this.runQueue(this.robot.turnMove, [this.directionMap[direction], arguments[2] || 1])
+            return this.runQueue(this.robot.turnMove, [
+                this.directionMap[direction],
+                arguments[2] || 1
+            ])
         }
     },
     {

@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-25 15:05:05 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-26 16:51:56
+ * @Last Modified time: 2017-06-26 17:03:45
  */
 
 import { Robot } from './robot'
@@ -19,15 +19,15 @@ export class Control {
      * @memberof Control
      */
     constructor(robotEle, editorEle, count, btnBox) {
-        this.robot = new Robot(robotEle, count)
-        this.editor = new Editor(editorEle)
-        this.btnBox = document.querySelector(btnBox)
-        this.directionMap = { bot: 0, lef: 1, top: 2, rig: 3 }
-        this.queue = []
-        this.queueState = false
-        this.duration = 250
+        this.robot = new Robot(robotEle, count)     // 初始化机器人
+        this.editor = new Editor(editorEle)     // 初始化命令编辑器
+        this.btnBox = document.querySelector(btnBox)    // 按钮盒子
+        this.directionMap = { bot: 0, lef: 1, top: 2, rig: 3 }  // 方向对应地图
+        this.queue = []     // 任务队列
+        this.queueState = false     // 任务队列状态
+        this.duration = 250     // 任务队列执行速度
         
-        this.setEvent()
+        this.setEvent()  // 初始化绑定事件
     }
 
     /**
