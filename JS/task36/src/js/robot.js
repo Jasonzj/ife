@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-23 22:56:18 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-26 18:03:42
+ * @Last Modified time: 2017-06-26 21:23:33
  */
 
 import robotImage from '../img/bot.png';
