@@ -1,7 +1,5 @@
 import './css/style.scss'
 import { Map } from './js/map'
-import { Robot } from './js/robot'
-import { Editor } from './js/editor'
 import { Control } from './js/control';
 
 const mapCanvas = document.querySelector('.map')
