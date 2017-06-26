@@ -2,10 +2,11 @@
  * @Author: Jason 
  * @Date: 2017-06-24 17:34:47 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-26 17:04:56
+ * @Last Modified time: 2017-06-26 17:07:16
  */
 
 import { addEvent } from './function'
+
 export class Editor {
     /**
      * Creates an instance of Editor.

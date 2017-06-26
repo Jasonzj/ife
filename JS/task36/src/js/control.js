@@ -2,13 +2,14 @@
  * @Author: Jason 
  * @Date: 2017-06-25 15:05:05 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-26 17:03:45
+ * @Last Modified time: 2017-06-26 17:07:32
  */
 
 import { Robot } from './robot'
 import { Editor } from './editor'
 import { addEvent } from './function'
 import { Promise } from './promise';
+
 export class Control {
     /**
      * Creates an instance of Control.
