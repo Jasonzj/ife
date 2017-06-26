@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-25 15:05:05 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-25 19:24:51
+ * @Last Modified time: 2017-06-26 16:17:43
  */
 
 import { Robot } from './robot'
@@ -39,29 +39,37 @@ export class Control {
             parseError = false
 
         codes.forEach((str, i) => {
-            if (str && this.editor.parse(str) === false) {
+            if (str && this.editor.parse(str) === false) {   // 如果命令解析有误则高亮错误行
                 parseError = true
                 this.editor.setTag(i, 'error')
             }
         })
 
-        if (!parseError) {
-            const self = this
+        if (!parseError) {  // 无错误
             let prev = 0
             codes.forEach((code, i) => {
-                this.editor.exec(this, code).then(() => {
-                    if (i % 37 == 0) {
-                        self.editor.scrollTo(i)
+                this.editor.exec(this, code)
+                .then(() => {   // 正确执行命令处理
+                    if (i % 37 === 0) {     // 大于当页最大行更新滚动条到当前执行命令行
+                        this.editor.scrollTo(i)
                     }
-                    self.editor.clearTag(prev)
-                    self.editor.setTag(i, 'light')
+                    this.editor.clearTag(prev)
+                    this.editor.setTag(i, 'light')
                     prev = i
+                })
+                .catch(()=> {   // 错误执行命令处理
+                    this.editor.clearTag()
+                    this.editor.setTag(i, 'warning')
                 })
             })
         }
         
     }
 
+    /**
+     * [random 随机修墙]
+     * @memberof Control
+     */
     random() {
         this.robot.randomWall()
     }
@@ -73,7 +81,7 @@ export class Control {
      * @memberof Control
      */
     runQueue(func, params) {
-        const promise = new Promise((function (resolve, reject) {
+        const promise = new Promise((resolve, reject) => {
             this.queue.push({
                 func: func, 
                 params: params, 
@@ -85,11 +93,9 @@ export class Control {
                     }
                 }
             })
-        }).bind(this))
+        })
 
-        if (!this.queueState) {
-            this.taskLoop()
-        }
+        if (!this.queueState) this.taskLoop()   // 如果没有正在执行的命令
 
         return promise
     }
@@ -100,11 +106,17 @@ export class Control {
      */
     taskLoop() {
         this.queueState = true
-        const task = this.queue.shift()
+        const task = this.queue.shift()     // 模拟队列取出第一个任务
         if (task) {
-            task.func.apply(this.robot, task.params)
-            task.callback()
-            setTimeout(this.taskLoop.bind(this), this.duration)
+            try {
+                task.func.apply(this.robot, task.params)
+                task.callback()
+                setTimeout(this.taskLoop.bind(this), this.duration)
+            } catch (e) {   
+                this.queueState = false
+                this.queue = []
+                task.callback(e)
+            }
             return false
         }
         this.queueState = false

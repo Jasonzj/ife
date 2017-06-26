@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-24 17:34:47 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-25 18:54:47
+ * @Last Modified time: 2017-06-26 15:33:06
  */
 
 import { addEvent } from './function'
@@ -158,6 +158,7 @@ export class Editor {
     }
 }
 
+// 解析命令策略
 const commands = [
     {
         pattern: /^go(\s+)?(\d+)?$/i,
