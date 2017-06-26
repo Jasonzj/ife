@@ -2,13 +2,13 @@
  * @Author: Jason 
  * @Date: 2017-06-25 15:05:05 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-26 16:17:43
+ * @Last Modified time: 2017-06-26 16:51:56
  */
 
 import { Robot } from './robot'
 import { Editor } from './editor'
 import { addEvent } from './function'
-
+import { Promise } from './promise';
 export class Control {
     /**
      * Creates an instance of Control.
@@ -70,8 +70,20 @@ export class Control {
      * [random 随机修墙]
      * @memberof Control
      */
-    random() {
+    randomWall() {
         this.robot.randomWall()
+    }
+
+    /**
+     * [reset 重置]
+     * @memberof Control
+     */
+    reset() {
+        this.robot.goto([1, 1])
+        this.robot.deg = 0
+        this.robot.direction = 0
+        this.robot.changeDeg()
+        this.robot.clearWall()
     }
 
     /**
@@ -85,7 +97,7 @@ export class Control {
             this.queue.push({
                 func: func, 
                 params: params, 
-                callback: function (exception) {
+                callback(exception) {
                     if (exception) {
                         reject(exception)
                     } else {
@@ -131,7 +143,7 @@ export class Control {
         const target = e.target
 
         if (target.nodeName === "BUTTON") {
-            const eventFn = {'run': this.run, 'random': this.random}[target.className]
+            const eventFn = {'run': this.run, 'random': this.randomWall, 'reset': this.reset }[target.className]
             if (eventFn) eventFn.call(this)
         }
         

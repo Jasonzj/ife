@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-23 22:56:18 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-25 19:47:07
+ * @Last Modified time: 2017-06-26 16:56:56
  */
 
 import robotImage from '../img/bot.png';
@@ -261,6 +261,17 @@ export class Robot {
         this.checkWall(this.getPosition(this.direction, 1), '拆墙')   // 判断前方有无墙无墙则抛出错误
         this.parentNode.removeChild(this.wallMap[this.getPosition(this.direction, 1)])
         delete this.wallMap[this.getPosition(this.direction, 1)]
+    }
+
+    /**
+     * [clearWall 清空所有墙]
+     * @memberof Robot
+     */
+    clearWall() {
+        for (const position in this.wallMap) {
+            this.parentNode.removeChild(this.wallMap[position])
+        }
+        this.wallMap = {}
     }
 
     /**

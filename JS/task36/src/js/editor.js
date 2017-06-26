@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-24 17:34:47 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-26 15:33:06
+ * @Last Modified time: 2017-06-26 16:47:02
  */
 
 import { addEvent } from './function'
