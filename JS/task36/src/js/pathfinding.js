@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-26 17:21:21 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-26 21:38:43
+ * @Last Modified time: 2017-06-26 22:23:29
  */
 
 export class PathFinder {
@@ -37,8 +37,8 @@ export class PathFinder {
     }
 
     getAround(current) {
-        const x = current[0],
-            y = current[1]
+        const x = current.x,
+            y = current.y
 
         return [
             { x: x, y: y - 1 },
@@ -63,24 +63,22 @@ export class PathFinder {
             result = [],        // 结果列表
             cur = null          // 当前指针
         
-        start.F = 0
-        start.G = 0
-        start.H = 0
-
-        openList.push({ 
+        start = {
+            F: 0,
+            G: 0,
+            H: 0,
             x: start[0],
-            y: start[1],
-            F: start.F,
-            G: start.G,
-            H: start.H
-        })
+            y: start[1]
+        }
+
+        closeList.push(start)
 
         cur = start
-
+        
         // 计算路径
-        // while (cur && inList(start, openList)) {
+        while (cur && !this.inList(start, openList)) {
             const items = this.getAround(cur)
-            // items.forEach((item, i) => {
+
             for (let i = 0, item; item = items[i++];) {
                 if (item.x === 0    // 超过地图边界不考虑
                     || item.y === 0 
@@ -95,13 +93,39 @@ export class PathFinder {
                 }
                 if (this.virtuaMap[item.y][item.x] === 0) {
                     item.G = cur.G + 1  
-                    item.H = (target[0] - item.x) + (target[1] - item.y)
+                    item.H = Math.abs(target[0] - item.x) + Math.abs(target[1] - item.y)
                     item.F = item.G + item.H
                     item.P = cur
-                    console.log(item);
+                    openList.push(item)
                 }
             }
-            // })
-        // }
+            if (!openList.length) {
+                curr = null
+                openList = []
+                closeList = []
+                break
+            }
+
+            openList.sort((a, b) => a.F - b.F)
+
+            const oMinF = openList[0]
+
+            cur = oMinF
+
+            if (!this.inList(cur, closeList)) {
+                closeList.push(cur)
+            }
+
+            openList.forEach((item, i) => {
+                if (item == cur) {
+                    openList.splice(i, 1)
+                }
+            })
+
+            if (cur.H == 1) {
+                // closeList.push()
+                cur = null
+            }
+        }
     }
 }
