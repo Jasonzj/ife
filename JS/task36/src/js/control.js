@@ -2,13 +2,14 @@
  * @Author: Jason 
  * @Date: 2017-06-25 15:05:05 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-26 17:07:32
+ * @Last Modified time: 2017-06-26 18:56:32
  */
 
 import { Robot } from './robot'
 import { Editor } from './editor'
 import { addEvent } from './function'
 import { Promise } from './promise';
+import { PathFinder } from './pathfinding';
 
 export class Control {
     /**
@@ -22,12 +23,14 @@ export class Control {
     constructor(robotEle, editorEle, count, btnBox) {
         this.robot = new Robot(robotEle, count)     // 初始化机器人
         this.editor = new Editor(editorEle)     // 初始化命令编辑器
+        this.finder = new PathFinder(20, this.robot.wallMap)    // 初始化搜索类
         this.btnBox = document.querySelector(btnBox)    // 按钮盒子
         this.directionMap = { bot: 0, lef: 1, top: 2, rig: 3 }  // 方向对应地图
         this.queue = []     // 任务队列
         this.queueState = false     // 任务队列状态
         this.duration = 250     // 任务队列执行速度
         
+        this.search([this.robot.x, this.robot.y], [10, 13])
         this.setEvent()  // 初始化绑定事件
     }
 
@@ -73,6 +76,7 @@ export class Control {
      */
     randomWall() {
         this.robot.randomWall()
+        this.finder.setMapWall()
     }
 
     /**
@@ -85,6 +89,11 @@ export class Control {
         this.robot.direction = 0
         this.robot.changeDeg()
         this.robot.clearWall()
+    }
+
+    search(current, target) {
+        this.finder.createVirtualMap()
+        this.finder.search(current, target)
     }
 
     /**
