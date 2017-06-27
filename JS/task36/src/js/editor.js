@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-24 17:34:47 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-26 21:12:13
+ * @Last Modified time: 2017-06-27 11:10:52
  */
 
 import { addEvent } from './function'
@@ -209,9 +209,9 @@ const commands = [
         }
     },
     {
-        pattern: /^mov\s+(to)(\s+)?(w+)?$/i,
-        handler(start, target) {
-            return this.runQueue(this.robot.move, [arguments[0]])
+        pattern: /^mov\s+to\s+(\d+)[,\s+](\d+)(\s+)?$/i,
+        handler(x, y) {
+            return this.runQueue(this.search, [[x, y]])
         }
     }
 ]

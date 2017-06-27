@@ -49,7 +49,7 @@ module.exports = {
     },
     devServer: {
         contentBase: path.resolve(__dirname, "build"),
-        port: 9999
+        port: 8888
     },
     plugins: [
         new htmlWebpackPlugin({

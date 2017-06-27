@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-25 15:05:05 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-26 22:27:13
+ * @Last Modified time: 2017-06-27 11:22:58
  */
 
 import { Robot } from './robot'
@@ -30,7 +30,7 @@ export class Control {
         this.queueState = false     // 任务队列状态
         this.duration = 250     // 任务队列执行速度
         
-        this.search([this.robot.x, this.robot.y], [3, 1])
+        // this.search([this.robot.x, this.robot.y], [3, 1])
         this.setEvent()  // 初始化绑定事件
     }
 
@@ -76,7 +76,6 @@ export class Control {
      */
     randomWall() {
         this.robot.randomWall()
-        this.finder.setMapWall()
     }
 
     /**
@@ -91,9 +90,12 @@ export class Control {
         this.robot.clearWall()
     }
 
-    search(current, target) {
-        this.finder.createVirtualMap()
-        this.finder.search(current, target)
+    search(target) {
+        const path = this.finder.search([this.robot.x, this.robot.y], target)
+        path.forEach(item => {
+            // console.log([item.x, item.y])
+            this.runQueue(this.robot.goto, [[item.x, item.y]])
+        })
     }
 
     /**
@@ -131,7 +133,10 @@ export class Control {
         const task = this.queue.shift()     // 模拟队列取出第一个任务
         if (task) {
             try {
-                task.func.apply(this.robot, task.params)
+                task.func.name === 'search' 
+                    ? task.func.apply(this, task.params)
+                    : task.func.apply(this.robot, task.params)
+                    
                 task.callback()
                 setTimeout(this.taskLoop.bind(this), this.duration)
             } catch (e) {   
