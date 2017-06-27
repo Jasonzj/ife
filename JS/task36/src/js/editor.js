@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-24 17:34:47 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-27 11:10:52
+ * @Last Modified time: 2017-06-27 20:44:23
  */
 
 import { addEvent } from './function'
@@ -111,7 +111,7 @@ export class Editor {
      * @memberof Editor
      */
     setCodes(codes) {
-        this.textarea.value = code
+        this.textarea.value = codes
         this.update()
     }
 

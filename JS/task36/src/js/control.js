@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-25 15:05:05 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-27 11:22:58
+ * @Last Modified time: 2017-06-27 20:44:37
  */
 
 import { Robot } from './robot'
@@ -10,6 +10,7 @@ import { Editor } from './editor'
 import { addEvent } from './function'
 import { Promise } from './promise';
 import { PathFinder } from './pathfinding';
+import { ImageReader } from './imageReader';
 
 export class Control {
     /**
@@ -20,18 +21,20 @@ export class Control {
      * @param {String} btnBox 按钮盒子类名
      * @memberof Control
      */
-    constructor(robotEle, editorEle, count, btnBox) {
-        this.robot = new Robot(robotEle, count)     // 初始化机器人
-        this.editor = new Editor(editorEle)     // 初始化命令编辑器
-        this.finder = new PathFinder(20, this.robot.wallMap)    // 初始化搜索类
-        this.btnBox = document.querySelector(btnBox)    // 按钮盒子
-        this.directionMap = { bot: 0, lef: 1, top: 2, rig: 3 }  // 方向对应地图
-        this.queue = []     // 任务队列
+    constructor(JSON) {
+        this.robot = new Robot(JSON.robotEle, JSON.count)            // 初始化机器人
+        this.editor = new Editor(JSON.editorEle)                     // 初始化命令编辑器
+        this.finder = new PathFinder(JSON.count)                     // 初始化搜索类
+        this.imageReader = new ImageReader(JSON.count)
+        this.btnBox = document.querySelector(JSON.btnBox)            // 按钮盒子
+        this.speedSelect = document.querySelector(JSON.selectBox)    // 速度选择Select
+        this.selectImg = document.querySelector(JSON.selectImg)      // 图片选择select
+        this.directionMap = { bot: 0, lef: 1, top: 2, rig: 3 }       // 方向对应地图
+        this.queue = []             // 任务队列
         this.queueState = false     // 任务队列状态
-        this.duration = 250     // 任务队列执行速度
+        this.duration = 250         // 任务队列执行速度
         
-        // this.search([this.robot.x, this.robot.y], [3, 1])
-        this.setEvent()  // 初始化绑定事件
+        this.setEvent()             // 初始化绑定事件
     }
 
     /**
@@ -90,12 +93,14 @@ export class Control {
         this.robot.clearWall()
     }
 
-    search(target) {
-        const path = this.finder.search([this.robot.x, this.robot.y], target)
-        path.forEach(item => {
-            // console.log([item.x, item.y])
-            this.runQueue(this.robot.goto, [[item.x, item.y]])
-        })
+    /**
+     * [setSpeed 设置robot运动速度]
+     * @param {Event} e 
+     * @memberof Control
+     */
+    setSpeed(target) {
+        this.duration = target.value
+        this.robot.ele.style.transitionDuration = target.value + 'ms'
     }
 
     /**
@@ -120,7 +125,6 @@ export class Control {
         })
 
         if (!this.queueState) this.taskLoop()   // 如果没有正在执行的命令
-
         return promise
     }
 
@@ -150,6 +154,60 @@ export class Control {
     }
 
     /**
+     * [search 自动寻路方法]
+     * @param {Array} target 目标坐标数组
+     * @memberof Control
+     */
+    search(target) {
+        const path = this.finder.search(
+            [this.robot.x, this.robot.y],   // 起点坐标数组
+            target,                         // 终点坐标数组
+            this.robot.wallMap              // 墙对应坐标集合对象
+        )
+
+        path.forEach(item => {  // 循环path路径依次运行
+            this.runQueue(this.robot.goto, [[item.x, item.y], true])
+        })
+    }
+
+    /**
+     * [setImage 选择图片画图片]
+     * @param {any} target 
+     * @memberof Control
+     */
+    setImage(target) {
+        this.imageReader.readImage(this.selectImg.files[0])
+        .then(data => {
+            let commands = 'tun bac\ntra bot\n'
+            for (let x = 1; x <= data.length; x++) {
+                if (x == data.length) {
+                    commands += 'tun rig\ntra lef\n'
+                } else if (x != 1) {
+                    commands += 'tra bot\n'
+                }
+                let columns = data[x - 1].length
+                for (let y = 1; y <= columns; y++) {
+                    if (x == data.length && y == columns) {
+                        break
+                    }
+                    let direction = 'lef',
+                        _y = columns - y
+                        
+                    if (x % 2) {
+                        direction = 'rig'
+                    }
+                    if (y != 1) {
+                        commands += `tra ${direction}\n`
+                    }
+
+                    commands += `build\nbru ${data[_y][x - 1]}\n`
+                }
+            }
+            this.editor.setCodes(commands)
+        })
+    }
+
+    /**
      * [clickHandle 点击事件处理]
      * @param {any} e 
      * @memberof Control
@@ -158,10 +216,34 @@ export class Control {
         const target = e.target
 
         if (target.nodeName === "BUTTON") {
-            const eventFn = {'run': this.run, 'random': this.randomWall, 'reset': this.reset }[target.className]
+            const eventFn = {
+                'run': this.run, 
+                'random': this.randomWall, 
+                'reset': this.reset, 
+                'duration': this.setSpeed 
+            }[target.className]
+            
             if (eventFn) eventFn.call(this)
         }
         
+    }
+
+    /**
+     * [changeHandle change事件处理]
+     * @param {Event} e 
+     * @memberof Control
+     */
+    changeHandle(e) {
+        const target = e.target
+
+        if (target.nodeName === 'SELECT' || target.nodeName === 'INPUT') {
+            const eventFn = { 
+                'duration': this.setSpeed, 
+                'image': this.setImage 
+            }[target.className]
+
+            if (eventFn) eventFn.call(this, target)
+        }
     }
 
     /**
@@ -171,5 +253,6 @@ export class Control {
     setEvent() {
         const self = this       
         addEvent(self.btnBox, 'click', self.clickHandle.bind(self))
+        addEvent(self.btnBox, 'change', self.changeHandle.bind(self))
     }
 }

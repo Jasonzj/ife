@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-23 14:59:41 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-24 16:06:48
+ * @Last Modified time: 2017-06-27 20:44:06
  */
 
 export class Map {
@@ -65,7 +65,7 @@ export class Map {
     }
 
     /**
-     * [drawCount 画线]
+     * [drawCount 画数字]
      * @memberof Map
      */
     drawCount() {
@@ -82,5 +82,3 @@ export class Map {
         }
     }
 }
-
-

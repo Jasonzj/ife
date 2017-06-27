@@ -4,6 +4,19 @@ import { Control } from './js/control';
 
 const mapCanvas = document.querySelector('.map')
 
-const map = new Map({ count: 20, canvas: mapCanvas, canvasWH: 780})     // 初始化地图
+new Map({       // 初始化地图
+    count: 20, 
+    canvas: mapCanvas, 
+    canvasWH: 780
+})     
 
-const control = new Control('.robot', '.console', 20, '.console-btn')   // 初始化控制台
+new Control({   // 初始化控制类
+    robotEle: '.robot',
+    editorEle: '.console',
+    selectImg: '.image',
+    selectBox: '.duration',
+    btnBox: '.console-btn',
+    count: 20
+})
+
+

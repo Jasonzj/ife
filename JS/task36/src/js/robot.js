@@ -2,11 +2,11 @@
  * @Author: Jason 
  * @Date: 2017-06-23 22:56:18 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-26 21:23:33
+ * @Last Modified time: 2017-06-27 20:44:18
  */
 
-import robotImage from '../img/bot.png';
 import { addEvent } from './function';
+import robotImage from '../img/bot.png';
 
 export class Robot {
     /**
@@ -16,15 +16,18 @@ export class Robot {
      * @memberof Robot
      */
     constructor(selector, count) {
+        this.width = Math.ceil(780 / count - 2)
+        this.height = Math.ceil(780 / count - 2)
         this.ele = document.querySelector(selector)
+        this.ele.style.width = this.width + 'px'
+        this.ele.style.height = this.width + 'px'
+        this.ele.style.backgroundSize = this.width + 'px'
         this.parentNode = this.ele.parentNode
-        this.mapCount = 20  // 地图格子
+        this.mapCount = count  // 地图格子
         this.deg = 0    // 角度
         this.x = 1      // X坐标
         this.y = 1      // Y坐标
         this.direction = 0  // 方向，0：bottom，1：left，2：top，3：right
-        this.width = this.ele.clientWidth
-        this.height = this.ele.clientHeight
         this.wallMap = {}
 
         this.init()
@@ -110,7 +113,19 @@ export class Robot {
      * @param {Array} position 坐标数组 
      * @memberof Robot
      */
-    goto(position) {
+    goto(position, turn) {
+        if (turn) {
+            const pos = [position[0] - this.x, position[1] - this.y]
+            if (pos[0] > 0) {   // 右
+                this.turn(3)
+            } else if (pos[0] < 0) {    // 左
+                this.turn(1)
+            } else if (pos[1] > 0) {    // 下
+                this.turn(0)
+            } else if (pos[1] < 0) {    // 上
+                this.turn(2)
+            }
+        }
         this.checkPosition(position, '无法移动到')
         this.ele.style.left = position[0] * this.width + 'px'
         this.ele.style.top = position[1] * this.height + 'px'
@@ -134,6 +149,7 @@ export class Robot {
      * @memberof Robot
      */
     go(step) {
+        this.checkPath(this.direction, step)
         this.goto(this.getPosition(this.direction, step))
     }
 
@@ -178,8 +194,8 @@ export class Robot {
 
     /**
      * [checkPath 检测移动路上是否有墙]
-     * @param {any} direction 
-     * @param {any} step 
+     * @param {Number} direction 方向数字
+     * @param {Number} step 移动步数
      * @memberof Robot
      */
     checkPath(direction, step) {
@@ -207,7 +223,7 @@ export class Robot {
     /**
      * [getWallMap 判断指定位置是否有墙]
      * @param {Array} position 指定坐标数组
-     * @returns 有墙返回 false 无则true
+     * @returns 有墙返回 true 无则false
      * @memberof Robot
      */
     getWallMap(position) {
@@ -286,10 +302,16 @@ export class Robot {
      * [randomWall 随机修墙]
      * @memberof Robot
      */
-    randomWall() {
-        const x = Math.floor(Math.random() * 20 + 1),
-            y = Math.floor(Math.random() * 20 + 1)
-        this.setWall([x, y])
+    randomWall() {       
+        this.clearWall() 
+        for (let i = 0; i < 30; i++) {
+            const pos = [Math.floor(Math.random() * 20 + 1), Math.floor(Math.random() * 20 + 1)]
+            if (!this.getWallMap(pos) 
+                && pos.toString() != [this.x, this.y].toString()
+            ) {
+                this.setWall(pos)
+            }
+        }
     }
 
     /**

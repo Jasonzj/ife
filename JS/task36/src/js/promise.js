@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-26 16:31:15 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-26 16:43:17
+ * @Last Modified time: 2017-06-27 20:44:47
  */
 
 export class Promise {

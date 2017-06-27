@@ -2,13 +2,12 @@
  * @Author: Jason 
  * @Date: 2017-06-26 17:21:21 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-27 13:18:46
+ * @Last Modified time: 2017-06-27 20:44:29
  */
 
 export class PathFinder {
-    constructor(count, wallMap) {
+    constructor(count) {
         this.count = count
-        this.wallMap = wallMap
     }
 
     /**
@@ -20,8 +19,8 @@ export class PathFinder {
     checkBorder(point) {
         if (point.x < 1
             || point.y < 1
-            || point.x > 20
-            || point.y > 20
+            || point.x > this.count
+            || point.y > this.count
         ) {
             return true
         }
@@ -82,7 +81,9 @@ export class PathFinder {
      * @returns {Array} path最终路径数组
      * @memberof PathFinder
      */
-    search(start, target) {
+    search(start, target, wallMap) {
+        this.wallMap = wallMap  // 初始化墙坐标对象
+
         let openList = [],      // 开启列表
             closeList = [],     // 关闭列表
             cur = null          // 当前指针
