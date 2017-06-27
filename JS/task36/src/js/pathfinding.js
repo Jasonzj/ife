@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-26 17:21:21 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-26 22:23:29
+ * @Last Modified time: 2017-06-26 22:27:12
  */
 
 export class PathFinder {
@@ -126,6 +126,7 @@ export class PathFinder {
                 // closeList.push()
                 cur = null
             }
+            console.log(closeList);
         }
     }
 }

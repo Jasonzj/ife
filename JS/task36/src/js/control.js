@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-25 15:05:05 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-26 21:23:25
+ * @Last Modified time: 2017-06-26 22:27:13
  */
 
 import { Robot } from './robot'
@@ -30,7 +30,7 @@ export class Control {
         this.queueState = false     // 任务队列状态
         this.duration = 250     // 任务队列执行速度
         
-        this.search([this.robot.x, this.robot.y], [10, 13])
+        this.search([this.robot.x, this.robot.y], [3, 1])
         this.setEvent()  // 初始化绑定事件
     }
 
