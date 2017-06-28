@@ -1,7 +1,6 @@
 import './css/style.scss'
 import { Map } from './js/map'
 import { Control } from './js/control';
-import { addEvent } from './js/function';
 
 const mapCanvas = document.querySelector('.map')
 
