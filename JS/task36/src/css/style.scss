@@ -23,8 +23,6 @@ body {
         height: 37px;
         background: url(../img/bot.png);
         background-size: 37px;
-        // transition-property: left, top, transform;
-        // transition-duration: .25s;
         transition: all .5s cubic-bezier(.2,0,0,1);
     }
     .wall {

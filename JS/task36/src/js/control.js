@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-25 15:05:05 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-27 20:44:37
+ * @Last Modified time: 2017-06-28 13:14:35
  */
 
 import { Robot } from './robot'
@@ -44,7 +44,7 @@ export class Control {
     run() {
         let codes = this.editor.getCodes(),
             parseError = false
-
+        
         codes.forEach((str, i) => {
             if (str && this.editor.parse(str) === false) {   // 如果命令解析有误则高亮错误行
                 parseError = true
@@ -55,19 +55,20 @@ export class Control {
         if (!parseError) {  // 无错误
             let prev = 0
             codes.forEach((code, i) => {
-                this.editor.exec(this, code)
-                .then(() => {   // 正确执行命令处理
-                    if (i % 37 === 0) {     // 大于当页最大行更新滚动条到当前执行命令行
-                        this.editor.scrollTo(i)
-                    }
-                    this.editor.clearTag(prev)
-                    this.editor.setTag(i, 'light')
-                    prev = i
-                })
-                .catch(()=> {   // 错误执行命令处理
-                    this.editor.clearTag()
-                    this.editor.setTag(i, 'warning')
-                })
+                if (code)
+                    this.editor.exec(this, code)    // 执行完拿到promise
+                    .then(() => {   // 正确执行命令处理
+                        if (i % 37 === 0) {     // 大于当页最大行更新滚动条到当前执行命令行
+                            this.editor.scrollTo(i)
+                        }
+                        this.editor.clearTag(prev)
+                        this.editor.setTag(i, 'light')
+                        prev = i
+                    })
+                    .catch(()=> {   // 错误执行命令处理
+                        this.editor.clearTag()
+                        this.editor.setTag(i, 'warning')
+                    })
             })
         }
         
@@ -107,6 +108,7 @@ export class Control {
      * [runQueue 运行命令队列]
      * @param {Function} func 要运行的函数
      * @param {Array} params 要运行的函数的参数数组
+     * @return {Promise} 每行命令的promise
      * @memberof Control
      */
     runQueue(func, params) {
@@ -180,27 +182,25 @@ export class Control {
         .then(data => {
             let commands = 'tun bac\ntra bot\n'
             for (let x = 1; x <= data.length; x++) {
-                if (x == data.length) {
+                if (x == data.length) {     // 如果等于data.length代表最后一行
                     commands += 'tun rig\ntra lef\n'
-                } else if (x != 1) {
+                } else if (x != 1) {        // 第一行不用tra bot
                     commands += 'tra bot\n'
                 }
-                let columns = data[x - 1].length
-                for (let y = 1; y <= columns; y++) {
-                    if (x == data.length && y == columns) {
+                for (let y = 1; y <= data.length; y++) {
+                    let direction = 'lef'
+
+                    if (x == data.length && y == data.length) { // 如果相等则结束
                         break
-                    }
-                    let direction = 'lef',
-                        _y = columns - y
-                        
-                    if (x % 2) {
+                    }    
+                    if (x % 2) {    // 偶数行 为rig
                         direction = 'rig'
                     }
-                    if (y != 1) {
+                    if (y != 1) {   
                         commands += `tra ${direction}\n`
                     }
 
-                    commands += `build\nbru ${data[_y][x - 1]}\n`
+                    commands += `build\nbru ${data[x - 1][y - 1]}\n`
                 }
             }
             this.editor.setCodes(commands)

@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-27 17:54:24 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-27 20:44:34
+ * @Last Modified time: 2017-06-28 13:11:07
  */
 
 import { addEvent } from './function';
@@ -47,7 +47,7 @@ export class ImageReader {
             for (let x = 0; x < this.count; x++) {
                 data[x] = []
                 for (let y = 0; y < this.count; y++) {
-                    data[x][y] = this.toRGBA(this.ctx.getImageData(x, y, 1, 1).data)
+                    data[x][y] = this.toRGBA(this.ctx.getImageData(y, x, 1, 1).data)
                 }
             }
             this.resolve(data)

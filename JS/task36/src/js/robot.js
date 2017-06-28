@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-23 22:56:18 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-27 20:44:18
+ * @Last Modified time: 2017-06-28 13:36:49
  */
 
 import { addEvent } from './function';
@@ -16,12 +16,9 @@ export class Robot {
      * @memberof Robot
      */
     constructor(selector, count) {
-        this.width = Math.ceil(780 / count - 2)
-        this.height = Math.ceil(780 / count - 2)
-        this.ele = document.querySelector(selector)
-        this.ele.style.width = this.width + 'px'
-        this.ele.style.height = this.width + 'px'
-        this.ele.style.backgroundSize = this.width + 'px'
+        this.width = Math.ceil(780 / count - (count === 20 ? 2 : 1))    // robot宽度
+        this.height = this.width                                        // robot高度
+        this.ele = document.querySelector(selector)                     // robot Element
         this.parentNode = this.ele.parentNode
         this.mapCount = count  // 地图格子
         this.deg = 0    // 角度
@@ -29,6 +26,11 @@ export class Robot {
         this.y = 1      // Y坐标
         this.direction = 0  // 方向，0：bottom，1：left，2：top，3：right
         this.wallMap = {}
+
+        // 初始化robot宽高
+        this.ele.style.width = this.width + 'px'
+        this.ele.style.height = this.width + 'px'
+        this.ele.style.backgroundSize = this.width + 'px'
 
         this.init()
     }

@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-23 14:59:41 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-27 20:44:06
+ * @Last Modified time: 2017-06-28 13:38:21
  */
 
 export class Map {
@@ -17,12 +17,10 @@ export class Map {
      * @memberof Map
      */
     constructor(config) {
-        this.count = config.count
-        this.width = Math.ceil(config.canvasWH / config.count - 2)
-        this.maxWidth = this.width * this.count
-        this.ctx = config.canvas.getContext('2d')
-        this.config = config
-        this.cacheCanvasStack = []
+        this.count = config.count   // 格子数量
+        this.width = Math.ceil(config.canvasWH / config.count - (config.count == 20 ? 2 : 1))   // 格子宽度
+        this.maxWidth = this.width * this.count     // 总宽度
+        this.ctx = config.canvas.getContext('2d')   
 
         this.init(config)
     }
