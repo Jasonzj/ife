@@ -1,0 +1,101 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+}
+
+html {
+    font-size: 14px;
+    font-family: Menlo, Consolas, monospace;
+    font-weight: 400
+}
+
+body {
+    font-size: 1rem
+}
+
+table,
+td,
+th {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+table {
+    width: 500px;
+}
+
+td,
+th {
+    border: 1px solid #bcbcbc;
+    padding: 5px 10px;
+    text-align: center;
+    width: 150px;
+}
+
+th {
+    position: relative;
+    background: #42b983;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #fff;
+    cursor: pointer
+}
+
+tr:nth-of-type(odd) {
+    background: #fff
+}
+
+tr:nth-of-type(even) {
+    background: #eee
+}
+
+fieldset {
+    border: 1px solid #BCBCBC;
+    padding: 15px;
+}
+
+input {
+    outline: none
+}
+
+input[type=text] {
+    border: 1px solid #ccc;
+    padding: .5rem .3rem;
+}
+
+input[type=text]:focus {
+    border-color: #42b983;
+}
+
+.up,
+.down {
+    position: absolute;
+    top: 8px;
+    right: 7px;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-bottom: 8px solid #fff;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+}
+
+.down {
+    top: 20px;
+    border-top: 7px solid #fff;
+    border-bottom: none;
+}
+
+.table {
+    margin-top: 300px;
+}
+
+.table2 {
+    margin-top: 800px;
+}
+
+.frozen {
+    position: fixed;
+    top: 0;
+}

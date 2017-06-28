@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="table"></div>
+    <div class="table2"></div>
+    <div class="table3"></div>
+    <div class="table4"></div>
+    <script src="./task39.js"></script>
+    <script>
+        const data = {
+            append: '.table',
+            data: {
+                thead: ['姓名:noSort', '语文', '数学', '英语', '总分:noSort:sum'],
+                tbody: [
+                    ['Jason', 82, 92, 65],
+                    ['Tavia', 80, 80, 100],
+                    ['Tavia3', 70, 90, 13],
+                    ['Tavia4', 60, 24, 32],
+                    ['Tavia5', 50, 42, 23],
+                    ['Tavia6', 45, 52, 11],
+                    ['Tavia7', 55, 31, 62],
+                    ['Tavia8', 98, 46, 66],
+                    ['Tavia9', 12, 76, 68],
+                    ['Tavia10', 32, 21, 69],
+                    ['Tavia11', 73, 85, 80],
+                    ['Tavia12', 12, 86, 50],
+                    ['Tavia13', 15, 23, 40],
+                    ['Tavia14', 54, 52, 30],
+                    ['Tavia15', 87, 13, 20],
+                    ['Tavia16', 80, 67, 10],
+                    ['Tavia17', 92, 42, 5],
+                    ['Tavia18', 11, 87, 9],
+                    ['Tavia19', 43, 33, 11],
+                    ['Tavia20', 32, 44, 98],
+                    ['Tavia21', 25, 55, 96]
+                ]
+            },
+            isSort: true,
+            isFrozen: true
+        }
+        const data2 = {
+            append: '.table2',
+            data: {
+                thead: ['姓名', '语文', '数学', '英语', '总分:sum'],
+                tbody: [
+                    ['Jason', 82, 92, 65],
+                    ['Tavia', 80, 80, 100],
+                    ['Tavia3', 70, 90, 13],
+                    ['Tavia4', 60, 24, 32],
+                    ['Tavia5', 50, 42, 23],
+                    ['Tavia6', 45, 52, 11],
+                    ['Tavia7', 55, 31, 62],
+                    ['Tavia8', 98, 46, 66]
+                ]
+            },
+            isSort: false,
+            isFrozen: false
+        }
+        new Table(data)
+        new Table(data2)
+    </script>
+</body>
+</html>

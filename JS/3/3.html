@@ -52,7 +52,6 @@
             data[i] = new Array();  //此时是个二维数组
             data[i][0] = source[i].innerHTML.slice(0,2);  //因为innerHTML都是string类型，利用slice裁剪字符串。
             data[i][1] = Number(source[i].getElementsByTagName('b')[0].innerHTML); //getElementsByTagName('b')是数组组所以要带[0]，用Number转换为数值类型。
-
         }
         return data;
     }
