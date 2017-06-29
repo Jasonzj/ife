@@ -1,0 +1,81 @@
+$dark: lightgray;
+$red: rgb(200, 27, 1);
+$black: #000;
+$white: #fff;
+
+.calendar-con {
+    position: relative;
+}
+
+.calendar-input {
+    height: 30px;
+    width: 200px;
+}
+
+.calendar {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    // display: none;
+    width: 350px; 
+    height: 430px; 
+    border: 2px solid $dark;
+    .calendar_prev {
+        float: left; 
+        cursor: pointer;
+    }
+
+    .calendar_next {
+        float: right; 
+        cursor: pointer;
+    }
+    .title {
+        margin: 0;
+        padding: 5px;
+        text-align: center;
+        background-color: $red;
+        color: $white;
+    }
+    span {
+        display: inline-block;
+        width: 50px;
+        line-height: 50px;
+        text-align: center;
+        cursor: pointer;
+    }
+}
+
+.calendar-btnBox {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+
+.calendar-btn {
+    width: 100px;
+    height: 30px;
+    cursor: pointer;
+    border: 1px solid $red;
+    background: $white;
+}
+
+.calendar.show {
+    display: block;
+}
+
+.white {
+    color: $dark;
+}
+.dark {
+    color: $black;
+}
+.light {
+    color: $red;
+}
+.current {
+    color: $white;
+    background: $red;
+}
+.multi {
+    background-color: rgb(235, 244, 249);
+}
