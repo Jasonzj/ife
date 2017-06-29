@@ -2,12 +2,23 @@
  * @Author: Jason 
  * @Date: 2017-06-29 14:49:51 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-29 19:47:49
+ * @Last Modified time: 2017-06-29 20:05:09
  */
 
 import { addEvent } from './common';
 
+/**
+ * 日历组件
+ * 
+ * @export
+ * @class Calendar
+ */
 export class Calendar {
+    /**
+     * Creates an instance of Calendar.
+     * @param {String} ele 日历外部盒子
+     * @memberof Calendar
+     */
     constructor(ele) {
         this.ele = document.querySelector(ele)
         this.date = new Date() 
@@ -19,12 +30,22 @@ export class Calendar {
     }
 
 
+    /**
+     * 初始化
+     * 
+     * @memberof Calendar
+     */
     init() {
         this.render()
         this.renderDate(this.cacheDate)
         this.setEvent()
     }
 
+    /**
+     * 初始化渲染
+     * 
+     * @memberof Calendar
+     */
     render() {
         // box
         const box = document.createElement('div')
@@ -60,6 +81,12 @@ export class Calendar {
         this.ele.appendChild(box)
     }
 
+    /**
+     * 日历数据渲染
+     * 
+     * @param {Date} date 日期Date对象
+     * @memberof Calendar
+     */
     renderDate(date) {
         document.querySelector('.title-s').innerHTML = ` ${date.getFullYear()} 年 ${date.getMonth() + 1} 月`
 
@@ -94,7 +121,13 @@ export class Calendar {
 
     }
 
-    setDate(conditions) { 
+    /**
+     * 设置日期月份
+     * 
+     * @param {Boolean} conditions true为下个月，false为上个月
+     * @memberof Calendar
+     */
+    setDateMonth(conditions) { 
         conditions 
             ? this.cacheDate.setMonth(this.cacheDate.getMonth() + 1) 
             : this.cacheDate.setMonth(this.cacheDate.getMonth() - 1)
@@ -102,6 +135,34 @@ export class Calendar {
         this.renderDate(this.cacheDate)
     }
 
+    /**
+     * 清空所有current高亮day
+     * 
+     * @memberof Calendar
+     */
+    clearCurrent() {
+        this.dayArr.filter(item => item.className === 'current').forEach(item => item.className = '')
+    }
+
+    /**
+     * 设置高亮
+     * 
+     * @param {Element} target 当前点击目标
+     * @memberof Calendar
+     */
+    setCurrent(target) {
+        this.cacheDate.setDate(parseInt(target.innerHTML))
+        this.date = new Date(this.cacheDate)
+        this.clearCurrent()
+        target.className = 'current'
+    }
+
+    /**
+     * 点击事件处理
+     * 
+     * @param {Event} e 
+     * @memberof Calendar
+     */
     clickHandle(e) {
         e.stopPropagation()
 
@@ -114,17 +175,19 @@ export class Calendar {
             const conditions = { calendar_next: true, calendar_prev: false }[target.className],   // 根据className取值
                 conditions2 = parseInt(target.innerHTML) < 15     // 根据文本值取值
             
-            conditions ? this.setDate(conditions) : this.setDate(conditions2)
+            conditions ? this.setDateMonth(conditions) : this.setDateMonth(conditions2)
         } 
             
         if (target.nodeName === "SPAN" && target.className === '') {
-            this.cacheDate.setDate(parseInt(target.innerHTML))
-            this.date = new Date(this.cacheDate)
-            this.dayArr.filter(item => item.className === 'current')[0].className = ''
-            target.className = 'current'
+            this.setCurrent(target)
         }
     }
 
+    /**
+     * 事件绑定
+     * 
+     * @memberof Calendar
+     */
     setEvent() {
         addEvent(this.box, 'click', this.clickHandle.bind(this))
     }
