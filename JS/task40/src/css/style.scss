@@ -1,3 +1,8 @@
+$dark: lightgray;
+$red: rgb(200, 27, 1);
+$black: #000;
+$white: #fff;
+
 .calendar_prev {
     float: left; 
     cursor: pointer;
@@ -11,13 +16,13 @@
 .calendar {
     width: 350px; 
     height: 400px; 
-    border: 2px solid lightgray;
+    border: 2px solid $dark;
     .title {
         margin: 0;
         padding: 5px;
         text-align: center;
-        background-color: rgb(200, 27, 1);
-        color: white;
+        background-color: $red;
+        color: $white;
     }
     span {
         display: inline-block;
@@ -28,15 +33,15 @@
 }
 
 .white {
-    color: lightgray
+    color: $dark;
 }
 .dark {
-    color: #000
+    color: $black;
 }
 .light {
-    color: rgb(200, 27, 1);
+    color: $red;
 }
 .current {
-    color: #fff;
-    background: rgb(200, 27, 1);
+    color: $white;
+    background: $red;
 }

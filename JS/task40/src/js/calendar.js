@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-29 14:49:51 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-29 20:05:09
+ * @Last Modified time: 2017-06-29 20:31:52
  */
 
 import { addEvent } from './common';
@@ -82,6 +82,16 @@ export class Calendar {
     }
 
     /**
+     * 获取日期
+     * 
+     * @returns 日期
+     * @memberof Calendar
+     */
+    getDate() {
+        return `${this.date.getFullYear()}-${this.date.getMonth() + 1}-${this.date.getDate()}-`
+    }
+
+    /**
      * 日历数据渲染
      * 
      * @param {Date} date 日期Date对象
@@ -97,26 +107,25 @@ export class Calendar {
         this.dayArr.forEach((item, i) => {
             item.innerHTML = dat.getDate()
 
-            if (dat.getMonth() !== date.getMonth()) {       // 如果不是同月
+            if (dat.getMonth() !== date.getMonth()) {        // 不是当月变暗
                 item.className = 'white'
             } 
 
-            else if (dat.getDate() === date.getDate()           // 高亮当前天数
+            else if (dat.getDate() === date.getDate()                     // 高亮当前天数
                 && this.cacheDate.getMonth() === this.date.getMonth()     // 判断月
             ) {
                 item.className = 'current'
             } 
             
-            else if (dat.getDay() === 0 || dat.getDay() === 6) {   // 判断周末
+            else if (dat.getDay() === 0 || dat.getDay() === 6) {          // 判断周末
                 item.className = 'light'
             } 
             
-
             else {      // 以上都不满足
                 item.className = ''
             }
 
-            dat.setDate(dat.getDate() + 1)  // 每次循环加1
+            dat.setDate(dat.getDate() + 1)  
         })
 
     }
@@ -175,7 +184,9 @@ export class Calendar {
             const conditions = { calendar_next: true, calendar_prev: false }[target.className],   // 根据className取值
                 conditions2 = parseInt(target.innerHTML) < 15     // 根据文本值取值
             
-            conditions ? this.setDateMonth(conditions) : this.setDateMonth(conditions2)
+            conditions 
+                ? this.setDateMonth(conditions) 
+                : this.setDateMonth(conditions2)
         } 
             
         if (target.nodeName === "SPAN" && target.className === '') {
