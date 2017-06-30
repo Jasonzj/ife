@@ -1,0 +1,153 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+// #loading {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     right: 0;
+//     bottom: 0;
+//     margin: auto;
+//     width: 80px;
+//     height: 80px;
+// }
+
+.pixGallway {
+    flex-wrap: wrap;
+    position: relative;
+    width: 1000px;
+    height: 800px;
+    margin: 0 auto;
+    overflow: hidden;
+    img {
+        object-fit: cover;
+        object-position: center;
+    }
+}
+
+.pixGallway > img:first-child:nth-last-child(1) {
+    width: 100%;
+    height: 100%;
+}
+
+.pixGallway > img:first-child:nth-last-child(2){
+    position: absolute;
+    left: 0;
+    width: 100 / 3 * 2%;
+    height: 100%;
+    clip-path: url(clip.svg#clip1);
+    -webkit-clip-path: polygon(0% 0%,100% 0%,50% 100%,0% 100%);
+}
+.pixGallway > img:first-child:nth-last-child(2) ~ img:nth-of-type(2){
+    position: absolute;
+    right: 0;
+    width: 100 / 3 * 2%;
+    height: 100%;
+    clip-path: url(clip.svg#clip2);    
+    -webkit-clip-path: polygon(50% 0%,100% 0%,100% 100%,0% 100%);
+}
+
+.pixGallway > img:first-child:nth-last-child(3) {
+    height: 100%;
+    width: 100 / 3 * 2%;
+    float: left;
+}
+
+.pixGallway > img:first-child:nth-last-child(3) ~ img:nth-of-type(2) {
+    height: 50%;
+    width: 33.333%;
+}
+
+.pixGallway > img:first-child:nth-last-child(3) ~ img:nth-of-type(3) {
+    height: 50%;
+    width: 33.333%;
+    margin-top: -5px;
+}
+
+.pixGallway > img:first-child:nth-last-child(4),
+.pixGallway > img:first-child:nth-last-child(4) ~ img:nth-of-type(2),
+.pixGallway > img:first-child:nth-last-child(4) ~ img:nth-of-type(3),
+.pixGallway > img:first-child:nth-last-child(4) ~ img:nth-of-type(4)
+{
+    height: 50%;
+    width: 50%;
+    float: left;
+}
+
+.pixGallway > img:first-child:nth-last-child(5) {
+    height: 100 / 3 * 2%;
+    width: 100 / 3 * 2%;
+}
+
+.pixGallway > img:first-child:nth-last-child(5) ~ img:nth-of-type(2) {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100 / 3 * 1%;
+}
+
+.pixGallway > img:first-child:nth-last-child(5) ~ img:nth-of-type(3) {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 100 / 3 * 1%;
+}
+.pixGallway > img:first-child:nth-last-child(5) ~ img:nth-of-type(4) {
+    position: absolute;
+    left: 100 / 3 * 1%;
+    bottom: 0;
+    width: 100 / 3 * 1%;
+    height: 100 / 3 * 1%;
+}
+.pixGallway > img:first-child:nth-last-child(5) ~ img:nth-of-type(5) {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100 / 3 * 1%;
+    height: 100 / 3 * 1%;
+}
+
+
+.pixGallway > img:first-child:nth-last-child(6) {
+    height: 100 / 3 * 2%;
+    width: 100 / 3 * 2%;
+}
+
+.pixGallway > img:first-child:nth-last-child(6) ~ img:nth-of-type(2) {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100 / 3 * 1%;
+    height: 100 / 3 * 1%;
+}
+
+.pixGallway > img:first-child:nth-last-child(6) ~ img:nth-of-type(3) {
+    position: absolute;
+    top: 100 / 3 * 1%;
+    right: 0;
+    width: 100 / 3 * 1%;
+    height: 100 / 3 * 1%;
+}
+.pixGallway > img:first-child:nth-last-child(6) ~ img:nth-of-type(4) {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 100 / 3 * 1%;
+    height: 100 / 3 * 1%;
+}
+.pixGallway > img:first-child:nth-last-child(6) ~ img:nth-of-type(5) {
+    position: absolute;
+    left: 100 / 3 * 1%;
+    bottom: 0;
+    width: 100 / 3 * 1%;
+    height: 100 / 3 * 1%;
+}
+.pixGallway > img:first-child:nth-last-child(6) ~ img:nth-of-type(6) {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100 / 3 * 1%;
+    height: 100 / 3 * 1%;
+}
