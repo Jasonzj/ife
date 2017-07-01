@@ -12,5 +12,5 @@ export function request(url) {
 
 export function getPhotos(page) {
   page = page || 0
-  return request(`http://localhost:4000?&page=${page}`)
+  return request(`http://www.jasonzj.me:4000/?&page=${page}`)
 }
