@@ -67,8 +67,9 @@
  			self.output.innerHTML = '';
  			for (var i = 0; i < arr.length; i++) {
  				if (i > 9) {
- 					num++;
+ 					num++; 
  					if (i === arr.length - 1) {
+						console.log(num)
  						self.setArr(arr, num);
  					}
  				} else {

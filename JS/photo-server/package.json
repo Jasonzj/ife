@@ -1,0 +1,12 @@
+{
+  "name": "photo-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "jason",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.3",
+    "q": "^1.5.0",
+    "request": "^2.81.0"
+  }
+}
