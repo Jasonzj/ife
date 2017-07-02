@@ -1,16 +1,22 @@
-export function request(url) {
-  return new Promise(function (resolve) {
-    var xhr = new XMLHttpRequest()
-    xhr.open('GET', url)
-    xhr.send()
+export const request = url => {
+    return new Promise((resolve, reject) => {
+        var xhr = new XMLHttpRequest()
+        xhr.open('GET', url)
+        xhr.send()
 
-    xhr.addEventListener('load', function () {
-      resolve(JSON.parse(xhr.responseText))
+        xhr.addEventListener('load', function() {
+            try {
+                resolve(JSON.parse(xhr.responseText))
+            } catch(e) {
+                reject(e)
+            }
+        })
     })
-  })
 }
 
-export function getPhotos(page) {
-  page = page || 0
-  return request(`http://www.jasonzj.me:4000/?&page=${page}`)
+export const getPhotos = page => {
+    page = page || 0
+    return request(`http://www.jasonzj.me:4000/?&page=${page}`)
 }
+
+
