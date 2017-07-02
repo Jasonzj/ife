@@ -1,6 +1,9 @@
+import loadingGif from '../img/loading.gif'
+
 export class Waterfall {
     constructor(selection, col) {
         this.container = document.querySelector(selection)
+        this.maskState = false
         this.col = col || 4
         
         this.init()
@@ -12,7 +15,20 @@ export class Waterfall {
      * @memberof Waterfall
      */
     init() {
-        this.setColumn()        
+        this.setMask()
+        this.setColumn()      
+        this.setEvent()  
+    }
+
+    setMask() {
+        const mask = document.createElement('div'),
+            img = document.createElement('img')
+        
+        this.mask = mask
+        this.maskImg = img
+        mask.className = 'waterfall-mask'
+        mask.appendChild(img)
+        document.body.appendChild(mask)
     }
 
     /**
@@ -24,7 +40,7 @@ export class Waterfall {
         this.columns = []
         for (let i = 0; i < this.col; i++) {
             const column = document.createElement('div')
-            column.className = 'pixColumn'
+            column.className = 'waterfallColumn'
             column.style.width = `${100 / this.col}%`
             this.columns.push(column)
             this.container.appendChild(column)
@@ -40,7 +56,7 @@ export class Waterfall {
     setImgsBox(date) {
         const wrap = document.createElement('div')
         wrap.className = 'waterfall'
-        wrap.innerHTML = `<img src=${date.image.small} data-src=${date.image.large}>`
+        wrap.innerHTML = `<img src=${date.image.small} large-src=${date.image.large}>`
 
         this.addBox(wrap)
     }
@@ -67,5 +83,57 @@ export class Waterfall {
     addBox(box) {
         const min = this.getMinIndex()
         min.appendChild(box)
+    }
+
+    /**
+     * 遮罩显示隐藏
+     * 
+     * @param {String} largeUrl 图片地址
+     * @returns 
+     * @memberof Waterfall
+     */
+    maskToggle(largeUrl) {
+        if (!this.taskState) {
+            const img = new Image()
+            this.maskImg.src = loadingGif
+            img.src = largeUrl
+            img.onload = () => {
+                this.maskImg.src = largeUrl
+            }
+            this.mask.classList.add('waterfall-flex')
+            this.taskState = true
+            return false
+        }
+        this.maskImg.src = ''
+        this.mask.classList.remove('waterfall-flex')
+        this.taskState = false
+    }
+
+    /**
+     * 点击事件处理
+     * 
+     * @param {Event} e 
+     * @memberof Waterfall
+     */
+    clickHandle(e) {
+        const target = e.target,
+            largeUrl = target.getAttribute('large-src')
+
+        if (target.nodeName === 'IMG' 
+            && largeUrl
+            || target.className.indexOf('waterfall-flex') > -1
+        ) {
+            this.maskToggle(largeUrl)
+        }
+    }
+
+    /**
+     * 事件绑定
+     * 
+     * @memberof Waterfall
+     */
+    setEvent() {
+        this.container.addEventListener('click', this.clickHandle.bind(this))
+        this.mask.addEventListener('click', this.clickHandle.bind(this))
     }
 }

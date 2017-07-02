@@ -11,7 +11,7 @@
     margin: 0 auto;
 }
 
-.pixColumn {
+.waterfallColumn {
     float: left;
 }
 
@@ -21,4 +21,22 @@
     img {
         width: 100%;
     }
+}
+
+.waterfall-mask {
+    position: fixed;
+    top: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .8);
+    img {
+        max-width: 50%;
+    }
+}
+
+.waterfall-flex {
+    display: flex;
 }

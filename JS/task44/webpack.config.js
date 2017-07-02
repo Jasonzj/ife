@@ -42,14 +42,14 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(png|jpg|jpeg)$/,
+                test: /\.(png|jpg|gif)$/,
                 loader: 'url-loader'
             }
         ]
     },
     devServer: {
         contentBase: path.resolve(__dirname, "build"),
-        port: 8888
+        port: 5000
     },
     plugins: [
         new htmlWebpackPlugin({
