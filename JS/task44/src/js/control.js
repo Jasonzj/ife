@@ -2,7 +2,7 @@ import { getPhotos } from './utils';
 import { Waterfall } from './waterfall';
 
 let num = 0
-const waterfall = new Waterfall('.main', 4)
+const waterfall = new Waterfall('.main', 4, 15)
 
 const scrollHandle = () => {
     const scrollTop = document.body.scrollTop || document.documentElement.scrollTop,

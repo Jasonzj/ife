@@ -1,10 +1,18 @@
 import loadingGif from '../img/loading.gif'
 
 export class Waterfall {
-    constructor(selection, col) {
+    /**
+     * Creates an instance of Waterfall.
+     * @param {String} selection 类名
+     * @param {Number} col 列数
+     * @param {Number} spaceing 列间距像素
+     * @memberof Waterfall
+     */
+    constructor(selection, col, spacing) {
         this.container = document.querySelector(selection)
         this.maskState = false
         this.col = col || 4
+        this.spacing = spacing
         
         this.init()
     }
@@ -20,6 +28,11 @@ export class Waterfall {
         this.setEvent()  
     }
 
+    /**
+     * 初始遮罩
+     * 
+     * @memberof Waterfall
+     */
     setMask() {
         const mask = document.createElement('div'),
             img = document.createElement('img')
@@ -56,6 +69,8 @@ export class Waterfall {
     setImgsBox(date) {
         const wrap = document.createElement('div')
         wrap.className = 'waterfall'
+        wrap.style.padding = `0 ${this.spacing / 2}px`
+        wrap.style.marginTop = this.spacing / 2 + 'px'
         wrap.innerHTML = `<img src=${date.image.small} large-src=${date.image.large}>`
 
         this.addBox(wrap)
