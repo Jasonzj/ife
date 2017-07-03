@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-07-03 19:22:34 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-07-03 21:41:56
+ * @Last Modified time: 2017-07-03 22:02:53
  */
 
 import { Animate } from './animate'
@@ -25,6 +25,8 @@ export class GameControl {
             yMax: this.animate.yMax,
             wallMap: this.animate.wallMap
         })
+        this.timer = null
+        this.state = false
 
         this.init()
     }
@@ -54,7 +56,11 @@ export class GameControl {
         
         if (path) {
             let i = 0
-            const timer = setInterval(() => {
+            if (this.state) {
+                clearInterval(this.timer)
+            }
+            this.state = true
+            this.timer = setInterval(() => {
                 this.hero.move(path[i])
                 if (path[i].x == this.animate.target[0] && path[i].y == this.animate.target[1]) {
                     this.hero.reset()
@@ -64,7 +70,8 @@ export class GameControl {
                 i++
                 if (i >= path.length) {
                     path = []
-                    clearInterval(timer)
+                    clearInterval(this.timer)
+                    this.state = false
                 }
             }, 40)
         }
