@@ -7,8 +7,8 @@
 .f-cb,.f-cbli li{zoom:1;}
 
 .main {
-    width: 1000px;
-    margin: 0 auto;
+    // width: 1000px;
+    // margin: 0 auto;
 }
 
 .waterfallColumn {
@@ -20,6 +20,10 @@
     padding: 0 8px;
     img {
         width: 100%;
+        &:hover {
+            cursor: zoom-in;
+            opacity: 0.8;
+        }
     }
 }
 
@@ -33,7 +37,7 @@
     height: 100%;
     background: rgba(0, 0, 0, .8);
     img {
-        max-width: 50%;
+        max-width: 40%;
     }
 }
 

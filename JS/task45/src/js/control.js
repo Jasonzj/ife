@@ -1,12 +1,12 @@
 import { getPhotos } from './utils';
-import { Waterfall } from './waterfall';
+import { Barrel } from './barrel';
 
 let num = 0
-const waterfall = new Waterfall('.main', 6, 15)
+const barrel = new Barrel('.main', 300)
 
 const scrollHandle = () => {
     const scrollTop = document.body.scrollTop || document.documentElement.scrollTop,
-        boxTop = waterfall.container.offsetHeight + waterfall.container.offsetTop
+        boxTop = barrel.container.offsetHeight + barrel.container.offsetTop
 
     if (scrollTop + innerHeight >= boxTop) {
         if (num >= 8) num = 0
@@ -17,12 +17,10 @@ const scrollHandle = () => {
 const setPhoto = () => {
     getPhotos(num++)
         .then(data => {
-            data.forEach(item => {    
-                waterfall.setImgsBox(item)
-            })
+            barrel.appendRow(data)
         })
         .catch(error => {
-            console.log(error)
+            throw error
         })
 }
 

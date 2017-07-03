@@ -1,0 +1,31 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 8px;
+}
+
+.main {
+    margin-left: -8px;
+}
+
+.barrel-row {
+    margin-bottom: 8px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.barrel-item-wrap {
+    height: 100%;
+    display: inline-block;
+    padding-left: 8px;
+    img {
+        height: 100%;
+        &:hover {
+            cursor: zoom-in;
+            opacity: 0.8;
+        }
+    }
+}
