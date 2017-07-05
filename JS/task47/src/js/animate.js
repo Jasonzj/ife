@@ -2,11 +2,11 @@
  * @Author: Jason 
  * @Date: 2017-07-03 17:44:06 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-07-04 22:49:59
+ * @Last Modified time: 2017-07-05 14:48:34
  */
 
 import { getRandomPosition } from './common'
-import { heroGuardCollision, bulletBlockCollision } from './collision'
+import { collectionInit } from './collision'
 
 export class Animate {
     constructor(selector) {
@@ -18,6 +18,7 @@ export class Animate {
         this.wallMap = {}       // the corresponding map wall
         this.xMax = (this.width / this.count) - 1     // biggest x axis coord
         this.yMax = (this.height / this.count) - 1    // biggest y axis coord
+        this.oneHalfCount = this.count / 2
         this.target = []    // the target location array
         
         this.init()
@@ -41,8 +42,8 @@ export class Animate {
      * @memberof Animate
      */
     createCanvas() {
-        const canvas = document.createElement('canvas'),
-            heroCanvas = document.createElement('canvas')
+        const canvas = document.createElement('canvas')
+        const heroCanvas = document.createElement('canvas')
         
         heroCanvas.width = this.width
         heroCanvas.height = this.height
@@ -120,18 +121,18 @@ export class Animate {
      * @param {Object} hero hero location object
      * @memberof Animate
      */
-    drawHero(hero) {
+    drawHero(hero) {        
         this.heroCxt.clearRect(0, 0, this.width, this.height)
         this.heroCxt.fillStyle = '#1ABC9C'
         this.heroCxt.beginPath()
-        this.heroCxt.arc(hero.x * this.count + (this.count / 2), hero.y * this.count + (this.count / 2), hero.radius * this.count, 0, 2 * Math.PI, false)
+        this.heroCxt.arc(hero.x * this.count + this.oneHalfCount, hero.y * this.count + this.oneHalfCount, hero.radius * this.count, 0, 2 * Math.PI, false)
         this.heroCxt.closePath()
         this.heroCxt.fill()
         for (let i = 0, guards = null; guards = this.guards.guardsQueue[i++];) {
             this.heroCxt.strokeStyle = '#F05F48'
             this.heroCxt.beginPath()
-            this.heroCxt.moveTo(hero.x * this.count + (this.count / 2), hero.y * this.count + (this.count / 2))
-            this.heroCxt.lineTo(guards.x * this.count + (this.count / 2), guards.y * this.count + (this.count / 2))
+            this.heroCxt.moveTo(hero.x * this.count + this.oneHalfCount, hero.y * this.count + this.oneHalfCount)
+            this.heroCxt.lineTo(guards.x * this.count + this.oneHalfCount, guards.y * this.count + this.oneHalfCount)
             this.heroCxt.stroke()
             this.heroCxt.closePath()
         }
@@ -144,25 +145,25 @@ export class Animate {
      * @memberof Animate
      */
     drawGuards(guardsQueue) {
-        guardsQueue.forEach(guards => {
+        guardsQueue.forEach((guards) => {
             this.cxt.fillStyle = '#F05F48'
             this.cxt.strokeStyle = '#F05F48'
             this.cxt.beginPath()
-            this.cxt.arc(guards.x * this.count + (this.count / 2), guards.y * this.count + (this.count / 2), this.count / 2, 0, 2 * Math.PI, false)
+            this.cxt.arc(guards.x * this.count + this.oneHalfCount, guards.y * this.count + this.oneHalfCount, this.count / 2, 0, 2 * Math.PI, false)
             this.cxt.closePath()
             this.cxt.fill()
             this.cxt.beginPath()
-            this.cxt.arc(guards.x * this.count + (this.count / 2), guards.y * this.count + (this.count / 2), guards.radius * this.count, 0, 2 * Math.PI, false)
+            this.cxt.arc(guards.x * this.count + this.oneHalfCount, guards.y * this.count + this.oneHalfCount, guards.radius * this.count, 0, 2 * Math.PI, false)
             this.cxt.closePath()
             this.cxt.stroke()
         })
     }
 
     drawBullet(bullets) {
-        bullets.forEach(bullet => {
+        bullets.forEach((bullet) => {
             if (bullet) {
                 this.heroCxt.beginPath()
-                this.heroCxt.arc(bullet.x * this.count + (this.count / 2), bullet.y * this.count + (this.count / 2), bullet.radius, 0, Math.PI * 2, true)
+                this.heroCxt.arc(bullet.x * this.count + this.oneHalfCount, bullet.y * this.count + this.oneHalfCount, bullet.radius, 0, Math.PI * 2, true)
                 this.heroCxt.closePath()
                 this.heroCxt.fillStyle = bullet.color
                 this.heroCxt.fill()
@@ -179,8 +180,10 @@ export class Animate {
     drawTarget() {
         getRandomPosition(this.wallMap, this.xMax, this.yMax, 0, this.yMax / 2)
             .then(position => {
+                const [ x, y ] = position
+
                 this.cxt.fillStyle = '#FDAA3D'
-                this.cxt.fillRect(position[0] * this.count, position[1] * this.count, this.count, this.count)
+                this.cxt.fillRect(x * this.count, y * this.count, this.count, this.count)
                 this.target = position
             })
     }
@@ -192,11 +195,11 @@ export class Animate {
      * @memberof Animate
      */
     getRandomWall() {
-        let randomDirection = Math.floor(Math.random() * (1 - 0 + 1) + 0),
-            randomY = Math.floor(Math.random() * this.yMax + 1),
-            randomW = Math.floor(Math.random() * 7 + 3),
-            randomH = Math.floor(Math.random() * 3 + 1),
-            randomX = 0
+        const randomDirection = Math.floor(Math.random() * (1 - 0 + 1) + 0)
+        const randomY = Math.floor(Math.random() * this.yMax + 1)
+        const randomW = Math.floor(Math.random() * 7 + 3)
+        const randomH = Math.floor(Math.random() * 3 + 1)
+        let randomX = 0
 
         if (randomDirection) {
             randomX = this.xMax
@@ -229,11 +232,10 @@ export class Animate {
      * @memberof Animate
      */
     animateLoop() {
-        this.drawHero(this.hero)
-        this.drawBullet(this.bullet.bullets)
-        heroGuardCollision()
-        bulletBlockCollision()
-        this.bullet.update()
+        this.drawHero(this.hero)                // 画英雄
+        this.drawBullet(this.bullet.bullets)    // 画子弹
+        collectionInit()                        // 检测碰撞
+        this.bullet.update()                    // 更新子弹位置
 
         requestAnimationFrame(this.animateLoop.bind(this))
     }

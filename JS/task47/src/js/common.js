@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-07-03 20:04:37 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-07-04 17:10:50
+ * @Last Modified time: 2017-07-05 14:44:36
  */
 
 export function addEvent(element, event, hanlder) {
@@ -33,8 +33,8 @@ export function addEvent(element, event, hanlder) {
 export const getRandomPosition = (wallMap, xMax, yMax, xMin, yMin) => {
     return new Promise((reject) => {
         const timer = setInterval(() => {
-            const randomX = Math.floor(Math.random() * (xMax - xMin + 1) + xMin),
-            randomY = Math.floor(Math.random() * (yMax - yMin + 1) + yMin)
+            const randomX = Math.floor(Math.random() * (xMax - xMin + 1) + xMin)
+            const randomY = Math.floor(Math.random() * (yMax - yMin + 1) + yMin)
             
             if (wallMap[[randomX, randomY]] !== 1) {
                 clearInterval(timer)

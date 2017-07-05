@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-07-03 20:12:13 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-07-03 21:39:09
+ * @Last Modified time: 2017-07-05 14:00:50
  */
 
 export class PathFinder {
@@ -21,7 +21,8 @@ export class PathFinder {
      * @memberof PathFinder
      */
     checkBorder(point) {
-        if (point.x < 0
+        if (
+            point.x < 0
             || point.y < 0
             || point.x > this.xMax
             || point.y > this.yMax
@@ -53,8 +54,8 @@ export class PathFinder {
      * @memberof PathFinder
      */
     getAround(point) {
-        const x = point.x,
-            y = point.y
+        const x = point.x
+        const y = point.y
         
         return [
             { x: x, y: y - 1 },
@@ -74,7 +75,10 @@ export class PathFinder {
      */
     inList(point, list) {
         for (const i in list) {
-            if (point.x === list[i].x && point.y === list[i].y) {
+            if (
+                point.x === list[i].x 
+                && point.y === list[i].y
+            ) {
                 return true
             }
         }
@@ -119,13 +123,15 @@ export class PathFinder {
             const items = this.getAround(cur)
 
             for (let i = 0, item; item = items[i++];) {
-                if (this.checkBorder(item)
+                if (
+                    this.checkBorder(item)
                     || this.inList(item, openList)
                     || this.inList(item, closeList)
                     || this.checkWall(item)
                 ) {
                     continue
-                } else {
+                } 
+                else {
                     item.G = cur.G + 1
                     item.H = Math.abs(parseInt(target.x) - parseInt(item.x)) + Math.abs(parseInt(target.y) - parseInt(item.y))
                     item.F = item.G + item.H

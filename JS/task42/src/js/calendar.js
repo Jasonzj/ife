@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-29 14:49:51 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-30 15:02:41
+ * @Last Modified time: 2017-07-05 14:26:33
  */
 
 import { 
@@ -162,13 +162,16 @@ export class Calendar {
                 item.className = 'white'
             } 
 
-            else if (dat.getDate() === date.getDate()                     // 高亮当前天数
+            else if (
+                dat.getDate() === date.getDate()                     // 高亮当前天数
                 && this.cacheDate.getMonth() === this.date.getMonth()     // 判断月
             ) {
                 if (!this.multi) item.className = 'current'
             } 
             
-            else if (dat.getDay() === 0 || dat.getDay() === 6) {          // 判断周末
+            else if (
+                dat.getDay() === 0 
+                || dat.getDay() === 6) {          // 判断周末
                 item.className = 'light'
             } 
             
@@ -177,7 +180,8 @@ export class Calendar {
             }
 
             // 判断时间跨度
-            if (this.multiDates[0]                                      // 如果存在
+            if (
+                this.multiDates[0]                                      // 如果存在
                 && this.multiDates[0].getDate() === dat.getDate()       // 天数相同
                 && this.multiDates[0].getMonth() === dat.getMonth()     // 月数相同
                 || this.multiDates[1]                                   // 如果存在
@@ -187,7 +191,8 @@ export class Calendar {
                 setClassName(item, 'current')
             }
 
-            if (this.multiDates[0] > dat        // 判断在0，1之间还是1，0之间
+            if (
+                this.multiDates[0] > dat        // 判断在0，1之间还是1，0之间
                 && this.multiDates[1] < dat 
                 || this.multiDates[1] > dat 
                 && this.multiDates[0] < dat
@@ -314,17 +319,17 @@ export class Calendar {
      */
     clickHandle(e) {
         const target = e.target
+        const multi = this.multi ? '' : target.className === 'white'
 
-        if (target.nodeName === 'STRONG'    
+        if (
+            target.nodeName === 'STRONG'    
             || target.nodeName === 'SPAN' 
-            && (this.multi ? '' : target.className === 'white')
+            && multi
         ) {
             const conditions = { calendar_next: true, calendar_prev: false }[target.className],   // 根据className取值
                 conditions2 = parseInt(target.innerHTML) < 15     // 根据文本值取值
 
-            conditions 
-                ? this.setDateMonth(conditions) 
-                : this.setDateMonth(conditions2)
+            conditions ? this.setDateMonth(conditions) : this.setDateMonth(conditions2)
         } 
             
         if (target.nodeName === 'INPUT') this.setToggle()
