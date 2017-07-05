@@ -2,11 +2,11 @@
  * @Author: Jason 
  * @Date: 2017-07-03 17:44:06 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-07-05 17:30:32
+ * @Last Modified time: 2017-07-05 18:04:24
  */
 
 import { getRandomPosition } from './common'
-import { collectionInit } from './collision'
+import { bulletCollision } from './collision'
 
 export class Animate {
     constructor(selector) {
@@ -237,7 +237,7 @@ export class Animate {
         this.drawHero(this.hero)                    // 画特工
         this.drawBullet(this.bullet.bullets)        // 画子弹
         this.drawGuards(this.guards.guardsQueue)    // 画守卫
-        collectionInit()                            // 检测碰撞
+        bulletCollision()                           // 检测碰撞
         this.bullet.update()                        // 更新子弹位置
 
         requestAnimationFrame(this.animateLoop.bind(this))

@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-07-04 17:39:01 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-07-05 17:03:16
+ * @Last Modified time: 2017-07-05 18:07:58
  */
 
 export class Bullet {
@@ -15,6 +15,14 @@ export class Bullet {
         this.hero = hero
     }
 
+    /**
+     * creat bullet
+     * 
+     * @param {Object} start starting from the object
+     * @param {Object} target the target object
+     * @param {String} color bullet color
+     * @memberof Bullet
+     */
     create(start, target, color) {
         const dis = Math.sqrt(Math.pow((target.x - start.x), 2) + Math.pow((target.y - start.y), 2))
         const angleX = (target.x - start.x) / dis
@@ -34,6 +42,11 @@ export class Bullet {
 
     }
 
+    /**
+     * update self position
+     * 
+     * @memberof Bullet
+     */
     update() {
         this.bullets.forEach((self) => {
             if (self) {
@@ -43,10 +56,21 @@ export class Bullet {
         })
     }
 
+    /**
+     * reset
+     * 
+     * @memberof Bullet
+     */
     reset() {
         this.bullets = []
     }
 
+    /**
+     * delete bullet
+     * 
+     * @param {Number} index the subscript
+     * @memberof Bullet
+     */
     delete(index) {
         delete this.bullets[index]
     }

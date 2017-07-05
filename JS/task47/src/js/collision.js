@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-07-04 20:36:57 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-07-05 17:35:31
+ * @Last Modified time: 2017-07-05 18:04:05
  */
 
 export const collection = {}
@@ -24,7 +24,7 @@ const heroGuardCollision = () => {
 }
 
 // 检测子弹碰撞
-const bulletBlockCollision = () => {  
+export const bulletCollision = () => {  
     if (collection.guards) {
         const { bullet, wallMap, xMax, yMax, hero, guards, control } = collection
         
@@ -72,10 +72,6 @@ const bulletBlockCollision = () => {
             }
         })
     }
-}
-
-export const collectionInit = () => {
-    bulletBlockCollision()
 }
 
 export const check = (() => {
