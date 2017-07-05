@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-07-04 16:07:52 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-07-05 14:50:21
+ * @Last Modified time: 2017-07-05 17:21:18
  */
 
 import { getRandomPosition } from './common';
@@ -27,13 +27,16 @@ export class Guards {
                     y,
                     radius: this.radius
                 })
-                this.animate.drawGuards(this.guardsQueue)
             })
         }
     }    
 
     reset() {
         this.guardsQueue = []
+    }
+
+    delete(index) {
+        delete this.guardsQueue[index]
     }
     
 }

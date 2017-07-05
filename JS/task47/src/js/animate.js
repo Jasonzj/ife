@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-07-03 17:44:06 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-07-05 14:48:34
+ * @Last Modified time: 2017-07-05 17:30:32
  */
 
 import { getRandomPosition } from './common'
@@ -146,16 +146,18 @@ export class Animate {
      */
     drawGuards(guardsQueue) {
         guardsQueue.forEach((guards) => {
-            this.cxt.fillStyle = '#F05F48'
-            this.cxt.strokeStyle = '#F05F48'
-            this.cxt.beginPath()
-            this.cxt.arc(guards.x * this.count + this.oneHalfCount, guards.y * this.count + this.oneHalfCount, this.count / 2, 0, 2 * Math.PI, false)
-            this.cxt.closePath()
-            this.cxt.fill()
-            this.cxt.beginPath()
-            this.cxt.arc(guards.x * this.count + this.oneHalfCount, guards.y * this.count + this.oneHalfCount, guards.radius * this.count, 0, 2 * Math.PI, false)
-            this.cxt.closePath()
-            this.cxt.stroke()
+            if (guards) {
+                this.heroCxt.fillStyle = '#F05F48'
+                this.heroCxt.strokeStyle = '#F05F48'
+                this.heroCxt.beginPath()
+                this.heroCxt.arc(guards.x * this.count + this.oneHalfCount, guards.y * this.count + this.oneHalfCount, this.count / 2, 0, 2 * Math.PI, false)
+                this.heroCxt.closePath()
+                this.heroCxt.fill()
+                this.heroCxt.beginPath()
+                this.heroCxt.arc(guards.x * this.count + this.oneHalfCount, guards.y * this.count + this.oneHalfCount, guards.radius * this.count, 0, 2 * Math.PI, false)
+                this.heroCxt.closePath()
+                this.heroCxt.stroke()
+            }
         })
     }
 
@@ -163,7 +165,7 @@ export class Animate {
         bullets.forEach((bullet) => {
             if (bullet) {
                 this.heroCxt.beginPath()
-                this.heroCxt.arc(bullet.x * this.count + this.oneHalfCount, bullet.y * this.count + this.oneHalfCount, bullet.radius, 0, Math.PI * 2, true)
+                this.heroCxt.arc(bullet.x * this.count + this.oneHalfCount, bullet.y * this.count + this.oneHalfCount, bullet.radius * this.count, 0, Math.PI * 2, true)
                 this.heroCxt.closePath()
                 this.heroCxt.fillStyle = bullet.color
                 this.heroCxt.fill()
@@ -232,10 +234,11 @@ export class Animate {
      * @memberof Animate
      */
     animateLoop() {
-        this.drawHero(this.hero)                // 画英雄
-        this.drawBullet(this.bullet.bullets)    // 画子弹
-        collectionInit()                        // 检测碰撞
-        this.bullet.update()                    // 更新子弹位置
+        this.drawHero(this.hero)                    // 画特工
+        this.drawBullet(this.bullet.bullets)        // 画子弹
+        this.drawGuards(this.guards.guardsQueue)    // 画守卫
+        collectionInit()                            // 检测碰撞
+        this.bullet.update()                        // 更新子弹位置
 
         requestAnimationFrame(this.animateLoop.bind(this))
     }

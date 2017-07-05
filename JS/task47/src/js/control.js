@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-07-03 19:22:34 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-07-05 15:10:36
+ * @Last Modified time: 2017-07-05 17:35:00
  */
 
 import { Animate } from './animate'
@@ -11,7 +11,7 @@ import { PathFinder } from './finder'
 import { addEvent } from './common'
 import { Guards } from './guards'
 import { Bullet } from './bullet'
-import { collection } from './collision'
+import { collection, check } from './collision'
 
 export class GameControl {
     /**
@@ -57,13 +57,16 @@ export class GameControl {
         this.animate.bullet = this.bullet       // 给animate设置子弹类
         this.animate.guards = this.guards       // 给animate设置守卫类
         this.animate.animateLoop()              // 开始动画主循环
+        this.bullet.wallMap = this.animate.wallMap
         this.setEvent()                         // 事件绑定
+        check.openCheckHeroGuardCollision()     // 开启特工和守卫距离碰撞检测(400ms一次)
         collection.hero = this.hero
         collection.guards = this.guards
         collection.bullet = this.bullet
         collection.wallMap = this.animate.wallMap
         collection.xMax = this.animate.xMax
         collection.yMax = this.animate.yMax
+        collection.control = this
     }
 
     /**
@@ -130,8 +133,18 @@ export class GameControl {
     clickCanvas(e) {
         const x = Math.floor(e.clientX / this.animate.count)
         const y = Math.floor(e.clientY / this.animate.count)
-        
-        this.search([x, y])
+        let state = true
+
+        this.guards.guardsQueue.forEach((guards) => {
+            const { _x = guards.x, _y = guards.y } = guards
+            if (x === _x && y === _y) {
+                this.bullet.create(this.hero, guards, '#1abc9c')
+                state = false
+                return false
+            }
+        })
+
+        if (state) this.search([x, y])
     }
 
     /**
