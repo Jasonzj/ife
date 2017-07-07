@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-07-03 19:22:34 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-07-05 17:35:00
+ * @Last Modified time: 2017-07-06 18:55:38
  */
 
 import { Animate } from './animate'
