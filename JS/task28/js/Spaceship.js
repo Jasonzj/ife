@@ -123,8 +123,8 @@
          * @returns changeState方法，接受指令改变飞船状态
          */
         stateSystem() {
-            const self = this,
-                states = {
+            const self = this
+            const states = {
                     // 状态对象
                     fly() {
                         self.state = 'fly'
@@ -158,8 +158,8 @@
          * @param {Object} msg 指令
          */
         signalSystem(msg) {
-            const self = this,
-                command = self.adapter.decrypt(msg) // 将二进制命令格式解码转换成JSON格式
+            const self = this
+            const command = self.adapter.decrypt(msg) // 将二进制命令格式解码转换成JSON格式
 
             if (self.state !== command.commond && command.id === self.id) {
                 self.stateSystem().changeState(command.commond)
@@ -220,23 +220,23 @@
      * [SpaceshipGlobal 飞船全局管理]
      */
     const SpaceshipGlobal = (() => {
-        let spaceshipQueue = [], //存储飞船队列
-            spaceshipSystem = [
-                SPACE_SPEED,
-                SPACE_SPEED2,
-                SPACE_SPEED3,
-                SPACE_CHAGE,
-                SPACE_CHAGE2,
-                SPACE_CHAGE3
-            ], // 存储飞船引擎和能源系统
-            spaceshipSystemValues = [
-                '无动力模式',
-                '巡航模式',
-                '高速模式',
-                '慢回复',
-                '快速回复',
-                '光能驱动永久型'
-            ]
+        let spaceshipQueue = [] //存储飞船队列
+        let spaceshipSystem = [ // 存储飞船引擎和能源系统
+            SPACE_SPEED,
+            SPACE_SPEED2,
+            SPACE_SPEED3,
+            SPACE_CHAGE,
+            SPACE_CHAGE2,
+            SPACE_CHAGE3
+        ] 
+        let spaceshipSystemValues = [
+            '无动力模式',
+            '巡航模式',
+            '高速模式',
+            '慢回复',
+            '快速回复',
+            '光能驱动永久型'
+        ]
 
         /**
          * [delete 删除飞船方法]
