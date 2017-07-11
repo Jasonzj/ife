@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-07-04 20:36:57 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-07-05 18:04:05
+ * @Last Modified time: 2017-07-11 13:46:16
  */
 
 export const collection = {}
@@ -17,7 +17,8 @@ const heroGuardCollision = () => {
             const dy = hero.y - guards.y
             const dist = Math.sqrt(dx * dx + dy * dy)
             if (dist < hero.radius + guards.radius) {
-                bullet.create(guards, hero, 'red')
+                // bullet.create(guards, hero, 'red')
+                bullet.objectPoolCreate(guards, hero, 'red')
             }
         })
     }
@@ -38,6 +39,7 @@ export const bulletCollision = () => {
                 // 判断子弹与特工碰撞
                 if (dist < hero.radius + item.radius) {
                     bullet.delete(i)
+                    bullet.objectPoolRecover(item)
                     alert('游戏结束')
                     control.reset.call(control)
                 }
@@ -53,6 +55,7 @@ export const bulletCollision = () => {
                     if (dist < item.radius) {
                         guards.delete(i)
                         bullet.delete(i)
+                        bullet.objectPoolRecover(item)
                     }
                 })
             }
@@ -69,6 +72,7 @@ export const bulletCollision = () => {
                 || y < 0
             ) {
                 bullet.delete(i)
+                bullet.objectPoolRecover(item)
             }
         })
     }

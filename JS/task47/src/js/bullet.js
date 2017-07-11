@@ -2,17 +2,38 @@
  * @Author: Jason 
  * @Date: 2017-07-04 17:39:01 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-07-05 18:07:58
+ * @Last Modified time: 2017-07-11 13:50:48
  */
 
 export class Bullet {
     constructor(animate, hero) {
         this.bullets = []
+        this.objPool = []
         this.radius = 0.2
         this.speed = 0.3
         this.color = 'red'
         this.animate = animate
         this.hero = hero
+    }
+
+    objectPoolCreate() {
+        if (this.objPool.length === 0) {
+            return this.create.apply(this, arguments)
+        } else {
+            const bullet = this.objPool.shift()
+            const position = this.getPosition.apply(this, arguments)
+            bullet.x = position.x
+            bullet.y = position.y
+            bullet.angleX = position.angleX
+            bullet.angleY = position.angleY
+            bullet.color = position.color
+            this.bullets.push(bullet)
+            return bullet
+        }        
+    }
+
+    objectPoolRecover(obj) {
+        this.objPool.push(obj)
     }
 
     /**
@@ -24,6 +45,20 @@ export class Bullet {
      * @memberof Bullet
      */
     create(start, target, color) {
+        const position = this.getPosition(start, target, color)
+        const obj = {
+            x: position.x,
+            y: position.y,
+            radius: this.radius,
+            color: position.color,
+            angleX: position.angleX,
+            angleY: position.angleY,
+        }
+        this.bullets.push(obj)
+        this.objPool.push(obj)
+    }
+
+    getPosition(start, target, color) {
         const dis = Math.sqrt(Math.pow((target.x - start.x), 2) + Math.pow((target.y - start.y), 2))
         const angleX = (target.x - start.x) / dis
         const angleY = (target.y - start.y) / dis
@@ -31,15 +66,13 @@ export class Bullet {
         let y = start.y
         let state = true
 
-        this.bullets.push({
-            x: start.x,
-            y: start.y,
-            radius: this.radius,
-            color: color,
+        return {
+            x,
+            y,
             angleX,
-            angleY
-        })
-
+            angleY,
+            color
+        }
     }
 
     /**
