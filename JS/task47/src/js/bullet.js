@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-07-04 17:39:01 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-07-11 13:50:48
+ * @Last Modified time: 2017-07-11 13:54:11
  */
 
 export class Bullet {
@@ -16,6 +16,12 @@ export class Bullet {
         this.hero = hero
     }
 
+    /**
+     * objectPoolCreate
+     * 
+     * @returns 
+     * @memberof Bullet
+     */
     objectPoolCreate() {
         if (this.objPool.length === 0) {
             return this.create.apply(this, arguments)
@@ -32,6 +38,12 @@ export class Bullet {
         }        
     }
 
+    /**
+     * objectPoolRecover
+     * 
+     * @param {any} obj 
+     * @memberof Bullet
+     */
     objectPoolRecover(obj) {
         this.objPool.push(obj)
     }
@@ -39,13 +51,10 @@ export class Bullet {
     /**
      * creat bullet
      * 
-     * @param {Object} start starting from the object
-     * @param {Object} target the target object
-     * @param {String} color bullet color
      * @memberof Bullet
      */
-    create(start, target, color) {
-        const position = this.getPosition(start, target, color)
+    create() {
+        const position = this.getPosition.apply(this, arguments)
         const obj = {
             x: position.x,
             y: position.y,
@@ -58,6 +67,15 @@ export class Bullet {
         this.objPool.push(obj)
     }
 
+    /**
+     * getPosition
+     * 
+     * @param {Object} start starting from the object
+     * @param {Object} target the target object
+     * @param {String} color bullet color 
+     * @returns 
+     * @memberof Bullet
+     */
     getPosition(start, target, color) {
         const dis = Math.sqrt(Math.pow((target.x - start.x), 2) + Math.pow((target.y - start.y), 2))
         const angleX = (target.x - start.x) / dis
