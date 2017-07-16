@@ -50,6 +50,9 @@
         "react/jsx-closing-bracket-location": 2,
         "jsx-a11y/alt-text": 2,
         "jsx-a11y/img-redundant-alt": 2,
-        "jsx-quotes": 2
+        "jsx-quotes": 2,
+        "import/no-unresolved": 0,
+        "import/no-extraneous-dependencies": 0,
+        "import/extensions": 0
     }
 }

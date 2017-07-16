@@ -34,11 +34,33 @@ module.exports = {
                 }
             },
             {
-                test: /\.(scss|css)$/,
-                exclude: path.resolve(__dirname, 'node_modules'),
-                use: ExtractTextPlugin.extract({
-                    use: ["css-loader", "sass-loader", "postcss-loader"]
-                })
+                // test: /\.(scss|css)$/,
+                // exclude: path.resolve(__dirname, 'node_modules'),
+                // use: ExtractTextPlugin.extract({
+                //     use: ["style-loader", "css-loader", "postcss-loader", "sass-loader"]
+                // })
+                test: /\.scss$/,
+                use:[
+                    {
+                        loader: 'style-loader'
+                    },
+                    {
+                        loader: 'css-loader'
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: (loader) => [
+                                require('autoprefixer')({
+                                    browsers: ["last 5 versions"]
+                                })
+                            ]
+                        }
+                    },
+                    {
+                        loader: 'sass-loader'
+                    }
+                ]
             },
             {
                 test: /\.(png|jpg|gif|svg)$/,
