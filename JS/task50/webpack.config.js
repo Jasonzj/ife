@@ -20,7 +20,8 @@ module.exports = {
             "components" : path.resolve(__dirname, 'src/components'),
             "containers" : path.resolve(__dirname, 'src/containers'),
             "reducers" : path.resolve(__dirname, 'src/reducers'),
-            "utils" : path.resolve(__dirname, 'src/utils')
+            "utils" : path.resolve(__dirname, 'src/utils'),
+            "mock" : path.resolve(__dirname, './mock')
         }
     },
     module: {
