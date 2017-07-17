@@ -49,6 +49,8 @@
         "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx"] }],
         "react/prefer-stateless-function": 2,
         "react/jsx-closing-bracket-location": 2,
+        "react/require-default-props": 0,
+        "react/forbid-prop-types": 0,
         "jsx-a11y/alt-text": 2,
         "jsx-a11y/img-redundant-alt": 2,
         "jsx-quotes": 2,

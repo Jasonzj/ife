@@ -1,18 +1,23 @@
 import React from 'react'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import test from 'reducers/test'
 
 // container
 import HomeContainer from 'containers/HomeContainer'
-import Lists from 'containers/Lists'
+import ShowLists from 'containers/ShowLists'
 
 // scss
 import './app.scss'
 
+const store = createStore(test)
+
 const App = () => (
-    <div>
+    <Provider store={store}>
         <HomeContainer>
-            <Lists />
+            <ShowLists />
         </HomeContainer>
-    </div>
+    </Provider>
 )
 
 export default App
