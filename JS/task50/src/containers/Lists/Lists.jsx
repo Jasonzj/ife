@@ -4,13 +4,6 @@ import React, { Component } from 'react'
 import './Lists.scss'
 
 class Lists extends Component {
-    constructor() {
-        super()
-        this.state = {
-            id: 1
-        }
-    }
-
     render() {
         return (
             <div className="lists">
