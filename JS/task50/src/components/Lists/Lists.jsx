@@ -26,8 +26,8 @@ Lists.propTypes = {
 }
 
 // connect
-const vLists = connect(
+const ListConnect = connect(
     state => ({ items: state })
 )(Lists)
 
-export default vLists
+export default ListConnect
