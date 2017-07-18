@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 
 // component
 import EditorTitle from 'components/EditorTitle'
+import EditorAdd from 'components/EditorAdd'
+import EditorFooter from 'components/EditorFooter'
 
 // scss
 import './Editor.scss'
@@ -25,8 +27,8 @@ class Editor extends Component {
                     setTitle={this.setTitle}
                 />
                 <div className="editor__container" />
-                {/* <div className="editor__add"></div>
-                <div className="editor__footer"></div> */}
+                <EditorAdd />
+                <EditorFooter />
             </div>
         )
     }

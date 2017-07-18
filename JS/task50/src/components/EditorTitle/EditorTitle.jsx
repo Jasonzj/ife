@@ -38,6 +38,10 @@ const vEditorTitle = connect(
             input.focus()
         },
         onBlur() {
+            if (input.value === '') {
+                alert('标题不能为空')
+                return
+            }
             title.innerHTML = input.value
             input.parentNode.classList.remove('editor__head--input')
             props.setTitle(title.innerHTML)

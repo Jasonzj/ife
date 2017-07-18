@@ -39,3 +39,28 @@
         display: none;
     }
 }
+
+// editor__add
+.editor__add {
+    margin-top: 20px;
+    border: 2px solid #ccc;
+}
+
+.editor__add__btn {
+    line-height: 80px;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+    background: #EFEFEF;
+}
+
+.editor__add__box {
+    display: none;
+    text-align: center;
+    line-height: 100px;
+    
+    button {
+        margin-right: 20px;
+    }
+
+}
