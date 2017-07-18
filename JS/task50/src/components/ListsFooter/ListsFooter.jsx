@@ -13,7 +13,7 @@ const ListsFooter = ({
             <td>
                 <input
                     type="checkbox"
-                    onChange={e => {
+                    onChange={(e) => {
                         dispatch({
                             type: 'TOGGLE_ALL_CHECKED',
                             isChecked: e.target.checked
