@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 // component
 import Button from 'components/Button'
@@ -20,9 +21,15 @@ const Item = ({
             {stateText}
         </td>
         <td colSpan="2">
-            <Button className={1}>编辑</Button>
-            <Button className={1}>删除</Button>
-            <Button className={1}>查看问卷</Button>
+            <Link to="/editor">
+                <Button className={1}>编辑</Button>
+            </Link>
+            <Link to="/editor">
+                <Button className={1}>删除</Button>
+            </Link>
+            <Link to="/editor">
+                <Button className={1}>查看问卷</Button>
+            </Link>
         </td>
     </tr>
 )
