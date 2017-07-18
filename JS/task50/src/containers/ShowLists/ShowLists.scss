@@ -58,11 +58,13 @@
     }
 }
 
-.lists__table__body {
+.lists__table__body
+{
     font-size: 14px;
     background: #fff;
 
     tr {
+        transition-duration: 0.7s;
         border-bottom: 1px solid #ccc;
 
         td {
@@ -71,6 +73,10 @@
 
         td:first-child {
             text-align: center;
+        }
+
+        &:hover {
+            background: rgb(252, 240, 229);
         }
 
     }
@@ -83,5 +89,29 @@
     margin-right: 25px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    transition-duration: 0.5s;
     background: #fff;
+
+    &:hover {
+        color: #fff;
+        background: #EE7419;
+        border: 1px solid #EE7419;
+    }
+}
+
+.lists__table__footer {
+    font-size: 14px;
+    background: #fff;
+
+    td {
+        line-height: 50px;
+
+        &:first-child {
+            text-align: center;
+        }
+    }
+
+    button {
+        margin-left: 30px;
+    }
 }
