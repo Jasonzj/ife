@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import Lists from 'components/Lists'
 
@@ -16,7 +17,9 @@ const ShowLists = () => (
                     <th>状态</th>
                     <th>操作</th>
                     <th>
-                        <button>+新建问卷</button>
+                        <Link to="/create">
+                            <button>+新建问卷</button>
+                        </Link>
                     </th>
                 </tr>
             </thead>

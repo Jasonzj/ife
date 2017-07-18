@@ -7,7 +7,7 @@ import Header from 'components/Header'
 // scss
 import './HomeContainer.scss'
 
-const Home = ({ children }) => (
+const HomeContainer = ({ children }) => (
     <div>
         <Header />
         <main className="main">
@@ -16,8 +16,8 @@ const Home = ({ children }) => (
     </div>
 )
 
-Home.propTypes = {
-    children: PropTypes.element.isRequired
+HomeContainer.propTypes = {
+    children: PropTypes.array
 }
 
-export default Home
+export default HomeContainer
