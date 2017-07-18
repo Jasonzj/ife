@@ -1,6 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+// component
+import Button from 'components/Button'
+
 const Item = ({
     title,
     endTime,
@@ -17,9 +20,9 @@ const Item = ({
             {stateText}
         </td>
         <td colSpan="2">
-            <button className="lists__table__body__btn">编辑</button>
-            <button className="lists__table__body__btn">删除</button>
-            <button className="lists__table__body__btn">查看问卷</button>
+            <Button className={1}>编辑</Button>
+            <Button className={1}>删除</Button>
+            <Button className={1}>查看问卷</Button>
         </td>
     </tr>
 )

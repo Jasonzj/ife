@@ -1,0 +1,27 @@
+%active {
+    color: #fff;
+    background: #EE7419;
+    border: 1px solid #EE7419;
+}
+
+%btn {
+    height: 28px;
+    padding: 0 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition-duration: 0.5s;
+
+    &:hover {
+        @extend %active;
+    }
+}
+
+.btn--info {
+    @extend %btn;
+    background: #fff;
+}
+
+.btn--active {
+    @extend %btn;
+    @extend %active;    
+}

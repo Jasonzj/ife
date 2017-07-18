@@ -1,5 +1,7 @@
 import React from 'react'
 
+import Button from 'components/Button'
+
 const ListsFooter = () => (
     <tfoot className="lists__table__footer">
         <tr>
@@ -8,7 +10,7 @@ const ListsFooter = () => (
             </td>
             <td colSpan="5">
                 全选
-                <button className="lists__table__body__btn">删除</button>
+                <Button className={1}>删除</Button>
             </td>
         </tr>
     </tfoot>

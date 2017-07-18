@@ -80,23 +80,11 @@
         }
 
     }
-    
-}
 
-.lists__table__body__btn {
-    height: 28px;
-    padding: 0 20px;
-    margin-right: 25px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    transition-duration: 0.5s;
-    background: #fff;
-
-    &:hover {
-        color: #fff;
-        background: #EE7419;
-        border: 1px solid #EE7419;
+    button {
+        margin-right: 25px;
     }
+    
 }
 
 .lists__table__footer {
