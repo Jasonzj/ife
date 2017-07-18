@@ -6,14 +6,21 @@ import { Link } from 'react-router-dom'
 import Button from 'components/Button'
 
 const Item = ({
+    id,
     title,
     endTime,
     stateText,
-    stateClassName
+    stateClassName,
+    isChecked,
+    toggleCheckedAction
 }) => (
     <tr>
         <td>
-            <input type="checkbox" />
+            <input
+                type="checkbox"
+                checked={isChecked}
+                onChange={() => toggleCheckedAction(id)}
+            />
         </td>
         <td>{title}</td>
         <td>{endTime}</td>
@@ -35,10 +42,13 @@ const Item = ({
 )
 
 Item.propTypes = {
+    id: PropTypes.number,
     title: PropTypes.string,
     stateClassName: PropTypes.string,
     endTime: PropTypes.string,
-    stateText: PropTypes.string
+    stateText: PropTypes.string,
+    isChecked: PropTypes.bool,
+    toggleCheckedAction: PropTypes.func
 }
 
 export default Item

@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom'
 
 // renducers
-import test from 'reducers/test'
+import lists from 'reducers/item'
 
 // container
 import HomeContainer from 'containers/HomeContainer'
@@ -18,7 +18,10 @@ import Editor from 'containers/Editor'
 // scss
 import './app.scss'
 
-const store = createStore(test)
+const store = createStore(
+    lists,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
 
 const App = () => (
     <Provider store={store}>
