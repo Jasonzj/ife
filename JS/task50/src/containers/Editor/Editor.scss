@@ -1,0 +1,41 @@
+.editor {
+    width: 100%;
+    padding: 20px;
+    box-shadow: 0 1px 5px #aaa;
+    background: #fff;
+}
+
+.editor__head {
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ccc;
+
+    input {
+        display: none;
+        height: 50px;
+        width: 70%;
+        margin: 0 auto;
+        font-size: 20px;
+        text-align: center;
+    }
+
+}
+
+.editor__title {
+    line-height: 56px;
+    font-size: 20px;
+    text-align: center;
+    transition-duration: 0.7s;
+    
+    &:hover {
+        background: rgb(252, 240, 229);
+    }
+}
+
+.editor__head--input {
+    input {
+        display: block;
+    }
+    .editor__title {
+        display: none;
+    }
+}
