@@ -6,14 +6,21 @@ import './Button.scss'
 
 const Button = ({
     children,
-    className
+    className,
+    onClick
 }) => (
-    <button className={className ? 'btn--info' : 'btn--active'}>{children}</button>
+    <button
+        className={className ? 'btn--info' : 'btn--active'}
+        onClick={onClick}
+    >
+        {children}
+    </button>
 )
 
 Button.propTypes = {
     children: PropTypes.string,
-    className: PropTypes.number
+    className: PropTypes.number,
+    onClick: PropTypes.func
 }
 
 export default Button

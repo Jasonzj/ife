@@ -12,14 +12,15 @@ const Item = ({
     stateText,
     stateClassName,
     isChecked,
-    toggleCheckedAction
+    toggleChecked,
+    removeQuestion
 }) => (
     <tr>
         <td>
             <input
                 type="checkbox"
                 checked={isChecked}
-                onChange={() => toggleCheckedAction(id)}
+                onChange={() => toggleChecked(id)}
             />
         </td>
         <td>{title}</td>
@@ -31,12 +32,13 @@ const Item = ({
             <Link to="/editor">
                 <Button className={1}>编辑</Button>
             </Link>
-            <Link to="/editor">
-                <Button className={1}>删除</Button>
-            </Link>
-            <Link to="/editor">
-                <Button className={1}>查看问卷</Button>
-            </Link>
+            <Button
+                className={1}
+                onClick={() => removeQuestion(id)}
+            >
+                删除
+            </Button>
+            <Button className={1}>查看问卷</Button>
         </td>
     </tr>
 )
@@ -48,7 +50,8 @@ Item.propTypes = {
     endTime: PropTypes.string,
     stateText: PropTypes.string,
     isChecked: PropTypes.bool,
-    toggleCheckedAction: PropTypes.func
+    toggleChecked: PropTypes.func,
+    removeQuestion: PropTypes.func
 }
 
 export default Item

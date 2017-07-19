@@ -37,8 +37,9 @@ module.exports = {
             {
                 // test: /\.(scss|css)$/,
                 // exclude: path.resolve(__dirname, 'node_modules'),
+                // fallback: 'style-loader',
                 // use: ExtractTextPlugin.extract({
-                //     use: ["style-loader", "css-loader", "postcss-loader", "sass-loader"]
+                //     use: [css-loader", "postcss-loader", "sass-loader"]
                 // })
                 test: /\.scss$/,
                 use:[

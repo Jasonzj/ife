@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom'
 
 // renducers
-import lists from 'reducers/item'
+import questionnairesListsLists from 'reducers/questionnaires'
 
 // container
 import HomeContainer from 'containers/HomeContainer'
@@ -19,7 +19,7 @@ import Editor from 'containers/Editor'
 import './app.scss'
 
 const store = createStore(
-    lists,
+    questionnairesListsLists,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 

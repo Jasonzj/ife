@@ -5,6 +5,9 @@ import PropTypes from 'prop-types'
 // component
 import Button from 'components/Button'
 
+// action
+import { AtoggleAllChecked, AremoveAllQuestion } from 'action/questionnaires'
+
 const ListsFooter = ({
     dispatch
 }) => (
@@ -14,16 +17,20 @@ const ListsFooter = ({
                 <input
                     type="checkbox"
                     onChange={(e) => {
-                        dispatch({
-                            type: 'TOGGLE_ALL_CHECKED',
-                            isChecked: e.target.checked
-                        })
+                        dispatch(AtoggleAllChecked(e.target.checked))
                     }}
                 />
             </td>
             <td colSpan="5">
                 全选
-                <Button className={1}>删除</Button>
+                <Button
+                    className={1}
+                    onClick={() => {
+                        dispatch(AremoveAllQuestion())
+                    }}
+                >
+                    删除
+                </Button>
             </td>
         </tr>
     </tfoot>
