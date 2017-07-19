@@ -11,7 +11,8 @@ import { AtoggleAllChecked, AsetDialog } from 'action/questionnaires'
 const ListsFooter = ({
     toogleAllChecked,
     setDialog,
-    isAllchecked
+    isAllchecked,
+    isChecked
 }) => (
     <tfoot className="lists__table__footer">
         <tr>
@@ -27,7 +28,7 @@ const ListsFooter = ({
                 <Button
                     className={1}
                     onClick={() => {
-                        if (!isAllchecked) {
+                        if (isChecked) {
                             alert('您还没选择要删除的文卷')
                             return
                         }
@@ -44,12 +45,14 @@ const ListsFooter = ({
 ListsFooter.propTypes = {
     toogleAllChecked: PropTypes.func,
     setDialog: PropTypes.func,
-    isAllchecked: PropTypes.bool
+    isAllchecked: PropTypes.bool,
+    isChecked: PropTypes.bool
 }
 
 const vListsFooter = connect(
     state => ({
-        isAllchecked: state.lists.filter(t => !t.state).every(t => t.isChecked)
+        isAllchecked: state.lists.filter(t => !t.state).every(t => t.isChecked),
+        isChecked: state.lists.every(t => !t.isChecked)
     }),
     dispatch => ({
         toogleAllChecked(checked) {

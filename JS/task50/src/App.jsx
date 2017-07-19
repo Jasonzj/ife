@@ -27,8 +27,6 @@ store.subscribe(() => {
     console.log(store.getState())
 })
 
-console.log(store.getState())
-
 const App = () => (
     <Provider store={store}>
         <Router>
