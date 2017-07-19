@@ -4,8 +4,14 @@
     border: 1px solid #EE7419;
 }
 
+%disbled {
+    color: #fff;
+    background: #ccc;
+    boreder: 1px solid #ccc;
+}
+
 %btn {
-    height: 28px;
+    line-height: 28px;
     padding: 0 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -23,5 +29,16 @@
 
 .btn--active {
     @extend %btn;
-    @extend %active;    
+    @extend %active;
+    border-color: #EE7419;
+}
+
+.btn--disbled {
+    @extend %btn;
+    @extend %disbled;
+
+    &:hover {
+        @extend %disbled;
+        border-color: #ccc;
+    }
 }

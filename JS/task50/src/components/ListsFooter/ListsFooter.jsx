@@ -6,19 +6,20 @@ import PropTypes from 'prop-types'
 import Button from 'components/Button'
 
 // action
-import { AtoggleAllChecked, AremoveAllQuestion } from 'action/questionnaires'
+import { AtoggleAllChecked, AsetDialog } from 'action/questionnaires'
 
 const ListsFooter = ({
-    dispatch
+    toogleAllChecked,
+    setDialog,
+    isAllchecked
 }) => (
     <tfoot className="lists__table__footer">
         <tr>
             <td>
                 <input
                     type="checkbox"
-                    onChange={(e) => {
-                        dispatch(AtoggleAllChecked(e.target.checked))
-                    }}
+                    onChange={e => toogleAllChecked(e.target.checked)}
+                    checked={isAllchecked}
                 />
             </td>
             <td colSpan="5">
@@ -26,7 +27,11 @@ const ListsFooter = ({
                 <Button
                     className={1}
                     onClick={() => {
-                        dispatch(AremoveAllQuestion())
+                        if (!isAllchecked) {
+                            alert('您还没选择要删除的文卷')
+                            return
+                        }
+                        setDialog(true, 'all', '所有选择的问卷')
                     }}
                 >
                     删除
@@ -37,9 +42,23 @@ const ListsFooter = ({
 )
 
 ListsFooter.propTypes = {
-    dispatch: PropTypes.func
+    toogleAllChecked: PropTypes.func,
+    setDialog: PropTypes.func,
+    isAllchecked: PropTypes.bool
 }
 
-const vListsFooter = connect()(ListsFooter)
+const vListsFooter = connect(
+    state => ({
+        isAllchecked: state.lists.filter(t => !t.state).every(t => t.isChecked)
+    }),
+    dispatch => ({
+        toogleAllChecked(checked) {
+            dispatch(AtoggleAllChecked(checked))
+        },
+        setDialog(bool, id, title) {
+            dispatch(AsetDialog(bool, id, title))
+        }
+    })
+)(ListsFooter)
 
 export default vListsFooter

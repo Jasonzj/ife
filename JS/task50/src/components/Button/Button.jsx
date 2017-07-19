@@ -7,11 +7,13 @@ import './Button.scss'
 const Button = ({
     children,
     className,
-    onClick
+    onClick,
+    disabled,
 }) => (
     <button
-        className={className ? 'btn--info' : 'btn--active'}
+        className={['btn--disbled', 'btn--info', 'btn--active'][className]}
         onClick={onClick}
+        disabled={disabled !== undefined && !disabled}
     >
         {children}
     </button>
@@ -19,8 +21,9 @@ const Button = ({
 
 Button.propTypes = {
     children: PropTypes.string,
-    className: PropTypes.number,
-    onClick: PropTypes.func
+    className: PropTypes.any,
+    onClick: PropTypes.func,
+    disabled: PropTypes.number
 }
 
 export default Button

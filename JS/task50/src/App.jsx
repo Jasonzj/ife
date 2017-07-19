@@ -1,5 +1,5 @@
 import React from 'react'
-import { createStore } from 'redux'
+import { createStore,  } from 'redux'
 import { Provider } from 'react-redux'
 import {
     BrowserRouter as Router,
@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom'
 
 // renducers
-import questionnairesListsLists from 'reducers/questionnaires'
+import rootReducer from 'reducers'
 
 // container
 import HomeContainer from 'containers/HomeContainer'
@@ -19,9 +19,15 @@ import Editor from 'containers/Editor'
 import './app.scss'
 
 const store = createStore(
-    questionnairesListsLists,
+    rootReducer,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
+
+store.subscribe(() => {
+    console.log(store.getState())
+})
+
+console.log(store.getState())
 
 const App = () => (
     <Provider store={store}>

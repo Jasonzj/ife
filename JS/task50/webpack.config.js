@@ -21,6 +21,7 @@ module.exports = {
             "containers" : path.resolve(__dirname, 'src/containers'),
             "reducers" : path.resolve(__dirname, 'src/reducers'),
             "utils" : path.resolve(__dirname, 'src/utils'),
+            "public" : path.resolve(__dirname, './public'),
             "mock" : path.resolve(__dirname, './mock')
         }
     },

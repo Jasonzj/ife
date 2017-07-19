@@ -13,7 +13,9 @@ const Item = ({
     stateClassName,
     isChecked,
     toggleChecked,
-    removeQuestion
+    setDialog,
+    btnStateT,
+    btnStateF
 }) => (
     <tr>
         <td>
@@ -21,6 +23,7 @@ const Item = ({
                 type="checkbox"
                 checked={isChecked}
                 onChange={() => toggleChecked(id)}
+                disabled={btnStateF}
             />
         </td>
         <td>{title}</td>
@@ -30,15 +33,29 @@ const Item = ({
         </td>
         <td colSpan="2">
             <Link to="/editor">
-                <Button className={1}>编辑</Button>
+                <Button
+                    className={btnStateT}
+                    disabled={btnStateT}
+                >
+                    编辑
+                </Button>
             </Link>
             <Button
-                className={1}
-                onClick={() => removeQuestion(id)}
+                className={btnStateT}
+                disabled={btnStateT}
+                onClick={() => {
+                    setDialog(true, id, title)
+                }}
             >
                 删除
             </Button>
             <Button className={1}>查看问卷</Button>
+            <Button
+                className={btnStateF}
+                disabled={btnStateF}
+            >
+                查看数据
+            </Button>
         </td>
     </tr>
 )
@@ -51,7 +68,11 @@ Item.propTypes = {
     stateText: PropTypes.string,
     isChecked: PropTypes.bool,
     toggleChecked: PropTypes.func,
-    removeQuestion: PropTypes.func
+    setDialog: PropTypes.func,
+    btnStateT: PropTypes.number,
+    btnStateF: PropTypes.number
 }
 
 export default Item
+
+// onClick={() => removeQuestion(id)}

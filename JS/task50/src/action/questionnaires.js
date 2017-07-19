@@ -16,3 +16,10 @@ export const AremoveQuestion = id => ({
 export const AremoveAllQuestion = () => ({
     type: 'REMOVE_ALL_QUESTION'
 })
+
+export const AsetDialog = (dialog, id, title) => ({
+    type: 'SET_DIALOG',
+    dialog,
+    id,
+    title
+})

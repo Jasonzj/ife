@@ -1,0 +1,50 @@
+.diglog {
+    background: rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.diglog__box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 370px;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    box-shadow: 0 1px 5px #aaa;
+    background: #fff;
+}
+
+.diglog__title {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    line-height: 45px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-size: 16px;
+    background: #EFEFEF;
+}
+
+.diglog__content {
+    padding: 20px;
+    font-size: 14px;
+}
+
+.diglog__btnBox {
+    line-height: 80px;
+    text-align: center;
+    
+    button {
+        margin-left: 20px;
+    }
+}
+
+.diglog__close {
+    color: #AAA;
+    font-size: 20px;
+    cursor: pointer;
+}

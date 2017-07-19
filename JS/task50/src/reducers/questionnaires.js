@@ -4,6 +4,9 @@ const questionnaires = (state, action) => {
     let list = null
     switch (action.type) {
         case 'TOGGLE_ALL_CHECKED':
+            if (state.state) {
+                return state
+            }
             return {
                 ...state,
                 isChecked: action.isChecked
@@ -32,7 +35,7 @@ const questionnaires = (state, action) => {
     }
 }
 
-const questionnairesLists = (state = data, action) => {
+const lists = (state = data, action) => {
     switch (action.type) {
         case 'TOGGLE_ALL_CHECKED':
         case 'TOGGLE_CHECKED':
@@ -44,10 +47,9 @@ const questionnairesLists = (state = data, action) => {
         case 'REMOVE_QUESTION':
             return questionnaires(state, action)
 
-
         default:
             return state
     }
 }
 
-export default questionnairesLists
+export default lists
