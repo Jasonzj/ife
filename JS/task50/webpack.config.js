@@ -30,10 +30,7 @@ module.exports = {
             {
                 test: /\.(js|jsx)$/,
                 loader: 'babel-loader',
-                exclude: path.resolve(__dirname, 'node_modules'),
-                query: {
-                    presets: ['es2015', 'stage-0', 'react']
-                }
+                exclude: path.resolve(__dirname, 'node_modules')
             },
             {
                 // test: /\.(scss|css)$/,
