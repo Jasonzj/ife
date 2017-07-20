@@ -27,15 +27,18 @@ class Editor extends Component {
         }
     }
 
+    // 设置标题
     setTitle = (title) => {
         this.setState({ title })
     }
 
+    // 切换添加按钮显示状态
     toggleAddBoxHandle = () => {
         const showAddBox = !this.state.showAddBox
         this.setState({ showAddBox })
     }
 
+    // 添加choose
     addChoose = (choose) => {
         const arr = [...this.state.chooses]
         arr.push({
@@ -51,12 +54,14 @@ class Editor extends Component {
         this.setState({ chooses: arr })
     }
 
+    // 设置Option
     setOption = (chooseId, optionId, text) => {
         const arr = [...this.state.chooses]
         arr[chooseId].options[optionId] = text
         this.setState({ chooses: arr })
     }
 
+    // 删除Option
     removeOption = (chooseId, optionId) => {
         const arr = [...this.state.chooses]
         arr[chooseId].options.splice(optionId, 1)
