@@ -8,6 +8,9 @@ import Button from 'components/Button'
 const EditorAdd = ({
     showAddBox,
     toggleAddBoxHandle,
+    addRadio,
+    addCheckBox,
+    addTextarea
 }) => (
     <div className="editor__add">
         <ReactCSSTransitionGroup
@@ -18,11 +21,10 @@ const EditorAdd = ({
             {
                 showAddBox &&
                 <div className="editor__add__box">
-                    <Button className={1}>单选</Button>
-                    <Button className={1}>多选</Button>
-                    <Button className={1}>文本框</Button>
+                    <Button className={1} onClick={addRadio}>单选</Button>
+                    <Button className={1} onClick={addCheckBox}>多选</Button>
+                    <Button className={1} onClick={addTextarea}>文本框</Button>
                 </div>
-                
             }
         </ReactCSSTransitionGroup>
         <div
@@ -36,6 +38,9 @@ const EditorAdd = ({
 
 EditorAdd.propTypes = {
     toggleAddBoxHandle: PropTypes.func,
+    addRadio: PropTypes.func,
+    addCheckBox: PropTypes.func,
+    addTextarea: PropTypes.func,
     showAddBox: PropTypes.bool
 }
 
