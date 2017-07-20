@@ -74,5 +74,3 @@ Item.propTypes = {
 }
 
 export default Item
-
-// onClick={() => removeQuestion(id)}

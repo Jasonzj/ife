@@ -32,12 +32,10 @@ EditorAdd.propTypes = {
     onClick: PropTypes.func
 }
 
-const vEditorAdd = connect(
-    () => ({
-        onClick() {
-            btnBox.style.display = 'block'
-        }
-    })
-)(EditorAdd)
+const getState = () => ({
+    onClick() {
+        btnBox.style.display = 'block'
+    }
+})
 
-export default vEditorAdd
+export default connect(getState)(EditorAdd)

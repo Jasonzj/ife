@@ -30,23 +30,21 @@ EditorTitle.propTypes = {
     onBlur: PropTypes.func
 }
 
-const vEditorTitle = connect(
-    (state, props) => ({
-        onClick() {
-            input.value = title.innerHTML
-            input.parentNode.classList.add('editor__head--input')
-            input.focus()
-        },
-        onBlur() {
-            if (input.value === '') {
-                alert('标题不能为空')
-                return
-            }
-            title.innerHTML = input.value
-            input.parentNode.classList.remove('editor__head--input')
-            props.setTitle(title.innerHTML)
+const getState = (state, props) => ({
+    onClick() {
+        input.value = title.innerHTML
+        input.parentNode.classList.add('editor__head--input')
+        input.focus()
+    },
+    onBlur() {
+        if (input.value === '') {
+            alert('标题不能为空')
+            return
         }
-    })
-)(EditorTitle)
+        title.innerHTML = input.value
+        input.parentNode.classList.remove('editor__head--input')
+        props.setTitle(title.innerHTML)
+    }
+})
 
-export default vEditorTitle
+export default connect(getState)(EditorTitle)

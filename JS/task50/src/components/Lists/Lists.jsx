@@ -57,28 +57,30 @@ Lists.propTypes = {
 }
 
 // connect
-const vList = connect(
-    state => ({
-        lists: state.lists,
-        dialog: state.dialog.bool,
-        removeId: state.dialog.removeId,
-        removeTitle: state.dialog.removeTitle
-    }),
-    dispatch => ({
-        toggleChecked(id) {
-            dispatch(AtoggleChecked(id))
-        },
-        removeQuestion(id) {
-            if (id === 'all') {
-                dispatch(AremoveAllQuestion())
-                return
-            }
-            dispatch(AremoveQuestion(id))
-        },
-        setDialog(bool, id, title) {
-            dispatch(AsetDialog(bool, id, title))
-        }
-    })
-)(Lists)
+const getState = state => ({
+    lists: state.lists,
+    dialog: state.dialog.bool,
+    removeId: state.dialog.removeId,
+    removeTitle: state.dialog.removeTitle
+})
 
-export default vList
+const getDispatch = dispatch => ({
+    toggleChecked(id) {
+        dispatch(AtoggleChecked(id))
+    },
+    removeQuestion(id) {
+        if (id === 'all') {
+            dispatch(AremoveAllQuestion())
+            return
+        }
+        dispatch(AremoveQuestion(id))
+    },
+    setDialog(bool, id, title) {
+        dispatch(AsetDialog(bool, id, title))
+    }
+})
+
+export default connect(
+    getState,
+    getDispatch
+)(Lists)

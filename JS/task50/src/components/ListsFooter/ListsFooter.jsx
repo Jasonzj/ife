@@ -1,5 +1,4 @@
-// import React from 'react'
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
@@ -9,88 +8,39 @@ import Button from 'components/Button'
 // action
 import { AtoggleAllChecked, AsetDialog } from 'action/questionnaires'
 
-@connect(
-    state => ({
-        isAllchecked: state.lists.filter(t => !t.state).every(t => t.isChecked),
-        isChecked: state.lists.every(t => !t.isChecked)
-    }),
-    dispatch => ({
-        toogleAllChecked(checked) {
-            dispatch(AtoggleAllChecked(checked))
-        },
-        setDialog(bool, id, title) {
-            dispatch(AsetDialog(bool, id, title))
-        }
-    })
+const ListsFooter = ({
+    toogleAllChecked,
+    setDialog,
+    isAllchecked,
+    isChecked
+}) => (
+    <tfoot className="lists__table__footer">
+        <tr>
+            <td>
+                <input
+                    type="checkbox"
+                    onChange={e => toogleAllChecked(e.target.checked)}
+                    checked={isAllchecked}
+                />
+            </td>
+            <td colSpan="5">
+                全选
+                <Button
+                    className={1}
+                    onClick={() => {
+                        if (isChecked) {
+                            alert('您还没选择要删除的文卷')
+                            return
+                        }
+                        setDialog(true, 'all', '所有选择的问卷')
+                    }}
+                >
+                    删除
+                </Button>
+            </td>
+        </tr>
+    </tfoot>
 )
-class ListsFooter extends Component {
-    render() {
-        const { toogleAllChecked, setDialog, isAllchecked, isChecked } = this.props
-
-        return (
-            <tfoot className="lists__table__footer">
-                <tr>
-                    <td>
-                        <input
-                            type="checkbox"
-                            onChange={e => toogleAllChecked(e.target.checked)}
-                            checked={isAllchecked}
-                        />
-                    </td>
-                    <td colSpan="5">
-                        全选
-                        <Button
-                            className={1}
-                            onClick={() => {
-                                if (isChecked) {
-                                    alert('您还没选择要删除的文卷')
-                                    return
-                                }
-                                setDialog(true, 'all', '所有选择的问卷')
-                            }}
-                        >
-                            删除
-                        </Button>
-                    </td>
-                </tr>
-            </tfoot>
-        )
-    }
-}
-
-// const ListsFooter = ({
-//     toogleAllChecked,
-//     setDialog,
-//     isAllchecked,
-//     isChecked
-// }) => (
-//     <tfoot className="lists__table__footer">
-//         <tr>
-//             <td>
-//                 <input
-//                     type="checkbox"
-//                     onChange={e => toogleAllChecked(e.target.checked)}
-//                     checked={isAllchecked}
-//                 />
-//             </td>
-//             <td colSpan="5">
-//                 全选
-//                 <Button
-//                     className={1}
-//                     onClick={() => {
-//                         if (isChecked) {
-//                             alert('您还没选择要删除的文卷')
-//                             return
-//                         }
-//                         setDialog(true, 'all', '所有选择的问卷')
-//                     }}
-//                 >
-//                     删除
-//                 </Button>
-//             </td>
-//         </tr>
-//     </tfoot>
-// )
 
 ListsFooter.propTypes = {
     toogleAllChecked: PropTypes.func,
@@ -99,19 +49,21 @@ ListsFooter.propTypes = {
     isChecked: PropTypes.bool
 }
 
-// const vListsFooter = connect(
-//     state => ({
-//         isAllchecked: state.lists.filter(t => !t.state).every(t => t.isChecked),
-//         isChecked: state.lists.every(t => !t.isChecked)
-//     }),
-//     dispatch => ({
-//         toogleAllChecked(checked) {
-//             dispatch(AtoggleAllChecked(checked))
-//         },
-//         setDialog(bool, id, title) {
-//             dispatch(AsetDialog(bool, id, title))
-//         }
-//     })
-// )(ListsFooter)
+const getState = state => ({
+    isAllchecked: state.lists.filter(t => !t.state).every(t => t.isChecked),
+    isChecked: state.lists.every(t => !t.isChecked)
+})
 
-export default ListsFooter
+const getDispatch = dispatch => ({
+    toogleAllChecked(checked) {
+        dispatch(AtoggleAllChecked(checked))
+    },
+    setDialog(bool, id, title) {
+        dispatch(AsetDialog(bool, id, title))
+    }
+})
+
+export default connect(
+   getState,
+   getDispatch
+)(ListsFooter)
