@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import EditorTitle from 'components/EditorTitle'
 import EditorAdd from 'components/EditorAdd'
 import EditorFooter from 'components/EditorFooter'
+import EditorMain from 'components/EditorMain'
 
 // scss
 import './Editor.scss'
@@ -12,12 +13,18 @@ class Editor extends Component {
     constructor() {
         super()
 
-        this.setTitle = this.setTitle.bind(this)
-        this.title = ''
+        this.state = {
+            showAddBox: false,
+            title: ''
+        }
     }
 
-    setTitle(title) {
-        this.title = title
+    setTitle = (title) => {
+        this.setState({ title })
+    }
+
+    toggleAddBoxHandle = () => {
+        this.setState({ showAddBox: !this.state.showAddBox })
     }
 
     render() {
@@ -26,8 +33,11 @@ class Editor extends Component {
                 <EditorTitle
                     setTitle={this.setTitle}
                 />
-                <div className="editor__container" />
-                <EditorAdd />
+                <EditorMain />
+                <EditorAdd
+                    showAddBox={this.state.showAddBox}
+                    toggleAddBoxHandle={this.toggleAddBoxHandle}
+                />
                 <EditorFooter />
             </div>
         )

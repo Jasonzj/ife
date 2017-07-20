@@ -55,12 +55,31 @@
 }
 
 .editor__add__box {
-    display: none;
+    display: block;
     text-align: center;
     line-height: 100px;
+    overflow: hidden;
     
     button {
         margin-right: 20px;
     }
 
+}
+
+.addBox-enter {
+    height: 0;
+}
+
+.addBox-enter.addBox-enter-active {
+    height: 100px;
+    transition: height 500ms ease-out;
+}
+
+.addBox-leave {
+    height: 100px;
+}
+
+.addBox-leave.addBox-leave-active {
+    height: 0px;
+    transition: height 300ms ease-in;
 }

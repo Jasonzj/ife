@@ -1,27 +1,33 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 // component
 import Button from 'components/Button'
 
-let btnBox
-
 const EditorAdd = ({
-    onClick
+    showAddBox,
+    toggleAddBoxHandle,
 }) => (
     <div className="editor__add">
-        <div
-            className="editor__add__box"
-            ref={node => btnBox = node}
+        <ReactCSSTransitionGroup
+            transitionName="addBox"
+            transitionEnterTimeout={300}
+            transitionLeaveTimeout={300}
         >
-            <Button className={1}>单选</Button>
-            <Button className={1}>多选</Button>
-            <Button className={1}>文本框</Button>
-        </div>
+            {
+                showAddBox &&
+                <div className="editor__add__box">
+                    <Button className={1}>单选</Button>
+                    <Button className={1}>多选</Button>
+                    <Button className={1}>文本框</Button>
+                </div>
+                
+            }
+        </ReactCSSTransitionGroup>
         <div
             className="editor__add__btn"
-            onClick={onClick}
+            onClick={toggleAddBoxHandle}
         >
             +添加问题
         </div>
@@ -29,13 +35,8 @@ const EditorAdd = ({
 )
 
 EditorAdd.propTypes = {
-    onClick: PropTypes.func
+    toggleAddBoxHandle: PropTypes.func,
+    showAddBox: PropTypes.bool
 }
 
-const getState = () => ({
-    onClick() {
-        btnBox.style.display = 'block'
-    }
-})
-
-export default connect(getState)(EditorAdd)
+export default EditorAdd
