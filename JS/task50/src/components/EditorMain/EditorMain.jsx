@@ -6,8 +6,10 @@ import Choose from 'components/Choose'
 
 const EditorMain = ({
     chooses,
-    setOption,
-    removeOption
+    setOptionTitle,
+    removeOption,
+    setChooseTitle,
+    addOption
 }) => {
     console.log(chooses)
     return (
@@ -17,8 +19,10 @@ const EditorMain = ({
                     <Choose
                         key={item.id}
                         disabled={1}
-                        setOption={setOption}
+                        setOptionTitle={setOptionTitle}
                         removeOption={removeOption}
+                        setChooseTitle={setChooseTitle}
+                        addOption={addOption}
                         {...item}
                     />
                 ))
@@ -29,8 +33,10 @@ const EditorMain = ({
 
 EditorMain.propTypes = {
     chooses: PropTypes.array,
-    setOption: PropTypes.func,
-    removeOption: PropTypes.func
+    setOptionTitle: PropTypes.func,
+    removeOption: PropTypes.func,
+    setChooseTitle: PropTypes.func,
+    addOption: PropTypes.func
 }
 
 export default EditorMain

@@ -10,9 +10,14 @@
     }
 }
 
-.options__edit {
-    line-height: 25px;
-    font-size: 16px;
+.option__title {
+    display: inline-block;
+
+    input {
+        line-height: 25px;
+        font-size: 16px;
+    }
+
 }
 
 .option__close {

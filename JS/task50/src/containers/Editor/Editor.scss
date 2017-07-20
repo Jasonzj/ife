@@ -10,7 +10,7 @@
     border-bottom: 2px solid #ccc;
 
     input {
-        display: none;
+        display: block;
         height: 50px;
         width: 70%;
         margin: 0 auto;
@@ -18,27 +18,40 @@
         text-align: center;
     }
 
-}
-
-.editor__title {
-    line-height: 56px;
-    font-size: 20px;
-    text-align: center;
-    transition-duration: 0.7s;
-    
-    &:hover {
-        background: rgb(252, 240, 229);
-    }
-}
-
-.editor__head--input {
-    input {
+    span {
         display: block;
+        line-height: 56px;
+        font-size: 20px;
+        text-align: center;
+        transition-duration: 0.7s;
+        
+        &:hover {
+            background: rgb(252, 240, 229);
+        }
+        
     }
-    .editor__title {
-        display: none;
-    }
+
 }
+
+// .editor__title {
+//     line-height: 56px;
+//     font-size: 20px;
+//     text-align: center;
+//     transition-duration: 0.7s;
+    
+//     &:hover {
+//         background: rgb(252, 240, 229);
+//     }
+// }
+
+// .editor__head--input {
+//     input {
+//         display: block;
+//     }
+//     .editor__title {
+//         display: none;
+//     }
+// }
 
 .editor__main {
     padding: 20px;

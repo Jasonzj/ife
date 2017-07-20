@@ -1,13 +1,24 @@
 .choose__title {
     font-weight: normal;
     line-height: 40px;
+
+    input {
+        font-size: 16px;
+        line-height: 25px;
+    }
+
 }
 
 .choose {
+    transition-duration: 0.7s;
     font-size: 16px;
 
     input {
         margin-right: 20px;
+    }
+
+    &:hover {
+        background: #fcf0e5;
     }
 
 }

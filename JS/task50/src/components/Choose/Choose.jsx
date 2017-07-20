@@ -6,10 +6,13 @@ import './Choose.scss'
 
 // component
 import Options from 'components/Options'
+import EditorTitle from 'components/EditorTitle'
 
 const Choose = ({
+    setChooseTitle,
+    setOptionTitle,
     removeOption,
-    setOption,
+    addOption,
     disabled,
     options,
     title,
@@ -17,7 +20,11 @@ const Choose = ({
     id
 }) => (
     <div className="choose">
-        <h1 className="choose__title">Q{id + 1} {title}</h1>
+        <EditorTitle
+            className="choose__title"
+            message={title}
+            setTitle={[setChooseTitle, id]}
+        />
         {
             options.map((o, i) => (
                 <Options
@@ -25,13 +32,14 @@ const Choose = ({
                     message={o}
                     type={type}
                     disabled={disabled}
-                    setOption={setOption}
+                    setOptionTitle={setOptionTitle}
                     removeOption={removeOption}
                     chooseId={id}
                     optionId={i}
                 />
             ))
         }
+        <button onClick={() => addOption(id)}>+</button>
     </div>
 )
 
@@ -41,8 +49,10 @@ Choose.propTypes = {
     title: PropTypes.string,
     disabled: PropTypes.number,
     id: PropTypes.number,
-    setOption: PropTypes.func,
-    removeOption: PropTypes.func
+    setOptionTitle: PropTypes.func,
+    removeOption: PropTypes.func,
+    setChooseTitle: PropTypes.func,
+    addOption: PropTypes.func
 }
 
 export default Choose

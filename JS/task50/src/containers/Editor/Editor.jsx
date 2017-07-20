@@ -21,15 +21,21 @@ class Editor extends Component {
         }
         this.state = {
             showAddBox: false,
-            title: '',
-            chooses: [],
-            data: []
+            title: '请输入问卷标题',
+            chooses: []
         }
     }
 
     // 设置标题
     setTitle = (title) => {
         this.setState({ title })
+    }
+
+    // 设置choose标题
+    setChooseTitle = (chooseId, title) => {
+        const arr = [...this.state.chooses]
+        arr[chooseId].title = title
+        this.setState({ chooses: arr })
     }
 
     // 切换添加按钮显示状态
@@ -44,7 +50,7 @@ class Editor extends Component {
         arr.push({
             id: this.chooseId++,
             type: choose,
-            title: this.defaultTitles[choose],
+            title: `Q${this.chooseId} ${this.defaultTitles[choose]}`,
             options: [
                 '选项1',
                 '选项2',
@@ -54,10 +60,22 @@ class Editor extends Component {
         this.setState({ chooses: arr })
     }
 
-    // 设置Option
-    setOption = (chooseId, optionId, text) => {
+    // 设置Option标题
+    setOptionTitle = (chooseId, optionId, text) => {
         const arr = [...this.state.chooses]
         arr[chooseId].options[optionId] = text
+        this.setState({ chooses: arr })
+    }
+
+    addOption = (chooseId) => {
+        const arr = [...this.state.chooses]
+        const options = arr[chooseId].options
+        if (options.length > 9) {
+            alert('最多10项，不能再添加了')
+            return
+        }
+
+        options.push(`选项${options.length + 1}`)
         this.setState({ chooses: arr })
     }
 
@@ -72,13 +90,18 @@ class Editor extends Component {
         return (
             <div className="editor">
                 <EditorTitle
-                    setTitle={this.setTitle}
+                    className="editor__head"
+                    setTitle={[this.setTitle]}
+                    message={this.state.title}
                 />
                 <EditorMain
+                    test={this.state}
                     chooses={this.state.chooses}
                     checkBoxs={this.state.checkBoxs}
-                    setOption={this.setOption}
+                    setOptionTitle={this.setOptionTitle}
                     removeOption={this.removeOption}
+                    setChooseTitle={this.setChooseTitle}
+                    addOption={this.addOption}
                 />
                 <EditorAdd
                     showAddBox={this.state.showAddBox}

@@ -1,50 +1,93 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-let input
-let title
+// const EditorTitle = ({
+//     onClick,
+//     onBlur,
+//     className,
+//     message
+// }) => (
+//     <div className={`${className}__head`}>
+//         <h1
+//             className={`${className}__title`}
+//             onClick={onClick}
+//             ref={node => title = node}
+//         >
+//             {message}
+//         </h1>
+//         <input
+//             type="text"
+//             onBlur={onBlur}
+//             ref={node => input = node}
+//         />
+//     </div>
+// )
 
-const EditorTitle = ({
-    onClick,
-    onBlur
-}) => (
-    <div className="editor__head">
-        <h1
-            className="editor__title"
-            onClick={onClick}
-            ref={node => title = node}
-        >
-            请在此输入标题
-        </h1>
-        <input
-            type="text"
-            onBlur={onBlur}
-            ref={node => input = node}
-        />
-    </div>
-)
+class EditorTitle extends Component {
+    constructor() {
+        super()
+        this.state = {
+            edit: false
+        }
+    }
 
-EditorTitle.propTypes = {
-    onClick: PropTypes.func,
-    onBlur: PropTypes.func
-}
-
-const getState = (state, props) => ({
-    onClick() {
-        input.value = title.innerHTML
-        input.parentNode.classList.add('editor__head--input')
-        input.focus()
-    },
-    onBlur() {
-        if (input.value === '') {
-            alert('标题不能为空')
+    editHandle = (target) => {
+        if (target.value === '') {
+            alert('选项不能为空')
             return
         }
-        title.innerHTML = input.value
-        input.parentNode.classList.remove('editor__head--input')
-        props.setTitle(title.innerHTML)
+        this.setState({ edit: !this.state.edit })
     }
-})
 
-export default connect(getState)(EditorTitle)
+    editTextHandle = (target) => {
+        const { setTitle } = this.props
+        const msg = target.value
+        const func = setTitle.shift()
+        func(...setTitle, msg)
+    }
+
+    editInputFocus(node) {
+        new Promise((rej) => {
+            rej(node)
+        }).then((input) => {
+            input && input.focus()
+        })
+    }
+
+    render() {
+        const { className, message } = this.props
+        const { edit } = this.state
+
+        return (
+            <div className={className}>
+                {
+                    !edit &&
+                    <span
+                        onClick={this.editHandle}
+                    >
+                        {message}
+                    </span>
+                }
+                {
+                    edit &&
+                    <input
+                        type="text"
+                        onBlur={e => this.editHandle(e.target)}
+                        defaultValue={message}
+                        onChange={(e => this.editTextHandle(e.target))}
+                        ref={node => this.editInputFocus(node)}
+                    />
+                }
+            </div>
+        )
+    }
+
+}
+
+EditorTitle.propTypes = {
+    className: PropTypes.string,
+    message: PropTypes.string,
+    setTitle: PropTypes.array
+}
+
+export default EditorTitle
