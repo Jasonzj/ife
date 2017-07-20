@@ -12,6 +12,7 @@ const Choose = ({
     setChooseTitle,
     setOptionTitle,
     removeOption,
+    removeChoose,
     addOption,
     disabled,
     options,
@@ -40,6 +41,7 @@ const Choose = ({
             ))
         }
         <button onClick={() => addOption(id)}>+</button>
+        <button onClick={() => removeChoose(id)} >删除</button>
     </div>
 )
 
@@ -52,7 +54,8 @@ Choose.propTypes = {
     setOptionTitle: PropTypes.func,
     removeOption: PropTypes.func,
     setChooseTitle: PropTypes.func,
-    addOption: PropTypes.func
+    addOption: PropTypes.func,
+    removeChoose: PropTypes.func
 }
 
 export default Choose

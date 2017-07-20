@@ -60,6 +60,12 @@ class Editor extends Component {
         this.setState({ chooses: arr })
     }
 
+    removeChoose = (chooseId) => {
+        const arr = [...this.state.chooses]
+        arr.splice(chooseId, 1)
+        this.setState({ chooses: arr })
+    }
+
     // 设置Option标题
     setOptionTitle = (chooseId, optionId, text) => {
         const arr = [...this.state.chooses]
@@ -102,6 +108,7 @@ class Editor extends Component {
                     removeOption={this.removeOption}
                     setChooseTitle={this.setChooseTitle}
                     addOption={this.addOption}
+                    removeChoose={this.removeChoose}
                 />
                 <EditorAdd
                     showAddBox={this.state.showAddBox}

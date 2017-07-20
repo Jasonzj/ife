@@ -8,6 +8,7 @@ const EditorMain = ({
     chooses,
     setOptionTitle,
     removeOption,
+    removeChoose,
     setChooseTitle,
     addOption
 }) => {
@@ -21,6 +22,7 @@ const EditorMain = ({
                         disabled={1}
                         setOptionTitle={setOptionTitle}
                         removeOption={removeOption}
+                        removeChoose={removeChoose}
                         setChooseTitle={setChooseTitle}
                         addOption={addOption}
                         {...item}
@@ -36,7 +38,8 @@ EditorMain.propTypes = {
     setOptionTitle: PropTypes.func,
     removeOption: PropTypes.func,
     setChooseTitle: PropTypes.func,
-    addOption: PropTypes.func
+    addOption: PropTypes.func,
+    removeChoose: PropTypes.func
 }
 
 export default EditorMain
