@@ -17,9 +17,17 @@ export const AremoveAllQuestion = () => ({
     type: 'REMOVE_ALL_QUESTION'
 })
 
-export const AsetDialog = (dialog, id, title) => ({
+export const AsetDialog = (dialog, func, message) => ({
     type: 'SET_DIALOG',
     dialog,
-    id,
-    title
+    func,
+    message
+})
+
+export const AaddQuestion = (title, chooses, endTime, state) => ({
+    type: 'ADD_QUESTION',
+    title,
+    chooses,
+    endTime,
+    state
 })

@@ -6,13 +6,14 @@ import PropTypes from 'prop-types'
 import Button from 'components/Button'
 
 // action
-import { AtoggleAllChecked, AsetDialog } from 'action/questionnaires'
+import { AtoggleAllChecked, AsetDialog, AremoveAllQuestion } from 'action/questionnaires'
 
 const ListsFooter = ({
     toogleAllChecked,
     setDialog,
     isAllchecked,
-    isChecked
+    isChecked,
+    removeAllQuestion
 }) => (
     <tfoot className="lists__table__footer">
         <tr>
@@ -32,7 +33,7 @@ const ListsFooter = ({
                             alert('您还没选择要删除的文卷')
                             return
                         }
-                        setDialog(true, 'all', '所有选择的问卷')
+                        setDialog(true, removeAllQuestion, '确定删除所有选择的问卷')
                     }}
                 >
                     删除
@@ -46,7 +47,8 @@ ListsFooter.propTypes = {
     toogleAllChecked: PropTypes.func,
     setDialog: PropTypes.func,
     isAllchecked: PropTypes.bool,
-    isChecked: PropTypes.bool
+    isChecked: PropTypes.bool,
+    removeAllQuestion: PropTypes.func
 }
 
 const getState = state => ({
@@ -58,8 +60,11 @@ const getDispatch = dispatch => ({
     toogleAllChecked(checked) {
         dispatch(AtoggleAllChecked(checked))
     },
-    setDialog(bool, id, title) {
-        dispatch(AsetDialog(bool, id, title))
+    removeAllQuestion() {
+        dispatch(AremoveAllQuestion())
+    },
+    setDialog(bool, func, message) {
+        dispatch(AsetDialog(bool, func, message))
     }
 })
 

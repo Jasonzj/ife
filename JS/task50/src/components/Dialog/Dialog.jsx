@@ -8,7 +8,6 @@ import Button from 'components/Button'
 import './Diglog.scss'
 
 const Dialog = ({
-    removeMessage,
     message,
     close,
     onClick
@@ -25,7 +24,7 @@ const Dialog = ({
                 </span>
             </h1>
             <p className="diglog__content">
-                {message || `确定删除${removeMessage}?`}
+                {message}
             </p>
             <div className="diglog__btnBox">
                 <Button
@@ -51,8 +50,7 @@ const Dialog = ({
 Dialog.propTypes = {
     message: PropTypes.string,
     close: PropTypes.func,
-    onClick: PropTypes.func,
-    removeMessage: PropTypes.string
+    onClick: PropTypes.func
 }
 
 export default Dialog

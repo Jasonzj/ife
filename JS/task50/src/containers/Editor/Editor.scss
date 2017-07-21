@@ -85,12 +85,20 @@
 
 .editor__footer {
     position: relative;
-    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    padding: 40px 20px;
+    font-size: 14px;
 
     input {
         height: 25px;
         padding: 0 10px;
+        margin-left: 10px;
         font-size: 14px;
+    }
+
+    button {
+        margin-left: 20px;
     }
 }
 

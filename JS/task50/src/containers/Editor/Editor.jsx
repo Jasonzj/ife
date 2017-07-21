@@ -1,14 +1,27 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 
 // component
 import EditorTitle from 'components/EditorTitle'
 import EditorAdd from 'components/EditorAdd'
 import EditorFooter from 'components/EditorFooter'
 import EditorMain from 'components/EditorMain'
+import Dialog from 'components/Dialog'
+
+// action
+import { AaddQuestion, AsetDialog } from 'action/questionnaires'
 
 // scss
 import './Editor.scss'
 
+@connect(
+    state => ({
+        dialog: state.dialog.bool,
+        diglogFunc: state.dialog.func,
+        dialogMsg: state.dialog.message
+    })
+)
 class Editor extends Component {
     constructor() {
         super()
@@ -173,7 +186,20 @@ class Editor extends Component {
         this.setState(() => ({ endTime }))
     }
 
+    addQuestion = (state) => {
+        const { dispatch } = this.props
+        const { title, chooses, endTime } = this.state
+        dispatch(AaddQuestion(title, chooses, endTime, state))
+    }
+
+    setDialog = (bool, id, title) => {
+        const { dispatch } = this.props
+        dispatch(AsetDialog(bool, id, title))
+    }
+
     render() {
+        const { dialog, diglogFunc, dialogMsg } = this.props
+
         return (
             <div className="editor">
                 <EditorTitle
@@ -205,10 +231,28 @@ class Editor extends Component {
                     showCalendar={this.state.showCalendar}
                     toggleCalendarHandle={() => this.toggleBool('showCalendar')}
                     endTime={this.state.endTime}
+                    saveQuestion={() => this.addQuestion(0)}
+                    releaseQuestion={() => this.addQuestion(1)}
+                    setDialog={this.setDialog}
                 />
+                {
+                    dialog &&
+                    <Dialog
+                        message={dialogMsg}
+                        onClick={diglogFunc}
+                        close={() => this.setDialog(false, null)}
+                    />
+                }
             </div>
         )
     }
+}
+
+Editor.propTypes = {
+    dispatch: PropTypes.func,
+    dialog: PropTypes.bool,
+    diglogFunc: PropTypes.func,
+    dialogMsg: PropTypes.string
 }
 
 export default Editor

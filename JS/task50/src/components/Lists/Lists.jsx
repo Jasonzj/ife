@@ -7,7 +7,7 @@ import Item from 'components/Item'
 import Dialog from 'components/Dialog'
 
 // action
-import { AtoggleChecked, AremoveQuestion, AremoveAllQuestion, AsetDialog } from 'action/questionnaires'
+import { AtoggleChecked, AremoveQuestion, AsetDialog } from 'action/questionnaires'
 
 const stateTexts = ['未发布', '发布中', '已结束']
 
@@ -17,8 +17,8 @@ const Lists = ({
     toggleChecked,
     removeQuestion,
     setDialog,
-    removeId,
-    removeTitle
+    dialogFunc,
+    message
 }) => (
     <tbody className="lists__table__body">
         {
@@ -31,6 +31,7 @@ const Lists = ({
                     setDialog={setDialog}
                     btnStateT={item.state ? 0 : 1}
                     btnStateF={item.state ? 1 : 0}
+                    removeQuestion={removeQuestion}
                     {...item}
                 />
             ))
@@ -38,9 +39,9 @@ const Lists = ({
         {
             dialog &&
             <Dialog
-                removeMessage={removeTitle}
+                message={message}
                 close={() => setDialog(false, null)}
-                onClick={() => removeQuestion(removeId)}
+                onClick={dialogFunc}
             />
         }
     </tbody>
@@ -52,16 +53,16 @@ Lists.propTypes = {
     toggleChecked: PropTypes.func,
     removeQuestion: PropTypes.func,
     setDialog: PropTypes.func,
-    removeId: PropTypes.any,
-    removeTitle: PropTypes.string
+    dialogFunc: PropTypes.func,
+    message: PropTypes.string
 }
 
 // connect
 const getState = state => ({
     lists: state.lists,
     dialog: state.dialog.bool,
-    removeId: state.dialog.removeId,
-    removeTitle: state.dialog.removeTitle
+    dialogFunc: state.dialog.func,
+    message: state.dialog.message
 })
 
 const getDispatch = dispatch => ({
@@ -69,14 +70,10 @@ const getDispatch = dispatch => ({
         dispatch(AtoggleChecked(id))
     },
     removeQuestion(id) {
-        if (id === 'all') {
-            dispatch(AremoveAllQuestion())
-            return
-        }
         dispatch(AremoveQuestion(id))
     },
-    setDialog(bool, id, title) {
-        dispatch(AsetDialog(bool, id, title))
+    setDialog(bool, func, message) {
+        dispatch(AsetDialog(bool, func, message))
     }
 })
 

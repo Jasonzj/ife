@@ -25,7 +25,7 @@ $white: #fff;
 
 .calendar {
     position: absolute;
-    top: 50px;
+    top: 70px;
     left: 20px;
     display: block;
     width: 350px; 
@@ -33,6 +33,7 @@ $white: #fff;
     border: 2px solid $dark;
     font-size: 16px;
     background: #fff;
+
     .calendar_prev {
         float: left; 
         cursor: pointer;
@@ -42,6 +43,7 @@ $white: #fff;
         float: right; 
         cursor: pointer;
     }
+
     .title {
         margin: 0;
         padding: 10px;
@@ -49,6 +51,7 @@ $white: #fff;
         background-color: $red;
         color: $white;
     }
+
     span {
         display: inline-block;
         width: 50px;

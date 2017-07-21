@@ -30,6 +30,16 @@ const questionnaires = (state, action) => {
             list.splice(action.id, 1)
             return list
         
+        case 'ADD_QUESTION':
+            return {
+                id: state.length,
+                title: action.title,
+                state: action.state,
+                endTime: action.endTime,
+                chooses: action.chooses,
+                isChecked: false
+            }
+
         default:
             return state
     }
@@ -46,6 +56,12 @@ const lists = (state = data, action) => {
 
         case 'REMOVE_QUESTION':
             return questionnaires(state, action)
+
+        case 'ADD_QUESTION':
+            return [
+                ...state,
+                questionnaires(state, action)
+            ]
 
         default:
             return state

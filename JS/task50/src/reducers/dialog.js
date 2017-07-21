@@ -1,7 +1,7 @@
 const data = {
     bool: false,
-    removeId: null,
-    removeTitle: ''
+    func: null,
+    message: ''
 }
 
 const dialog = (state = data, action) => {
@@ -10,8 +10,8 @@ const dialog = (state = data, action) => {
             return {
                 ...action,
                 bool: action.dialog,
-                removeId: action.id,
-                removeTitle: action.title
+                func: action.func,
+                message: action.message
             }
 
         default: 

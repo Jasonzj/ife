@@ -15,7 +15,8 @@ const Item = ({
     toggleChecked,
     setDialog,
     btnStateT,
-    btnStateF
+    btnStateF,
+    removeQuestion
 }) => (
     <tr>
         <td>
@@ -44,7 +45,7 @@ const Item = ({
                 className={btnStateT}
                 disabled={btnStateT}
                 onClick={() => {
-                    setDialog(true, id, title)
+                    setDialog(true, () => removeQuestion(id), '确定删除此问卷')
                 }}
             >
                 删除
@@ -70,7 +71,8 @@ Item.propTypes = {
     toggleChecked: PropTypes.func,
     setDialog: PropTypes.func,
     btnStateT: PropTypes.number,
-    btnStateF: PropTypes.number
+    btnStateF: PropTypes.number,
+    removeQuestion: PropTypes.func,
 }
 
 export default Item

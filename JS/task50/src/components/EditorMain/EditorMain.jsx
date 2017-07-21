@@ -13,32 +13,29 @@ const EditorMain = ({
     removeOption,
     setOptionTitle,
     setChooseTitle,
-}) => {
-    console.log(chooses)
-    return (
-        <div className="editor__main">
-            {
-                chooses.map(item => (
-                    <Choose
-                        key={item.id}
-                        disabled={1}
-                        up={item.id !== 0}
-                        down={item.id !== (chooses.length - 1)}
-                        addOption={addOption}
-                        moveChoose={moveChoose}
-                        reuseChoose={reuseChoose}
-                        removeOption={removeOption}
-                        removeChoose={removeChoose}
-                        setOptionTitle={setOptionTitle}
-                        setChooseTitle={setChooseTitle}
-                        noTextarea={item.type !== 'textarea'}
-                        {...item}
-                    />
-                ))
-            }
-        </div>
-    )
-}
+}) => (
+    <div className="editor__main">
+        {
+            chooses.map(item => (
+                <Choose
+                    key={item.id}
+                    disabled={1}
+                    up={item.id !== 0}
+                    down={item.id !== (chooses.length - 1)}
+                    addOption={addOption}
+                    moveChoose={moveChoose}
+                    reuseChoose={reuseChoose}
+                    removeOption={removeOption}
+                    removeChoose={removeChoose}
+                    setOptionTitle={setOptionTitle}
+                    setChooseTitle={setChooseTitle}
+                    noTextarea={item.type !== 'textarea'}
+                    {...item}
+                />
+            ))
+        }
+    </div>
+)
 
 EditorMain.propTypes = {
     chooses: PropTypes.array,
