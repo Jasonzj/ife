@@ -194,6 +194,12 @@ class Editor extends Component {
 
     setDialog = (bool, id, title) => {
         const { dispatch } = this.props
+
+        if (!this.state.chooses.length) {
+            alert('请至少添加一个问题在保存或发布')
+            return
+        }
+
         dispatch(AsetDialog(bool, id, title))
     }
 
