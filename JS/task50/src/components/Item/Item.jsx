@@ -33,7 +33,7 @@ const Item = ({
             {stateText}
         </td>
         <td colSpan="2">
-            <Link to="/editor">
+            <Link to={`/editor/${id}`}>
                 <Button
                     className={btnStateT}
                     disabled={btnStateT}

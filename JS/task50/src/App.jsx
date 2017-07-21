@@ -1,6 +1,7 @@
 import React from 'react'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
+
 import {
     BrowserRouter as Router,
     Route
@@ -33,7 +34,8 @@ const App = () => (
             <HomeContainer>
                 <Route exact path="/" component={ShowLists} />
                 <Route path="/create" component={Create} />
-                <Route path="/editor" component={Editor} />
+                <Route path="/newQuestion" component={Editor} />
+                <Route path="/editor/:id" component={Editor} />
             </HomeContainer>
         </Router>
     </Provider>

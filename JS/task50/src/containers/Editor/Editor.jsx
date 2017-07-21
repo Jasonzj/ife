@@ -10,13 +10,14 @@ import EditorMain from 'components/EditorMain'
 import Dialog from 'components/Dialog'
 
 // action
-import { AaddQuestion, AsetDialog } from 'action/questionnaires'
+import { AaddQuestion, AsetDialog, AsetQuestion } from 'action/questionnaires'
 
 // scss
 import './Editor.scss'
 
 @connect(
     state => ({
+        lists: state.lists,
         dialog: state.dialog.bool,
         diglogFunc: state.dialog.func,
         dialogMsg: state.dialog.message
@@ -39,6 +40,23 @@ class Editor extends Component {
             title: '请输入问卷标题',
             chooses: [],
             endTime: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+        }
+    }
+
+    componentWillMount() {
+        const { match, lists } = this.props
+        const id = match.params.id
+        if (id) {
+            const { chooses, title, endTime } = lists[id]
+
+            this.setState({ chooses, title, endTime })
+
+            this.addQuestion = (state) => {
+                const { dispatch, history } = this.props
+                const { title, chooses, endTime } = this.state
+                dispatch(AsetQuestion(title, chooses, endTime, state, id))
+                history.push('/')
+            }
         }
     }
 
@@ -187,9 +205,10 @@ class Editor extends Component {
     }
 
     addQuestion = (state) => {
-        const { dispatch } = this.props
+        const { dispatch, history } = this.props
         const { title, chooses, endTime } = this.state
         dispatch(AaddQuestion(title, chooses, endTime, state))
+        history.push('/')
     }
 
     setDialog = (bool, id, title) => {
@@ -258,7 +277,10 @@ Editor.propTypes = {
     dispatch: PropTypes.func,
     dialog: PropTypes.bool,
     diglogFunc: PropTypes.func,
-    dialogMsg: PropTypes.string
+    dialogMsg: PropTypes.string,
+    match: PropTypes.any,
+    lists: PropTypes.array,
+    history: PropTypes.any
 }
 
 export default Editor

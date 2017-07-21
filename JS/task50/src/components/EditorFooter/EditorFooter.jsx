@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 // component
 import Calendar from 'components/Calendar'
@@ -23,15 +24,21 @@ const EditorFooter = ({
                 onChange={() => {}}
                 onClick={toggleCalendarHandle}
             />
-            {
-                showCalendar &&
-                <Calendar
-                    date={endTime}
-                    setTime={setEndTime}
-                    hide={toggleCalendarHandle}
-                    noToday
-                />
-            }
+            <ReactCSSTransitionGroup
+                transitionName="calendar"
+                transitionEnterTimeout={300}
+                transitionLeaveTimeout={300}
+            >
+                {
+                    showCalendar &&
+                    <Calendar
+                        date={endTime}
+                        setTime={setEndTime}
+                        hide={toggleCalendarHandle}
+                        noToday
+                    />
+                }
+            </ReactCSSTransitionGroup>
         </div>
         <div>
             <Button

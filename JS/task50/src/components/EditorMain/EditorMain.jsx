@@ -16,9 +16,9 @@ const EditorMain = ({
 }) => (
     <div className="editor__main">
         {
-            chooses.map(item => (
+            chooses.map((item, i) => (
                 <Choose
-                    key={item.id}
+                    key={i}
                     disabled={1}
                     up={item.id !== 0}
                     down={item.id !== (chooses.length - 1)}

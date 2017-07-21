@@ -6,7 +6,7 @@ import './Create.scss'
 
 const Create = () => (
     <div className="create">
-        <Link to="/editor">
+        <Link to="/newQuestion">
             <button className="create__btn">+新建问卷</button>
         </Link>
     </div>

@@ -31,3 +31,12 @@ export const AaddQuestion = (title, chooses, endTime, state) => ({
     endTime,
     state
 })
+
+export const AsetQuestion = (title, chooses, endTime, state, id) => ({
+    type: 'SET_QUESTION',
+    id,
+    title,
+    chooses,
+    endTime,
+    state
+})
