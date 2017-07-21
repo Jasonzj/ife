@@ -83,6 +83,17 @@
 
 }
 
+.editor__footer {
+    position: relative;
+    padding: 20px;
+
+    input {
+        height: 25px;
+        padding: 0 10px;
+        font-size: 14px;
+    }
+}
+
 .addBox-enter {
     height: 0;
 }

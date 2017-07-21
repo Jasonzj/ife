@@ -1,0 +1,96 @@
+$dark: lightgray;
+$red: rgb(200, 27, 1);
+$black: #000;
+$white: #fff;
+
+%btn {
+    width: 100px;
+    height: 30px;
+    cursor: pointer;
+    color: #fff;
+    border: none;
+    background: #ccc;
+}
+
+.calendar-con {
+    position: relative;
+    width: 380px;
+    height: 480px;
+}
+
+.calendar-input {
+    height: 30px;
+    width: 200px;
+}
+
+.calendar {
+    position: absolute;
+    top: 50px;
+    left: 20px;
+    display: block;
+    width: 350px; 
+    height: 430px; 
+    border: 2px solid $dark;
+    font-size: 16px;
+    background: #fff;
+    .calendar_prev {
+        float: left; 
+        cursor: pointer;
+    }
+
+    .calendar_next {
+        float: right; 
+        cursor: pointer;
+    }
+    .title {
+        margin: 0;
+        padding: 10px;
+        text-align: center;
+        background-color: $red;
+        color: $white;
+    }
+    span {
+        display: inline-block;
+        width: 50px;
+        line-height: 50px;
+        text-align: center;
+        cursor: pointer;
+    }
+}
+
+.calendar-btnBox {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+
+.calendar-btnT {
+    @extend %btn;
+    background: #1abc9c;
+}
+
+.calendar-btnF {
+    @extend %btn;
+    color: #000;
+}
+
+.calendar.show {
+    display: block;
+}
+
+.white {
+    color: $dark;
+}
+.dark {
+    color: $black;
+}
+.light {
+    color: $red;
+}
+.current {
+    color: $white;
+    background: $red;
+}
+.multi {
+    background-color: rgb(235, 244, 249);
+}

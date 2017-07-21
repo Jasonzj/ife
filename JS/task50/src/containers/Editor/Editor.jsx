@@ -13,6 +13,7 @@ class Editor extends Component {
     constructor() {
         super()
 
+        const date = new Date()
         this.chooseId = 0
         this.defaultTitles = {
             radio: '单选题',
@@ -20,9 +21,11 @@ class Editor extends Component {
             textarea: '文本题'
         }
         this.state = {
+            showCalendar: false,
             showAddBox: false,
             title: '请输入问卷标题',
-            chooses: []
+            chooses: [],
+            endTime: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
         }
     }
 
@@ -63,9 +66,9 @@ class Editor extends Component {
     }
 
     // 切换添加按钮显示状态
-    toggleAddBoxHandle = () => {
-        const showAddBox = !this.state.showAddBox
-        this.setState({ showAddBox })
+    toggleBool = (name) => {
+        const bool = !this.state[name]
+        this.setState({ [name]: bool })
     }
 
     // 添加choose
@@ -166,6 +169,10 @@ class Editor extends Component {
         this.setState(() => ({ chooses: arr }))
     }
 
+    setEndTime = (endTime) => {
+        this.setState(() => ({ endTime }))
+    }
+
     render() {
         return (
             <div className="editor">
@@ -188,12 +195,17 @@ class Editor extends Component {
                 />
                 <EditorAdd
                     showAddBox={this.state.showAddBox}
-                    toggleAddBoxHandle={this.toggleAddBoxHandle}
+                    toggleAddBoxHandle={() => this.toggleBool('showAddBox')}
                     addRadio={() => this.addChoose('radio')}
                     addCheckBox={() => this.addChoose('checkbox')}
                     addTextarea={() => this.addChoose('textarea')}
                 />
-                <EditorFooter />
+                <EditorFooter
+                    setEndTime={this.setEndTime}
+                    showCalendar={this.state.showCalendar}
+                    toggleCalendarHandle={() => this.toggleBool('showCalendar')}
+                    endTime={this.state.endTime}
+                />
             </div>
         )
     }
