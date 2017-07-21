@@ -1,28 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-// const EditorTitle = ({
-//     onClick,
-//     onBlur,
-//     className,
-//     message
-// }) => (
-//     <div className={`${className}__head`}>
-//         <h1
-//             className={`${className}__title`}
-//             onClick={onClick}
-//             ref={node => title = node}
-//         >
-//             {message}
-//         </h1>
-//         <input
-//             type="text"
-//             onBlur={onBlur}
-//             ref={node => input = node}
-//         />
-//     </div>
-// )
-
 class EditorTitle extends Component {
     constructor() {
         super()
@@ -55,11 +33,17 @@ class EditorTitle extends Component {
     }
 
     render() {
-        const { className, message } = this.props
+        const { className, message, msg } = this.props
         const { edit } = this.state
 
         return (
             <div className={className}>
+                {
+                    msg &&
+                    <span>
+                        {msg}
+                    </span>
+                }
                 {
                     !edit &&
                     <span

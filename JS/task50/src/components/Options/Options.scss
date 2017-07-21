@@ -8,6 +8,14 @@
             display: inline-block;
         }
     }
+
+    input[type=textarea] {
+        width: 70%;
+        height: 130px;
+        border-radius: 5px;
+        border: 1px solid #000;
+    }
+
 }
 
 .option__title {

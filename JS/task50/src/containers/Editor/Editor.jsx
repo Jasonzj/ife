@@ -26,6 +26,30 @@ class Editor extends Component {
         }
     }
 
+    // 获取深拷贝的引用值
+    getNewReference(ref) {
+        return JSON.parse(JSON.stringify(ref))
+    }
+
+    // 获取深拷贝的chooses
+    getNewChooses() {
+        return this.getNewReference(this.state.chooses)
+    }
+
+    // 截取数组指定值前后
+    getSliceArr(arr, chooseId, num, num2) {
+        const before = arr.slice(0, chooseId)
+        const after = arr.slice(chooseId + num).map(t => ({
+            ...t,
+            id: t.id + num2
+        }))
+
+        return {
+            before,
+            after
+        }
+    }
+
     // 设置标题
     setTitle = (title) => {
         this.setState({ title })
@@ -33,9 +57,9 @@ class Editor extends Component {
 
     // 设置choose标题
     setChooseTitle = (chooseId, title) => {
-        const arr = [...this.state.chooses]
+        const arr = this.getNewChooses()
         arr[chooseId].title = title
-        this.setState({ chooses: arr })
+        this.setState(() => ({ chooses: arr }))
     }
 
     // 切换添加按钮显示状态
@@ -46,35 +70,64 @@ class Editor extends Component {
 
     // 添加choose
     addChoose = (choose) => {
-        const arr = [...this.state.chooses]
-        arr.push({
+        const arr = this.getNewChooses()
+
+        if (arr.length >= 10) {
+            alert('不能大于10个问题')
+            return
+        }
+
+        const data = {
             id: this.chooseId++,
             type: choose,
-            title: `Q${this.chooseId} ${this.defaultTitles[choose]}`,
+            title: `${this.defaultTitles[choose]}`,
             options: [
                 '选项1',
                 '选项2',
                 '选项3'
             ]
-        })
-        this.setState({ chooses: arr })
+        }
+
+        if (choose === 'textarea') {
+            data.options = ['']
+        }
+
+        arr.push(data)
+
+        this.setState(() => ({ chooses: arr }))
     }
 
+    // 复用choose
+    reuseChoose = (chooseId) => {
+        const arr = this.getNewChooses()
+
+        if (arr.length >= 10) {
+            alert('不能大于10个问题')
+            return
+        }
+
+        const cur = this.getNewReference(arr[chooseId])
+        const result = this.getSliceArr(arr, chooseId, 0, 1)
+        this.setState({ chooses: [...result.before, cur, ...result.after] })
+    }
+
+    // 删除choose
     removeChoose = (chooseId) => {
-        const arr = [...this.state.chooses]
-        arr.splice(chooseId, 1)
-        this.setState({ chooses: arr })
+        const arr = this.getNewChooses()
+        const result = this.getSliceArr(arr, chooseId, 1, -1)
+        this.setState({ chooses: [...result.before, ...result.after] })
     }
 
     // 设置Option标题
     setOptionTitle = (chooseId, optionId, text) => {
-        const arr = [...this.state.chooses]
+        const arr = this.getNewChooses()
         arr[chooseId].options[optionId] = text
-        this.setState({ chooses: arr })
+        this.setState(() => ({ chooses: arr }))
     }
 
+    // 添加Option
     addOption = (chooseId) => {
-        const arr = [...this.state.chooses]
+        const arr = this.getNewChooses()
         const options = arr[chooseId].options
         if (options.length > 9) {
             alert('最多10项，不能再添加了')
@@ -82,14 +135,35 @@ class Editor extends Component {
         }
 
         options.push(`选项${options.length + 1}`)
-        this.setState({ chooses: arr })
+        this.setState(() => ({ chooses: arr }))
     }
 
     // 删除Option
     removeOption = (chooseId, optionId) => {
-        const arr = [...this.state.chooses]
+        const arr = this.getNewChooses()
         arr[chooseId].options.splice(optionId, 1)
-        this.setState({ chooses: arr })
+        this.setState(() => ({ chooses: arr }))
+    }
+
+    // choose上移
+    moveChoose = (chooseId, move) => {
+        const arr = this.getNewChooses()
+        let diff = 0
+
+        if (move === 'up') diff = 1
+        if (move === 'down') diff = -1
+
+        const cur = {
+            ...arr[chooseId],
+            id: arr[chooseId].id - diff
+        }
+        const next = {
+            ...arr[chooseId - diff],
+            id: arr[chooseId - diff].id + diff
+        }
+        arr[chooseId] = next
+        arr[chooseId - diff] = cur
+        this.setState(() => ({ chooses: arr }))
     }
 
     render() {
@@ -109,6 +183,8 @@ class Editor extends Component {
                     setChooseTitle={this.setChooseTitle}
                     addOption={this.addOption}
                     removeChoose={this.removeChoose}
+                    reuseChoose={this.reuseChoose}
+                    moveChoose={this.moveChoose}
                 />
                 <EditorAdd
                     showAddBox={this.state.showAddBox}

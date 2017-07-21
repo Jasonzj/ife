@@ -6,11 +6,13 @@ import Choose from 'components/Choose'
 
 const EditorMain = ({
     chooses,
-    setOptionTitle,
-    removeOption,
+    addOption,
+    moveChoose,
+    reuseChoose,
     removeChoose,
+    removeOption,
+    setOptionTitle,
     setChooseTitle,
-    addOption
 }) => {
     console.log(chooses)
     return (
@@ -20,11 +22,16 @@ const EditorMain = ({
                     <Choose
                         key={item.id}
                         disabled={1}
-                        setOptionTitle={setOptionTitle}
+                        up={item.id !== 0}
+                        down={item.id !== (chooses.length - 1)}
+                        addOption={addOption}
+                        moveChoose={moveChoose}
+                        reuseChoose={reuseChoose}
                         removeOption={removeOption}
                         removeChoose={removeChoose}
+                        setOptionTitle={setOptionTitle}
                         setChooseTitle={setChooseTitle}
-                        addOption={addOption}
+                        noTextarea={item.type !== 'textarea'}
                         {...item}
                     />
                 ))
@@ -39,7 +46,9 @@ EditorMain.propTypes = {
     removeOption: PropTypes.func,
     setChooseTitle: PropTypes.func,
     addOption: PropTypes.func,
-    removeChoose: PropTypes.func
+    removeChoose: PropTypes.func,
+    reuseChoose: PropTypes.func,
+    moveChoose: PropTypes.func
 }
 
 export default EditorMain

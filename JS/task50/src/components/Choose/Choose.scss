@@ -1,15 +1,5 @@
-.choose__title {
-    font-weight: normal;
-    line-height: 40px;
-
-    input {
-        font-size: 16px;
-        line-height: 25px;
-    }
-
-}
-
 .choose {
+    padding: 20px;
     transition-duration: 0.7s;
     font-size: 16px;
 
@@ -21,4 +11,51 @@
         background: #fcf0e5;
     }
 
+}
+
+.choose__title {
+    font-weight: normal;
+    line-height: 40px;
+
+    input {
+        font-size: 16px;
+        line-height: 25px;
+    }
+
+}
+
+%chooseBtn {
+    padding: 0 10px;
+    font-size: 16px;
+    border: 0;
+    background: none;
+}
+
+%chooseBox {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.choose__btn {
+    @extend %chooseBox;
+}
+
+.choose__btn--textarea {
+    @extend %chooseBox;
+    justify-content: flex-end;
+}
+
+.choose__btn--add {
+    @extend %chooseBtn;
+    width: 70%;
+    border: 1px dashed #000;
+}
+
+.choose__btn--remove,
+.choose__btn--reuse,
+.choose__btn--up,
+.choose__btn--down 
+{
+    @extend %chooseBtn;
 }
