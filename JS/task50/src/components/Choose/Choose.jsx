@@ -43,6 +43,7 @@ const Choose = ({
                     disabled={disabled}
                     setOptionTitle={setOptionTitle}
                     removeOption={removeOption}
+                    noTextarea={noTextarea}
                 />
             ))
         }

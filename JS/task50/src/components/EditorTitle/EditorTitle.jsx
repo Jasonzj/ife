@@ -71,7 +71,8 @@ class EditorTitle extends Component {
 EditorTitle.propTypes = {
     className: PropTypes.string,
     message: PropTypes.string,
-    setTitle: PropTypes.array
+    setTitle: PropTypes.array,
+    msg: PropTypes.string
 }
 
 export default EditorTitle

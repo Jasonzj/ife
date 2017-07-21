@@ -14,18 +14,22 @@ const Options = ({
     optionId,
     removeOption,
     message,
-    setOptionTitle
+    setOptionTitle,
+    noTextarea
 }) => (
     <div className="options">
         <input
             type={type}
             disabled={disabled}
         />
-        <EditorTitle
-            className="option__title"
-            message={message}
-            setTitle={[setOptionTitle, chooseId, optionId]}
-        />
+        {
+            noTextarea &&
+            <EditorTitle
+                className="option__title"
+                message={message}
+                setTitle={[setOptionTitle, chooseId, optionId]}
+            />
+        }
         <span
             className="option__close"
             onClick={() => removeOption(chooseId, optionId)}
@@ -42,7 +46,8 @@ Options.propTypes = {
     chooseId: PropTypes.number,
     optionId: PropTypes.number,
     setOptionTitle: PropTypes.func,
-    removeOption: PropTypes.func
+    removeOption: PropTypes.func,
+    noTextarea: PropTypes.bool
 }
 
 export default Options
