@@ -10,7 +10,7 @@ export const AtoggleAllChecked = isChecked => ({
 
 export const AremoveQuestion = id => ({
     type: 'REMOVE_QUESTION',
-    id: id - 1
+    id
 })
 
 export const AremoveAllQuestion = () => ({

@@ -36,6 +36,7 @@ const App = () => (
                 <Route path="/create" component={Create} />
                 <Route path="/newQuestion" component={Editor} />
                 <Route path="/editor/:id" component={Editor} />
+                <Route path="/check/:id" component={Editor} />
             </HomeContainer>
         </Router>
     </Provider>

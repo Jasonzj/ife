@@ -44,9 +44,7 @@ const Item = ({
             <Button
                 className={btnStateT}
                 disabled={btnStateT}
-                onClick={() => {
-                    setDialog(true, () => removeQuestion(id), '确定删除此问卷')
-                }}
+                onClick={() => setDialog(true, () => removeQuestion(id), '确定删除此问卷')}
             >
                 删除
             </Button>
