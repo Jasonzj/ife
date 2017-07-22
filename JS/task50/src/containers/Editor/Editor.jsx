@@ -8,6 +8,7 @@ import EditorAdd from 'components/EditorAdd'
 import EditorFooter from 'components/EditorFooter'
 import EditorMain from 'components/EditorMain'
 import Dialog from 'components/Dialog'
+import Button from 'components/Button'
 
 // action
 import { AaddQuestion, AsetDialog, AsetQuestion } from 'action/questionnaires'
@@ -29,6 +30,8 @@ class Editor extends Component {
 
         const date = new Date()
         this.chooseId = 0
+        this.disabled = true
+        this.check = false
         this.defaultTitles = {
             radio: '单选题',
             checkbox: '复选题',
@@ -46,7 +49,11 @@ class Editor extends Component {
     componentWillMount() {
         const { match, lists } = this.props
         const id = match.params.id
-        if (id) {
+        const path = match.path
+        const editorPath = path.includes('/editor')
+        const checkPath = path.includes('/check')
+
+        if (id && editorPath || checkPath) {
             const { chooses, title, endTime } = lists[id]
 
             this.setState({ chooses, title, endTime })
@@ -57,6 +64,11 @@ class Editor extends Component {
                 dispatch(AsetQuestion(title, chooses, endTime, state, id))
                 history.push('/')
             }
+        }
+
+        if (id && checkPath) {
+            this.disabled = false
+            this.check = true
         }
     }
 
@@ -200,10 +212,12 @@ class Editor extends Component {
         this.setState(() => ({ chooses: arr }))
     }
 
+    // 设置问卷截止时间
     setEndTime = (endTime) => {
         this.setState(() => ({ endTime }))
     }
 
+    // 添加问卷事件
     addQuestion = (state) => {
         const { dispatch, history } = this.props
         const { title, chooses, endTime } = this.state
@@ -211,6 +225,7 @@ class Editor extends Component {
         history.push('/')
     }
 
+    // 设置浮框
     setDialog = (bool, id, title) => {
         const { dispatch } = this.props
 
@@ -231,6 +246,7 @@ class Editor extends Component {
                     className="editor__head"
                     setTitle={[this.setTitle]}
                     message={this.state.title}
+                    disabled={!!this.check}
                 />
                 <EditorMain
                     test={this.state}
@@ -243,23 +259,31 @@ class Editor extends Component {
                     removeChoose={this.removeChoose}
                     reuseChoose={this.reuseChoose}
                     moveChoose={this.moveChoose}
+                    disabled={this.disabled}
+                    check={this.check}
                 />
-                <EditorAdd
-                    showAddBox={this.state.showAddBox}
-                    toggleAddBoxHandle={() => this.toggleBool('showAddBox')}
-                    addRadio={() => this.addChoose('radio')}
-                    addCheckBox={() => this.addChoose('checkbox')}
-                    addTextarea={() => this.addChoose('textarea')}
-                />
-                <EditorFooter
-                    setEndTime={this.setEndTime}
-                    showCalendar={this.state.showCalendar}
-                    toggleCalendarHandle={() => this.toggleBool('showCalendar')}
-                    endTime={this.state.endTime}
-                    saveQuestion={() => this.addQuestion(0)}
-                    releaseQuestion={() => this.addQuestion(1)}
-                    setDialog={this.setDialog}
-                />
+                {
+                    !this.check &&
+                    <EditorAdd
+                        showAddBox={this.state.showAddBox}
+                        toggleAddBoxHandle={() => this.toggleBool('showAddBox')}
+                        addRadio={() => this.addChoose('radio')}
+                        addCheckBox={() => this.addChoose('checkbox')}
+                        addTextarea={() => this.addChoose('textarea')}
+                    />
+                }
+                {
+                    !this.check &&
+                    <EditorFooter
+                        setEndTime={this.setEndTime}
+                        showCalendar={this.state.showCalendar}
+                        toggleCalendarHandle={() => this.toggleBool('showCalendar')}
+                        endTime={this.state.endTime}
+                        saveQuestion={() => this.addQuestion(0)}
+                        releaseQuestion={() => this.addQuestion(1)}
+                        setDialog={this.setDialog}
+                    />
+                }
                 {
                     dialog &&
                     <Dialog
@@ -267,6 +291,9 @@ class Editor extends Component {
                         onClick={diglogFunc}
                         close={() => this.setDialog(false, null)}
                     />
+                }{
+                    this.check &&
+                    <Button className={2}>提交</Button>
                 }
             </div>
         )

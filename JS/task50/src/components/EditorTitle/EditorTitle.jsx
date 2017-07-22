@@ -10,6 +10,10 @@ class EditorTitle extends Component {
     }
 
     editHandle = (target) => {
+        const { disabled } = this.props
+        if (disabled) {
+            return
+        }
         if (target.value === '') {
             alert('选项不能为空')
             return
@@ -72,7 +76,8 @@ EditorTitle.propTypes = {
     className: PropTypes.string,
     message: PropTypes.string,
     setTitle: PropTypes.array,
-    msg: PropTypes.string
+    msg: PropTypes.string,
+    disabled: PropTypes.bool
 }
 
 export default EditorTitle

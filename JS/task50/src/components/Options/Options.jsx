@@ -9,6 +9,7 @@ import './Options.scss'
 
 const Options = ({
     type,
+    check,
     disabled,
     chooseId,
     optionId,
@@ -19,35 +20,42 @@ const Options = ({
 }) => (
     <div className="options">
         <input
+            name={`${type}${chooseId}`}
             type={type}
             disabled={disabled}
+            defaultValue=""
         />
         {
             noTextarea &&
             <EditorTitle
+                disabled={!!check}
                 className="option__title"
                 message={message}
                 setTitle={[setOptionTitle, chooseId, optionId]}
             />
         }
-        <span
-            className="option__close"
-            onClick={() => removeOption(chooseId, optionId)}
-        >
-            X
-        </span>
+        {
+            !check &&
+            <span
+                className="option__close"
+                onClick={() => removeOption(chooseId, optionId)}
+            >
+                X
+            </span>
+        }
     </div>
 )
 
 Options.propTypes = {
     message: PropTypes.string,
     type: PropTypes.string,
-    disabled: PropTypes.number,
+    disabled: PropTypes.bool,
     chooseId: PropTypes.number,
     optionId: PropTypes.number,
     setOptionTitle: PropTypes.func,
     removeOption: PropTypes.func,
-    noTextarea: PropTypes.bool
+    noTextarea: PropTypes.bool,
+    check: PropTypes.bool
 }
 
 export default Options

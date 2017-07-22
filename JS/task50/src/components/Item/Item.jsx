@@ -48,7 +48,9 @@ const Item = ({
             >
                 删除
             </Button>
-            <Button className={1}>查看问卷</Button>
+            <Link to={`/check/${id}`}>
+                <Button className={1}>查看问卷</Button>
+            </Link>
             <Button
                 className={btnStateF}
                 disabled={btnStateF}

@@ -1,5 +1,6 @@
 import React from 'react'
-import { createStore } from 'redux'
+import { createStore, compose } from 'redux'
+import persistState from 'redux-localstorage'
 import { Provider } from 'react-redux'
 
 import {
@@ -19,9 +20,13 @@ import Editor from 'containers/Editor'
 // scss
 import './app.scss'
 
+const enhancer = compose(
+    persistState()
+)
+
 const store = createStore(
     rootReducer,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    enhancer
 )
 
 store.subscribe(() => {

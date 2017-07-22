@@ -20,6 +20,7 @@ const Choose = ({
     disabled,
     options,
     title,
+    check,
     type,
     down,
     up,
@@ -39,6 +40,7 @@ const Choose = ({
                     message={o}
                     type={type}
                     optionId={i}
+                    check={check}
                     chooseId={id}
                     disabled={disabled}
                     setOptionTitle={setOptionTitle}
@@ -47,51 +49,54 @@ const Choose = ({
                 />
             ))
         }
-        <div className={noTextarea ? 'choose__btn' : 'choose__btn--textarea'}>
-            {
-                noTextarea &&
+        {
+            !check &&
+            <div className={noTextarea ? 'choose__btn' : 'choose__btn--textarea'}>
+                {
+                    noTextarea &&
+                    <button
+                        className="choose__btn--add"
+                        onClick={() => addOption(id)}
+                    >
+                        +
+                    </button>
+                }
+
                 <button
-                    className="choose__btn--add"
-                    onClick={() => addOption(id)}
+                    className="choose__btn--remove"
+                    onClick={() => removeChoose(id)}
                 >
-                    +
+                    删除
                 </button>
-            }
 
-            <button
-                className="choose__btn--remove"
-                onClick={() => removeChoose(id)}
-            >
-                删除
-            </button>
-
-            <button
-                className="choose__btn--reuse"
-                onClick={() => reuseChoose(id)}
-            >
-                复用
-            </button>
-
-            {
-                up &&
                 <button
-                    className="choose__btn--up"
-                    onClick={() => moveChoose(id, 'up')}
+                    className="choose__btn--reuse"
+                    onClick={() => reuseChoose(id)}
                 >
-                    上移
+                    复用
                 </button>
-            }
 
-            {
-                down &&
-                <button
-                    className="choose__btn--down"
-                    onClick={() => moveChoose(id, 'down')}
-                >
-                    下移
-                </button>
-            }
-        </div>
+                {
+                    up &&
+                    <button
+                        className="choose__btn--up"
+                        onClick={() => moveChoose(id, 'up')}
+                    >
+                        上移
+                    </button>
+                }
+
+                {
+                    down &&
+                    <button
+                        className="choose__btn--down"
+                        onClick={() => moveChoose(id, 'down')}
+                    >
+                        下移
+                    </button>
+                }
+            </div>
+        }
     </div>
 )
 
@@ -99,7 +104,7 @@ Choose.propTypes = {
     type: PropTypes.string,
     title: PropTypes.string,
     id: PropTypes.number,
-    disabled: PropTypes.number,
+    disabled: PropTypes.bool,
     options: PropTypes.array,
     addOption: PropTypes.func,
     moveChoose: PropTypes.func,
@@ -110,7 +115,8 @@ Choose.propTypes = {
     setChooseTitle: PropTypes.func,
     down: PropTypes.bool,
     up: PropTypes.bool,
-    noTextarea: PropTypes.bool
+    noTextarea: PropTypes.bool,
+    check: PropTypes.bool
 }
 
 export default Choose

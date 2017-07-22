@@ -5,7 +5,9 @@ import PropTypes from 'prop-types'
 import Choose from 'components/Choose'
 
 const EditorMain = ({
+    check,
     chooses,
+    disabled,
     addOption,
     moveChoose,
     reuseChoose,
@@ -19,9 +21,11 @@ const EditorMain = ({
             chooses.map((item, i) => (
                 <Choose
                     key={i}
-                    disabled={1}
+                    check={check}
+                    disabled={disabled}
                     up={item.id !== 0}
                     down={item.id !== (chooses.length - 1)}
+                    noTextarea={item.type !== 'textarea'}
                     addOption={addOption}
                     moveChoose={moveChoose}
                     reuseChoose={reuseChoose}
@@ -29,7 +33,6 @@ const EditorMain = ({
                     removeChoose={removeChoose}
                     setOptionTitle={setOptionTitle}
                     setChooseTitle={setChooseTitle}
-                    noTextarea={item.type !== 'textarea'}
                     {...item}
                 />
             ))
@@ -45,7 +48,9 @@ EditorMain.propTypes = {
     addOption: PropTypes.func,
     removeChoose: PropTypes.func,
     reuseChoose: PropTypes.func,
-    moveChoose: PropTypes.func
+    moveChoose: PropTypes.func,
+    disabled: PropTypes.bool,
+    check: PropTypes.bool
 }
 
 export default EditorMain
