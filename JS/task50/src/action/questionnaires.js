@@ -40,3 +40,9 @@ export const AsetQuestion = (title, chooses, endTime, state, id) => ({
     endTime,
     state
 })
+
+export const AaddOptionChecked = (id, chooses) => ({
+    type: 'ADD_OPTION_CHECKED',
+    id,
+    chooses
+})

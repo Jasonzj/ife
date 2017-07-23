@@ -51,6 +51,24 @@ const questionnaires = (state, action) => {
                 isChecked: false
             }
 
+        case 'ADD_OPTION_CHECKED':
+            if (state.id != parseInt(action.id)) {
+                return state
+            }
+
+            return {
+                ...state,
+                chooses: action.chooses.map((choose) => {
+                    const checkeds = choose.checkeds
+                    checkeds.push(choose.cacheChecked)
+                    
+                    return {
+                        ...choose,
+                        checkeds
+                    }
+                })
+            }
+
         default:
             return state
     }
@@ -61,6 +79,7 @@ const lists = (state = data, action) => {
         case 'TOGGLE_ALL_CHECKED':
         case 'TOGGLE_CHECKED':
         case 'SET_QUESTION':
+        case 'ADD_OPTION_CHECKED':
             return state.map(t => questionnaires(t, action))
 
         case 'REMOVE_ALL_QUESTION':
@@ -72,6 +91,8 @@ const lists = (state = data, action) => {
                 ...state,
                 questionnaires(state, action)
             ]
+
+            
 
         default:
             return state

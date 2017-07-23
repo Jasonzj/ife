@@ -10,13 +10,23 @@
         "id": 0,
         "type": "radio",
         "title": "单选题",
-        "options": ["选项1", "选项2", "选项3"]
+        "options": ["选项1", "选项2", "选项3"],
+        "cacheChecked": [false, false, false],
+        "checkeds": [
+          [false, true, false],
+          [false, false, true]
+        ]
       },
       {
         "id": 1,
         "type": "checkbox",
         "title": "蛇哥牛逼",
-        "options": ["蛇哥帅不帅", "蛇哥厉不厉害", "蛇哥牛不牛逼"]
+        "options": ["蛇哥帅不帅", "蛇哥厉不厉害", "蛇哥牛不牛逼"],
+        "cacheChecked": [false, false, false],
+        "checkeds": [
+          [false, true, true],
+          [true, false, true]
+        ]
       }
     ]
   },
@@ -31,13 +41,23 @@
         "id": 0,
         "type": "radio",
         "title": "单选题",
-        "options": ["选项1", "选项2", "选项3"]
+        "options": ["选项1", "选项2", "选项3"],
+        "cacheChecked": [false, false, false],
+        "checkeds": [
+          [false, false, true],
+          [true, false, false]
+        ]
       },
       {
         "id": 1,
         "type": "checkbox",
         "title": "蛇哥牛逼",
-        "options": ["蛇哥帅不帅", "蛇哥厉不厉害", "蛇哥牛不牛逼"]
+        "options": ["蛇哥帅不帅", "蛇哥厉不厉害", "蛇哥牛不牛逼"],
+        "cacheChecked": [false, false, false],
+        "checkeds": [
+          [false, true, true],
+          [true, false, true]
+        ]
       }
     ]
   },
@@ -52,7 +72,12 @@
         "id": 0,
         "type": "radio",
         "title": "单选题",
-        "options": ["选项1", "选项2", "选项3"]
+        "options": ["选项1", "选项2", "选项3"],
+        "cacheChecked": [false, false, false],
+        "checkeds": [
+          [false, true, false],
+          [false, false, true]
+        ]
       }
     ]
   },
@@ -67,7 +92,12 @@
         "id": 0,
         "type": "radio",
         "title": "单选题",
-        "options": ["选项1", "选项2", "选项3"]
+        "options": ["选项1", "选项2", "选项3"],
+        "cacheChecked": [false, false, false],
+        "checkeds": [
+          [false, true, true],
+          [true, false, true]
+        ]
       }
     ]
   }

@@ -11,7 +11,7 @@ import Dialog from 'components/Dialog'
 import Button from 'components/Button'
 
 // action
-import { AaddQuestion, AsetDialog, AsetQuestion } from 'action/questionnaires'
+import { AaddQuestion, AsetDialog, AsetQuestion, AaddOptionChecked } from 'action/questionnaires'
 
 // scss
 import './Editor.scss'
@@ -131,7 +131,8 @@ class Editor extends Component {
                 '选项1',
                 '选项2',
                 '选项3'
-            ]
+            ],
+            cacheChecked: [false, false, false]
         }
 
         if (choose === 'textarea') {
@@ -171,15 +172,25 @@ class Editor extends Component {
         this.setState(() => ({ chooses: arr }))
     }
 
+    // 设置Option选择
+    setOptionChecked = (chooseId, optionId, bool) => {
+        const arr = this.getNewChooses()
+        arr[chooseId].cacheChecked[optionId] = bool
+        this.setState(() => ({ chooses: arr }))
+    }
+
     // 添加Option
     addOption = (chooseId) => {
         const arr = this.getNewChooses()
         const options = arr[chooseId].options
+        const cacheChecked = arr[chooseId].cacheChecked
+
         if (options.length > 9) {
             alert('最多10项，不能再添加了')
             return
         }
 
+        cacheChecked.push(false)
         options.push(`选项${options.length + 1}`)
         this.setState(() => ({ chooses: arr }))
     }
@@ -188,6 +199,7 @@ class Editor extends Component {
     removeOption = (chooseId, optionId) => {
         const arr = this.getNewChooses()
         arr[chooseId].options.splice(optionId, 1)
+        arr[chooseId].cacheChecked.splice(optionId, 1)
         this.setState(() => ({ chooses: arr }))
     }
 
@@ -237,6 +249,20 @@ class Editor extends Component {
         dispatch(AsetDialog(bool, id, title))
     }
 
+    // 提交问卷事件
+    addOptionChecked = () => {
+        const { dispatch, match, lists } = this.props
+        const { chooses } = this.state
+        const id = match.params.id
+        const state = lists[id].state
+
+        if (state !== 1) {
+            alert('当前状态不能提交问卷，只有发布中才能提交问卷')
+        }
+
+        dispatch(AaddOptionChecked(id, chooses))
+    }
+
     render() {
         const { dialog, diglogFunc, dialogMsg } = this.props
 
@@ -253,6 +279,7 @@ class Editor extends Component {
                     chooses={this.state.chooses}
                     checkBoxs={this.state.checkBoxs}
                     setOptionTitle={this.setOptionTitle}
+                    setOptionChecked={this.setOptionChecked}
                     removeOption={this.removeOption}
                     setChooseTitle={this.setChooseTitle}
                     addOption={this.addOption}
@@ -293,7 +320,14 @@ class Editor extends Component {
                     />
                 }{
                     this.check &&
-                    <Button className={2}>提交</Button>
+                    <div className="editor__btn">
+                        <Button
+                            className={2}
+                            onClick={this.addOptionChecked}
+                        >
+                        提交
+                        </Button>
+                    </div>
                 }
             </div>
         )

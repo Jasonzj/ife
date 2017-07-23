@@ -16,6 +16,7 @@ const Options = ({
     removeOption,
     message,
     setOptionTitle,
+    setOptionChecked,
     noTextarea
 }) => (
     <div className="options">
@@ -24,6 +25,7 @@ const Options = ({
             type={type}
             disabled={disabled}
             defaultValue=""
+            onChange={e => setOptionChecked(chooseId, optionId, e.target.checked)}
         />
         {
             noTextarea &&
@@ -53,9 +55,11 @@ Options.propTypes = {
     chooseId: PropTypes.number,
     optionId: PropTypes.number,
     setOptionTitle: PropTypes.func,
+    setOptionChecked: PropTypes.func,
     removeOption: PropTypes.func,
     noTextarea: PropTypes.bool,
-    check: PropTypes.bool
+    check: PropTypes.bool,
+    checked: PropTypes.array
 }
 
 export default Options

@@ -20,13 +20,14 @@ import Editor from 'containers/Editor'
 // scss
 import './app.scss'
 
-const enhancer = compose(
-    persistState()
-)
+// const enhancer = compose(
+//     persistState()
+// )
 
 const store = createStore(
     rootReducer,
-    enhancer
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    // enhancer
 )
 
 store.subscribe(() => {

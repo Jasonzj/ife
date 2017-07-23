@@ -9,6 +9,7 @@ import Options from 'components/Options'
 import EditorTitle from 'components/EditorTitle'
 
 const Choose = ({
+    setOptionChecked,
     setChooseTitle,
     setOptionTitle,
     removeOption,
@@ -44,6 +45,7 @@ const Choose = ({
                     chooseId={id}
                     disabled={disabled}
                     setOptionTitle={setOptionTitle}
+                    setOptionChecked={setOptionChecked}
                     removeOption={removeOption}
                     noTextarea={noTextarea}
                 />
@@ -113,6 +115,7 @@ Choose.propTypes = {
     removeOption: PropTypes.func,
     setOptionTitle: PropTypes.func,
     setChooseTitle: PropTypes.func,
+    setOptionChecked: PropTypes.func,
     down: PropTypes.bool,
     up: PropTypes.bool,
     noTextarea: PropTypes.bool,
