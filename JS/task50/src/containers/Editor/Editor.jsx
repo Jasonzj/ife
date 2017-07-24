@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 // component
 import EditorTitle from 'components/EditorTitle'
@@ -32,6 +33,7 @@ class Editor extends Component {
         this.chooseId = 0
         this.disabled = true
         this.check = false
+        this.data = false
         this.defaultTitles = {
             radio: '单选题',
             checkbox: '复选题',
@@ -52,8 +54,9 @@ class Editor extends Component {
         const path = match.path
         const editorPath = path.includes('/editor')
         const checkPath = path.includes('/check')
+        const dataPath = path.includes('/data')
 
-        if (id && editorPath || checkPath) {
+        if (id && editorPath || checkPath || dataPath) {
             const { chooses, title, endTime } = lists[id]
 
             this.setState({ chooses, title, endTime })
@@ -69,6 +72,11 @@ class Editor extends Component {
         if (id && checkPath) {
             this.disabled = false
             this.check = true
+        }
+
+        if (id && dataPath) {
+            this.check = true
+            this.data = true
         }
     }
 
@@ -132,11 +140,13 @@ class Editor extends Component {
                 '选项2',
                 '选项3'
             ],
+            checkeds: [],
             cacheChecked: [false, false, false]
         }
 
         if (choose === 'textarea') {
             data.options = ['']
+            data.cacheChecked = false
         }
 
         arr.push(data)
@@ -258,9 +268,56 @@ class Editor extends Component {
 
         if (state !== 1) {
             alert('当前状态不能提交问卷，只有发布中才能提交问卷')
+            return
         }
 
         dispatch(AaddOptionChecked(id, chooses))
+    }
+
+    // 获取图表数据
+    getChartData = (chooseId, type) => {
+        const arr = this.getNewChooses()
+        const radioData = []
+        const checkBoxData = [{
+            name: 'jason',
+            values: []
+        }]
+        const choose = arr[chooseId]
+
+        choose.options.forEach((label, i) => {
+            let count = 0
+
+            choose.checkeds.forEach((checked) => {
+                if (checked[i] === true) {
+                    count++
+                }
+            })
+
+            const value = (count / choose.checkeds.length) * 100
+
+            if (value === 0) {
+                return
+            }
+
+            checkBoxData[0].values.push({
+                x: label,
+                y: count
+            })
+
+            radioData.push({
+                label,
+                value
+            })
+        })
+
+
+        switch (type) {
+            case 'radio':
+                return radioData
+            
+            case 'checkbox':
+                return checkBoxData
+        }
     }
 
     render() {
@@ -288,6 +345,8 @@ class Editor extends Component {
                     moveChoose={this.moveChoose}
                     disabled={this.disabled}
                     check={this.check}
+                    checkData={this.data}
+                    getChartData={this.getChartData}
                 />
                 {
                     !this.check &&
@@ -319,14 +378,16 @@ class Editor extends Component {
                         close={() => this.setDialog(false, null)}
                     />
                 }{
-                    this.check &&
+                    this.check && !this.data &&
                     <div className="editor__btn">
-                        <Button
-                            className={2}
-                            onClick={this.addOptionChecked}
-                        >
-                        提交
-                        </Button>
+                        <Link to="/">
+                            <Button
+                                className={2}
+                                onClick={this.addOptionChecked}
+                            >
+                            提交
+                            </Button>
+                        </Link>
                     </div>
                 }
             </div>

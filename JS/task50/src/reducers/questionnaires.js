@@ -61,10 +61,11 @@ const questionnaires = (state, action) => {
                 chooses: action.chooses.map((choose) => {
                     const checkeds = choose.checkeds
                     checkeds.push(choose.cacheChecked)
-                    
+
                     return {
                         ...choose,
-                        checkeds
+                        checkeds,
+                        cacheChecked: [...choose.cacheChecked].fill(false)
                     }
                 })
             }

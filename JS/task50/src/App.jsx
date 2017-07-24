@@ -43,7 +43,7 @@ const App = () => (
                 <Route path="/newQuestion" component={Editor} />
                 <Route path="/editor/:id" component={Editor} />
                 <Route path="/check/:id" component={Editor} />
-                <Route path="/checkData/:id" component={Editor} />
+                <Route path="/data/:id" component={Editor} />
             </HomeContainer>
         </Router>
     </Provider>

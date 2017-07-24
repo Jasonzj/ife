@@ -51,12 +51,14 @@ const Item = ({
             <Link to={`/check/${id}`}>
                 <Button className={1}>查看问卷</Button>
             </Link>
-            <Button
-                className={btnStateF}
-                disabled={btnStateF}
-            >
-                查看数据
-            </Button>
+            <Link to={`/data/${id}`}>
+                <Button
+                    className={btnStateF}
+                    disabled={btnStateF}
+                >
+                    查看数据
+                </Button>
+            </Link>
         </td>
     </tr>
 )

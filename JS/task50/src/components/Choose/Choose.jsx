@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { PieChart, BarChart } from 'react-d3'
 
 // scss
 import './Choose.scss'
@@ -14,10 +15,12 @@ const Choose = ({
     setOptionTitle,
     removeOption,
     removeChoose,
+    getChartData,
     reuseChoose,
     moveChoose,
     noTextarea,
     addOption,
+    checkData,
     disabled,
     options,
     title,
@@ -27,7 +30,7 @@ const Choose = ({
     up,
     id
 }) => (
-    <div className="choose">
+    <div className={'choose'}>
         <EditorTitle
             className="choose__title"
             message={title}
@@ -99,6 +102,26 @@ const Choose = ({
                 }
             </div>
         }
+        {
+            checkData && type === 'radio' &&
+            <PieChart
+                data={getChartData(id, type)}
+                width={1000}
+                height={400}
+                radius={100}
+                innerRadius={20}
+                sectorBorderColor="white"
+            />
+        }
+        {
+            checkData && type === 'checkbox' &&
+            <BarChart
+                data={getChartData(id, type)}
+                width={1000}
+                height={400}
+                fill={'#3182bd'}
+            />
+        }
     </div>
 )
 
@@ -119,7 +142,9 @@ Choose.propTypes = {
     down: PropTypes.bool,
     up: PropTypes.bool,
     noTextarea: PropTypes.bool,
-    check: PropTypes.bool
+    check: PropTypes.bool,
+    checkData: PropTypes.bool,
+    getChartData: PropTypes.func
 }
 
 export default Choose

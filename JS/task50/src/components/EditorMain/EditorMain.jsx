@@ -8,11 +8,13 @@ const EditorMain = ({
     check,
     chooses,
     disabled,
+    checkData,
     addOption,
     moveChoose,
     reuseChoose,
     removeChoose,
     removeOption,
+    getChartData,
     setOptionTitle,
     setChooseTitle,
     setOptionChecked
@@ -29,11 +31,13 @@ const EditorMain = ({
                         up={item.id !== 0}
                         down={item.id !== (chooses.length - 1)}
                         noTextarea={item.type !== 'textarea'}
+                        checkData={checkData}
                         addOption={addOption}
                         moveChoose={moveChoose}
                         reuseChoose={reuseChoose}
                         removeOption={removeOption}
                         removeChoose={removeChoose}
+                        getChartData={getChartData}
                         setOptionTitle={setOptionTitle}
                         setChooseTitle={setChooseTitle}
                         setOptionChecked={setOptionChecked}
@@ -56,7 +60,9 @@ EditorMain.propTypes = {
     moveChoose: PropTypes.func,
     setOptionChecked: PropTypes.func,
     disabled: PropTypes.bool,
-    check: PropTypes.bool
+    check: PropTypes.bool,
+    checkData: PropTypes.bool,
+    getChartData: PropTypes.func
 }
 
 export default EditorMain
