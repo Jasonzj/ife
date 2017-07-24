@@ -25,7 +25,7 @@ const Options = ({
             type={type}
             disabled={disabled}
             defaultValue=""
-            onChange={e => setOptionChecked(chooseId, optionId, e.target.checked)}
+            onChange={e => setOptionChecked(chooseId, optionId, e.target)}
         />
         {
             noTextarea &&

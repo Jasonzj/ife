@@ -122,6 +122,9 @@ const Choose = ({
                 fill={'#3182bd'}
             />
         }
+        {
+            checkData && type === 'textarea' && `有效回答人数: ${getChartData(id, type)}`
+        }
     </div>
 )
 

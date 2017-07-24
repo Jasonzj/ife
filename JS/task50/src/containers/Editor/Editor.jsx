@@ -146,7 +146,7 @@ class Editor extends Component {
 
         if (choose === 'textarea') {
             data.options = ['']
-            data.cacheChecked = false
+            data.cacheChecked = [false]
         }
 
         arr.push(data)
@@ -183,9 +183,18 @@ class Editor extends Component {
     }
 
     // 设置Option选择
-    setOptionChecked = (chooseId, optionId, bool) => {
+    setOptionChecked = (chooseId, optionId, target) => {
         const arr = this.getNewChooses()
-        arr[chooseId].cacheChecked[optionId] = bool
+        if (target.type === 'text') {
+            if (target.value !== '') {
+                arr[chooseId].cacheChecked[0] = true
+            } else {
+                arr[chooseId].cacheChecked[0] = false
+            }
+            this.setState(() => ({ chooses: arr }))
+            return false
+        }
+        arr[chooseId].cacheChecked[optionId] = target.checked
         this.setState(() => ({ chooses: arr }))
     }
 
@@ -279,7 +288,7 @@ class Editor extends Component {
         const arr = this.getNewChooses()
         const radioData = []
         const checkBoxData = [{
-            name: 'jason',
+            name: 'checkbox',
             values: []
         }]
         const choose = arr[chooseId]
@@ -310,13 +319,15 @@ class Editor extends Component {
             })
         })
 
-
         switch (type) {
             case 'radio':
                 return radioData
             
             case 'checkbox':
                 return checkBoxData
+            
+            case 'textarea':
+                return choose.checkeds.filter(checked => checked[0]).length
         }
     }
 
