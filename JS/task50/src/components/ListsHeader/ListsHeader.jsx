@@ -10,7 +10,7 @@ const ListHeader = () => (
             <th>状态</th>
             <th>操作</th>
             <th>
-                <Link to="/create">
+                <Link to="/newQuestion">
                     <button>+新建问卷</button>
                 </Link>
             </th>

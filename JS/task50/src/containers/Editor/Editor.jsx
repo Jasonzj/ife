@@ -302,7 +302,7 @@ class Editor extends Component {
                 }
             })
 
-            const value = (count / choose.checkeds.length) * 100
+            const value = Math.floor((count / choose.checkeds.length) * 100)
 
             if (value === 0) {
                 return

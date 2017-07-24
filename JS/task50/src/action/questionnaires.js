@@ -46,3 +46,9 @@ export const AaddOptionChecked = (id, chooses) => ({
     id,
     chooses
 })
+
+export const AchangeState = (id, state) => ({
+    type: 'CHANGE_STATE',
+    id,
+    state
+})

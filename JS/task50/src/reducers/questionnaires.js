@@ -52,7 +52,7 @@ const questionnaires = (state, action) => {
             }
 
         case 'ADD_OPTION_CHECKED':
-            if (state.id != parseInt(action.id)) {
+            if (state.id !== parseInt(action.id)) {
                 return state
             }
 
@@ -69,6 +69,16 @@ const questionnaires = (state, action) => {
                     }
                 })
             }
+        
+        case 'CHANGE_STATE':
+            if (state.id !== parseInt(action.id)) {
+                return state
+            }
+
+            return {
+                ...state,
+                state: action.state
+            }
 
         default:
             return state
@@ -81,6 +91,7 @@ const lists = (state = data, action) => {
         case 'TOGGLE_CHECKED':
         case 'SET_QUESTION':
         case 'ADD_OPTION_CHECKED':
+        case 'CHANGE_STATE':
             return state.map(t => questionnaires(t, action))
 
         case 'REMOVE_ALL_QUESTION':
