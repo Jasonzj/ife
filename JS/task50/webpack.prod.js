@@ -9,14 +9,7 @@ module.exports = {
         vendor: [
             'react',
             'react-dom',
-            'react-redux',
-            'react-d3',
-            'react-router',
-            'react-router-dom',
-            'redux',
-            'prop-types',
-            'react-addons-css-transition-group',
-            'redux-localstorage'
+            'react-redux'
         ]
     },
     output: {
