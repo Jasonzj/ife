@@ -16,8 +16,8 @@ import HomeContainer from 'containers/HomeContainer'
 import ShowLists from 'containers/ShowLists'
 
 // lazyContainer
-import CreateContainer from 'bundle-loader?lazy&name=create-[name]!containers/Create/index.js'
-import EditorContainer from 'bundle-loader?lazy&name=editor-[name]!containers/Editor/index.js'
+import Create from 'bundle-loader?lazy&name=create-[name]!containers/Create/index.js'
+import Editor from 'bundle-loader?lazy&name=editor-[name]!containers/Editor/index.js'
 
 // scss
 import './app.scss'
@@ -34,15 +34,13 @@ const store = createStore(
 )
 
 // router
-const Create = () => (
-    <Bundle load={CreateContainer}>
-        {(Create) => <Create />}
-    </Bundle>
-)
+const Loading = function () {
+    return <div>Loading...</div>
+}
 
-const Editor = () => (
-    <Bundle load={EditorContainer}>
-        {(Editor) => <Editor />}
+const createComponent = (component) =>() => (
+    <Bundle load={component}>
+        { Component => Component ? <Component /> : <Loading/> }
     </Bundle>
 )
 
@@ -52,11 +50,11 @@ const App = () => (
         <Router>
             <HomeContainer>
                 <Route exact path="/" component={ShowLists} />
-                <Route path="/create" component={Create} />
-                <Route path="/newQuestion" component={Editor} />
-                <Route path="/editor/:id" component={Editor} />
-                <Route path="/check/:id" component={Editor} />
-                <Route path="/data/:id" component={Editor} />
+                <Route path="/create" component={createComponent(Create)} />
+                <Route path="/newQuestion" component={createComponent(Editor)} />
+                <Route path="/editor/:id" component={createComponent(Editor)} />
+                <Route path="/check/:id" component={createComponent(Editor)} />
+                <Route path="/data/:id" component={createComponent(Editor)} />
             </HomeContainer>
         </Router>
     </Provider>
