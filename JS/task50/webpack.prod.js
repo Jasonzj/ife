@@ -48,12 +48,6 @@ module.exports = {
                 exclude: path.resolve(__dirname, 'node_modules')
             },
             {
-                // test: /\.(scss|css)$/,
-                // exclude: path.resolve(__dirname, 'node_modules'),
-                // fallback: 'style-loader',
-                // use: ExtractTextPlugin.extract({
-                //     use: [css-loader", "postcss-loader", "sass-loader"]
-                // })
                 test: /\.scss$/,
                 use:[
                     {
@@ -84,26 +78,21 @@ module.exports = {
             }
         ]
     },
-    devServer: {
-        hot: true,
-        compress: true,
-        historyApiFallback: true,
-        port: 8000,
-        contentBase: path.resolve(__dirname, "build"),
-        stats: {
-            modules: false,
-            chunks: false
-        }
-    },
     plugins: [
         new htmlWebpackPlugin({
             filename: 'index.html',
             template: 'index.html'
         }),
-        new webpack.HotModuleReplacementPlugin(),
         new webpack.optimize.CommonsChunkPlugin({
             names: ['vendor'],
             filename: 'vendor.js'
-        })
+        }),
+        new webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': JSON.stringify('production')
+            }
+        }),
+        new webpack.optimize.AggressiveMergingPlugin(),
+        new webpack.optimize.UglifyJsPlugin()
     ]
 }

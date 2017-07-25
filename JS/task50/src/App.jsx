@@ -2,7 +2,7 @@ import React from 'react'
 import { createStore, compose } from 'redux'
 import persistState from 'redux-localstorage'
 import { Provider } from 'react-redux'
-
+import Bundle from './bundle.js'
 import {
     HashRouter as Router,
     Route,
@@ -14,12 +14,15 @@ import rootReducer from 'reducers'
 // container
 import HomeContainer from 'containers/HomeContainer'
 import ShowLists from 'containers/ShowLists'
-import Create from 'containers/Create'
-import Editor from 'containers/Editor'
+
+// lazyContainer
+import CreateContainer from 'bundle-loader?lazy&name=create-[name]!containers/Create/index.js'
+import EditorContainer from 'bundle-loader?lazy&name=editor-[name]!containers/Editor/index.js'
 
 // scss
 import './app.scss'
 
+// store
 const enhancer = compose(
     persistState()
 )
@@ -30,10 +33,20 @@ const store = createStore(
     enhancer
 )
 
-store.subscribe(() => {
-    console.log(store.getState())
-})
+// router
+const Create = () => (
+    <Bundle load={CreateContainer}>
+        {(Create) => <Create />}
+    </Bundle>
+)
 
+const Editor = () => (
+    <Bundle load={EditorContainer}>
+        {(Editor) => <Editor />}
+    </Bundle>
+)
+
+// app
 const App = () => (
     <Provider store={store}>
         <Router>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router'
 
 // component
 import EditorTitle from 'components/EditorTitle'
@@ -416,4 +417,4 @@ Editor.propTypes = {
     history: PropTypes.any
 }
 
-export default Editor
+export default withRouter(Editor)
