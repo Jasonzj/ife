@@ -4,8 +4,8 @@ import persistState from 'redux-localstorage'
 import { Provider } from 'react-redux'
 
 import {
-    BrowserRouter as Router,
-    Route
+    HashRouter as Router,
+    Route,
 } from 'react-router-dom'
 
 // renducers
