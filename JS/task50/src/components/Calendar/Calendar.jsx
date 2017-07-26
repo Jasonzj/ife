@@ -12,7 +12,7 @@ class Calendar extends Component {
     constructor({ date }) {
         super()
 
-        this.currDate = new Date().setDate(new Date().getDate() - 1)
+        this.currDate = new Date()
         this.state = {
             date: new Date(date),
             cacheDate: new Date(date),

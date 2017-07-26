@@ -5,28 +5,28 @@ import PropTypes from 'prop-types'
 import Button from 'components/Button'
 
 // scss
-import './Diglog.scss'
+import './Dialog.scss'
 
 const Dialog = ({
     message,
     close,
     onClick
 }) => (
-    <div className="diglog">
-        <div className="diglog__box">
-            <h1 className="diglog__title">
+    <div className="dialog">
+        <div className="dialog__box">
+            <h1 className="dialog__title">
                 提示
                 <span
-                    className="diglog__close"
+                    className="dialog__close"
                     onClick={close}
                 >
                     X
                 </span>
             </h1>
-            <p className="diglog__content">
+            <p className="dialog__content">
                 {message}
             </p>
-            <div className="diglog__btnBox">
+            <div className="dialog__btnBox">
                 <Button
                     className={2}
                     onClick={() => {

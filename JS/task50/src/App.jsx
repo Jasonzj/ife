@@ -34,11 +34,9 @@ const store = createStore(
 )
 
 // router
-const Loading = function () {
-    return <div>Loading...</div>
-}
+const Loading = () => <div>Loading...</div>
 
-const createComponent = (component) =>() => (
+const createComponent = component => () => (
     <Bundle load={component}>
         { Component => Component ? <Component /> : <Loading /> }
     </Bundle>

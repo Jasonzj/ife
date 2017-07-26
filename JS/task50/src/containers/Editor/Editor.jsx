@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 // component
 import EditorTitle from 'components/EditorTitle'
@@ -31,6 +32,8 @@ class Editor extends Component {
         super()
 
         const date = new Date()
+        date.setDate(date.getDate() + 1)
+
         this.chooseId = 0
         this.disabled = true
         this.check = false
@@ -382,14 +385,21 @@ class Editor extends Component {
                         setDialog={this.setDialog}
                     />
                 }
+                <ReactCSSTransitionGroup
+                    transitionName="dialog"
+                    transitionEnterTimeout={300}
+                    transitionLeaveTimeout={300}
+                >
+                    {
+                        dialog &&
+                        <Dialog
+                            message={dialogMsg}
+                            onClick={diglogFunc}
+                            close={() => this.setDialog(false, null)}
+                        />
+                    }
+                </ReactCSSTransitionGroup>
                 {
-                    dialog &&
-                    <Dialog
-                        message={dialogMsg}
-                        onClick={diglogFunc}
-                        close={() => this.setDialog(false, null)}
-                    />
-                }{
                     this.check && !this.data &&
                     <div className="editor__btn">
                         <Link to="/">

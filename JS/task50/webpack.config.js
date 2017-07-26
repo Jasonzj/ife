@@ -49,24 +49,27 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                exclude: path.resolve(__dirname, 'node_modules'),
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: [
-                        'css-loader',
-                        {
-                            loader: 'postcss-loader',
-                            options: {
-                                plugins: (loader) => [
-                                    require('autoprefixer')({
-                                        browsers: ["last 5 versions"]
-                                    })
-                                ]
-                            }
-                        },
-                        'sass-loader'
-                    ]
-                })
+                use:[
+                    {
+                        loader: 'style-loader'
+                    },
+                    {
+                        loader: 'css-loader'
+                    },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            plugins: (loader) => [
+                                require('autoprefixer')({
+                                    browsers: ["last 5 versions"]
+                                })
+                            ]
+                        }
+                    },
+                    {
+                        loader: 'sass-loader'
+                    }
+                ]
             },
             {
                 test: /\.(png|jpg|gif|svg)$/,
@@ -87,7 +90,6 @@ module.exports = {
         }
     },
     plugins: [
-        new ExtractTextPlugin('style.css'),
         new htmlWebpackPlugin({
             filename: 'index.html',
             template: 'index.html'

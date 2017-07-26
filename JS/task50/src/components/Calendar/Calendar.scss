@@ -98,3 +98,21 @@ $white: #fff;
 .multi {
     background-color: rgb(235, 244, 249);
 }
+
+.calendar-enter {
+    height: 0;
+}
+
+.calendar-enter.calendar-enter-active {
+    height: 430px;
+    transition: height 500ms ease-out;
+}
+
+.calendar-leave {
+    height: 430px;
+}
+
+.calendar-leave.calendar-leave-active {
+    height: 0px;
+    transition: height 300ms ease-in;
+}

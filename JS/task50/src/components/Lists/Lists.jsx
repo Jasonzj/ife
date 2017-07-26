@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 // components
 import Item from 'components/Item'
@@ -81,14 +82,20 @@ class Lists extends Component {
                         />
                     ))
                 }
-                {
-                    dialog &&
-                    <Dialog
-                        message={message}
-                        close={() => setDialog(false, null)}
-                        onClick={dialogFunc}
-                    />
-                }
+                <ReactCSSTransitionGroup
+                    transitionName="dialog"
+                    transitionEnterTimeout={300}
+                    transitionLeaveTimeout={300}
+                >
+                    {
+                        dialog &&
+                        <Dialog
+                            message={message}
+                            close={() => setDialog(false, null)}
+                            onClick={dialogFunc}
+                        />
+                    }
+                </ReactCSSTransitionGroup>
             </tbody>
         )
     }
