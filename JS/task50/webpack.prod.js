@@ -90,7 +90,14 @@ module.exports = {
                 'NODE_ENV': JSON.stringify('production')
             }
         }),
+        new webpack.LoaderOptionsPlugin({
+            minimize: true
+        }),
         new webpack.optimize.AggressiveMergingPlugin(),
-        new webpack.optimize.UglifyJsPlugin()
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: true
+            }
+        })
     ]
 }

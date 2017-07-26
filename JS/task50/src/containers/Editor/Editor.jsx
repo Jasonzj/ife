@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
@@ -27,7 +27,7 @@ import './Editor.scss'
         dialogMsg: state.dialog.message
     })
 )
-class Editor extends Component {
+class Editor extends PureComponent {
     constructor() {
         super()
 
