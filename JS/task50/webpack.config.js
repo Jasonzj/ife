@@ -82,6 +82,7 @@ module.exports = {
         hot: true,
         compress: true,
         historyApiFallback: true,
+        inline: true,
         port: 8000,
         contentBase: path.resolve(__dirname, "build"),
         stats: {
