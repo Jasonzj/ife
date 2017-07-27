@@ -1,3 +1,4 @@
+const pkg = require('./package.json')
 const path = require('path')
 const htmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
@@ -6,18 +7,7 @@ const webpack = require('webpack')
 module.exports = {
     entry: {
         app: './src/entry.js',
-        vendor: [
-            'react',
-            'react-dom',
-            'react-redux',
-            'react-d3',
-            'react-router',
-            'react-router-dom',
-            'redux',
-            'prop-types',
-            'react-addons-css-transition-group',
-            'redux-localstorage'
-        ]
+        vendor: Object.keys(pkg.dependencies)
     },
     output: {
         path: path.resolve(__dirname, 'build'),
@@ -93,11 +83,11 @@ module.exports = {
         new webpack.LoaderOptionsPlugin({
             minimize: true
         }),
-        new webpack.optimize.AggressiveMergingPlugin(),
         new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: true
             }
-        })
+        }),
+        new webpack.optimize.AggressiveMergingPlugin()
     ]
 }
