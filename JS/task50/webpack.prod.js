@@ -88,6 +88,7 @@ module.exports = {
                 warnings: true
             }
         }),
-        new webpack.optimize.AggressiveMergingPlugin()
+        new webpack.optimize.AggressiveMergingPlugin(),
+        new webpack.optimize.OccurrenceOrderPlugin()
     ]
 }
