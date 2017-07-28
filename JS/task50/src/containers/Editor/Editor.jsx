@@ -6,10 +6,10 @@ import { withRouter } from 'react-router'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 // component
+import EditorAdd from './subComponent/EditorAdd'
+import EditorFooter from './subComponent/EditorFooter'
+import EditorMain from './subComponent/EditorMain'
 import EditorTitle from 'components/EditorTitle'
-import EditorAdd from 'components/EditorAdd'
-import EditorFooter from 'components/EditorFooter'
-import EditorMain from 'components/EditorMain'
 import Dialog from 'components/Dialog'
 import Button from 'components/Button'
 
@@ -326,10 +326,10 @@ class Editor extends PureComponent {
         switch (type) {
             case 'radio':
                 return radioData
-            
+
             case 'checkbox':
                 return checkBoxData
-            
+
             case 'textarea':
                 return choose.checkeds.filter(checked => checked[0]).length
         }

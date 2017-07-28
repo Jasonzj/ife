@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 // component
-import Choose from 'components/Choose'
+import Choose from './Choose'
 
 const EditorMain = ({
     check,

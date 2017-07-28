@@ -104,8 +104,6 @@ const lists = (state = data, action) => {
                 questionnaires(state, action)
             ]
 
-            
-
         default:
             return state
     }

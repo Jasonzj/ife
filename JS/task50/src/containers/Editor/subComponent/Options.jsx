@@ -4,9 +4,6 @@ import PropTypes from 'prop-types'
 // component
 import EditorTitle from 'components/EditorTitle'
 
-// scss
-import './Options.scss'
-
 const Options = ({
     type,
     check,

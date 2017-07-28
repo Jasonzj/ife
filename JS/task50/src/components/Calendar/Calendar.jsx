@@ -5,8 +5,8 @@ import PropTypes from 'prop-types'
 import './Calendar.scss'
 
 // component
-import CalendarHead from './CalendarHead'
-import CalendarBody from './CalendarBody'
+import CalendarHead from './subComponent/CalendarHead'
+import CalendarBody from './subComponent/CalendarBody'
 
 class Calendar extends Component {
     constructor({ date }) {

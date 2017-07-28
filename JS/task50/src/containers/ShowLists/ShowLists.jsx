@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 // components
-import Lists from 'components/Lists'
-import ListsHeader from 'components/ListsHeader'
-import ListsFooter from 'components/ListsFooter'
+import Lists from './subComponent/Lists'
+import ListsHeader from './subComponent/ListsHeader'
+import ListsFooter from './subComponent/ListsFooter'
 
 // scss
 import './ShowLists.scss'

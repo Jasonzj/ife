@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 // components
-import Item from 'components/Item'
+import Item from './Item'
 import Dialog from 'components/Dialog'
 
 // action
@@ -82,20 +82,23 @@ class Lists extends Component {
                         />
                     ))
                 }
-                <ReactCSSTransitionGroup
-                    transitionName="dialog"
-                    transitionEnterTimeout={300}
-                    transitionLeaveTimeout={300}
-                >
-                    {
-                        dialog &&
-                        <Dialog
-                            message={message}
-                            close={() => setDialog(false, null)}
-                            onClick={dialogFunc}
-                        />
-                    }
-                </ReactCSSTransitionGroup>
+                <tr style={{ border: '0px' }}>
+                    <ReactCSSTransitionGroup
+                        component="th"
+                        transitionName="dialog"
+                        transitionEnterTimeout={300}
+                        transitionLeaveTimeout={300}
+                    >
+                        {
+                            dialog &&
+                            <Dialog
+                                message={message}
+                                close={() => setDialog(false, null)}
+                                onClick={dialogFunc}
+                            />
+                        }
+                    </ReactCSSTransitionGroup>
+                </tr>
             </tbody>
         )
     }

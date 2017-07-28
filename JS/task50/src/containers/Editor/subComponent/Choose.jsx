@@ -2,11 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { PieChart, BarChart } from 'react-d3'
 
-// scss
-import './Choose.scss'
-
 // component
-import Options from 'components/Options'
+import Options from './Options'
 import EditorTitle from 'components/EditorTitle'
 
 const Choose = ({

@@ -15,7 +15,7 @@ module.exports = {
         chunkFilename: 'js/[name]-[chunkhash:6].js'
     },
     resolve: {
-        extensions: ['.js', '.jsx', '.scss', '.css'],
+        extensions: ['.js', '.jsx', '.scss'],
         modules: [
             path.resolve(__dirname, 'node_modules'),
             path.join(__dirname, './src')
