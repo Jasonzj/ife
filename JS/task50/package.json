@@ -49,6 +49,7 @@
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.0",
+    "react-addons-perf": "^15.4.2",
     "react-d3": "^0.4.0",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.5",
