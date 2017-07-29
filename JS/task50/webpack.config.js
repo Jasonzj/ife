@@ -1,7 +1,6 @@
 const pkg = require('./package.json')
 const path = require('path')
 const htmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const webpack = require('webpack')
 
 module.exports = {
