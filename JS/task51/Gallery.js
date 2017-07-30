@@ -33,7 +33,7 @@
          * @param {object} option 配置项
          */
         setImage(image, option) {
-
+            this.addImage(image)
         }
 
         /**
@@ -51,7 +51,16 @@
          * @param {(string|string[])} image 一张图片的 URL 或多张图片 URL 组成的数组
          */
         addImage(image) {
-
+            if (typeof image === 'string') {
+                image = [image]
+            }
+            
+            image.forEach(img => {
+                const wrap = document.createElement('div')
+                wrap.className = 'galleryBox'
+                wrap.innerHTML = `<img src=${img}>`
+                this.container.appendChild(wrap)
+            })
         }
 
         /**
