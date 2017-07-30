@@ -34,7 +34,6 @@ class Editor extends PureComponent {
         const date = new Date()
         date.setDate(date.getDate() + 1)
 
-        this.chooseId = 0
         this.disabled = true
         this.check = false
         this.data = false
@@ -136,7 +135,7 @@ class Editor extends PureComponent {
         }
 
         const data = {
-            id: this.chooseId++,
+            id: arr.length,
             type: choose,
             title: `${this.defaultTitles[choose]}`,
             options: [
@@ -336,6 +335,7 @@ class Editor extends PureComponent {
     }
 
     render() {
+        console.log(this.state)
         const { dialog, diglogFunc, dialogMsg } = this.props
 
         return (

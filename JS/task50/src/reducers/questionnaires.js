@@ -96,7 +96,10 @@ const lists = (state = data, action) => {
 
         case 'REMOVE_ALL_QUESTION':
         case 'REMOVE_QUESTION':
-            return state.filter(t => questionnaires(t, action))
+            return state.filter(t => questionnaires(t, action)).map((t, i) => ({
+                ...t,
+                id: i
+            }))
 
         case 'ADD_QUESTION':
             return [

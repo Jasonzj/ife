@@ -68,7 +68,7 @@ class Lists extends Component {
         return (
             <tbody className="lists__table__body">
                 {
-                    lists.map(item => (
+                    lists.map((item, i) => (
                         <Item
                             key={item.id}
                             stateText={stateTexts[item.state]}
