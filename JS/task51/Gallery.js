@@ -19,6 +19,7 @@
     class Gallery {
         constructor(containerSelector) {
             this.container = document.querySelector(containerSelector)
+            this.galleryBox = null
             this.LAYOUT = {
                 PUZZLE: 1,      // 拼图
                 WATERFALL: 2,   // 瀑布流
@@ -28,6 +29,7 @@
                 layout: 1,                  // 布局类型
                 waterfallColumn: 4,         // 瀑布流布局列数
                 fullscreenState: false,     // 是否全屏
+                puzzleHeight: 500,          // 拼图高度
                 images: [],                 // 图片数组
             }
         }
@@ -48,6 +50,7 @@
             }
             
             this.addImage(image)
+            this.setLayout(option.layout)
         }
 
         /**
@@ -69,13 +72,19 @@
                 image = [image]
             }
             
+            const gallerybox = document.createElement('div')
+            gallerybox.className = 'galleryBox'
+            gallerybox.style.height = this.options.puzzleHeight + 'px'
+
             image.forEach(img => {
                 const wrap = document.createElement('div')
-                wrap.className = 'galleryBox'
                 wrap.innerHTML = `<img src=${img}>`
                 this.options.images.push(wrap)
-                this.container.appendChild(wrap)
+                gallerybox.appendChild(wrap)
             })
+
+            this.galleryBox = gallerybox
+            this.container.appendChild(gallerybox)
         }
 
         /**
@@ -102,6 +111,12 @@
          */
         setLayout(layout) {
             this.options.layout = layout
+
+            switch (layout) {
+                case 1: this.setPuzzle()
+                // case 2: this.setWaterFall()
+                // case 3: this.setBarrel()
+            }
         }
 
         /**
@@ -110,6 +125,26 @@
          */
         getLayout() {
             return this.options.layout
+        }
+
+        /**
+         * 设置拼图布局
+         */
+        setPuzzle() {
+            const images = this.getImageDomElements()
+            const boxHeight = this.options.puzzleHeight
+            const boxWidth = parseInt(window.getComputedStyle(this.container, null).getPropertyValue('width'))
+
+            images.forEach(img => img.className = 'puzzleBox')
+            this.addClass(this.galleryBox, `count${images.length}`)
+
+            switch (images.length) {
+                case 5:
+                    const sizeL = Math.ceil(boxWidth / 3)
+                    images[1].style.height = sizeL + 'px'
+                    images[2].style.height = (boxHeight - sizeL) + 'px'
+                    break;
+            }
         }
 
         /**
@@ -200,6 +235,9 @@
 
         }
         
+        addClass(target, classN) {
+            target.classList.add(classN)
+        }
     }
 
     return Gallery
