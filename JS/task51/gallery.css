@@ -12,11 +12,14 @@
     position: relative;
     width: 100%;
     overflow: hidden;
+    font-size: 0;
+    -webkit-text-size-adjust:none;
 }
 
 /* Puzzle */
 .puzzleBox {
     display: inline-block;
+    box-sizing: border-box;
 }
 .puzzleBox img {
     width: 100%;
@@ -56,7 +59,6 @@
 .count3 > .puzzleBox:nth-child(3) {
     height: 50%;
     width: 33.33333%;
-    margin-top: -5px;
 }
 .count4 > .puzzleBox {
     height: 50%;

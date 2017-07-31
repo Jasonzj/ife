@@ -139,6 +139,15 @@
             this.addClass(this.galleryBox, `count${images.length}`)
 
             switch (images.length) {
+                case 3:
+                    const sizeH = Math.ceil(boxHeight / 2)
+                    images[0].style.width = (boxWidth - sizeH) + 'px'
+                    images[1].style.height = sizeH + 'px'
+                    images[1].style.width = sizeH + 'px'
+                    images[2].style.height = sizeH + 'px'
+                    images[2].style.width = sizeH + 'px'
+                    break;
+            
                 case 5:
                     const sizeL = Math.ceil(boxWidth / 3)
                     images[1].style.height = sizeL + 'px'
