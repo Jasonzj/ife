@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
 }
+
 .gallery {
     width: 1000px;
     margin: 0 auto;
@@ -133,4 +134,18 @@
     bottom: 0;
     width: 33.33333%;
     height: 33.33333%;
+}
+
+/* waterfall */
+.waterfallBox {
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+.waterfallBox img {
+    width: 100%;
+}
+
+.waterfallColumn {
+    float: left;
 }

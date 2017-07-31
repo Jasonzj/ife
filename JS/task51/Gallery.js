@@ -32,6 +32,7 @@
                 puzzleHeight: 500,          // 拼图高度
                 images: [],                 // 图片数组
             }
+            this.columns = []
         }
 
         /**
@@ -76,15 +77,16 @@
             gallerybox.className = 'galleryBox'
             gallerybox.style.height = this.options.puzzleHeight + 'px'
 
-            image.forEach(img => {
+            image.forEach(imgUrl => {
                 const wrap = document.createElement('div')
-                wrap.innerHTML = `<img src=${img}>`
+                // wrap.innerHTML = `<img src=${img}>`
+                const img = new Image()
+                img.src = imgUrl
+                wrap.appendChild(img)
                 this.options.images.push(wrap)
-                gallerybox.appendChild(wrap)
             })
 
             this.galleryBox = gallerybox
-            this.container.appendChild(gallerybox)
         }
 
         /**
@@ -111,12 +113,17 @@
          */
         setLayout(layout) {
             this.options.layout = layout
+            this.clearLayout()
 
             switch (layout) {
-                case 1: this.setPuzzle()
-                // case 2: this.setWaterFall()
+                case 1: this.setPuzzle() 
+                    break
+                case 2: this.setWaterFall()
+                    break
                 // case 3: this.setBarrel()
             }
+
+            this.container.appendChild(this.galleryBox)
         }
 
         /**
@@ -127,6 +134,13 @@
             return this.options.layout
         }
 
+        clearLayout() {
+            const node = this.galleryBox
+            while (node.firstChild) {
+                node.firstChild.remove()
+            }
+        }
+
         /**
          * 设置拼图布局
          */
@@ -135,25 +149,55 @@
             const boxHeight = this.options.puzzleHeight
             const boxWidth = parseInt(window.getComputedStyle(this.container, null).getPropertyValue('width'))
 
-            images.forEach(img => img.className = 'puzzleBox')
+            images.forEach(img => {
+                img.className = 'puzzleBox'
+                this.galleryBox.appendChild(img)
+            })
+
             this.addClass(this.galleryBox, `count${images.length}`)
 
             switch (images.length) {
-                case 3:
-                    const sizeH = Math.ceil(boxHeight / 2)
-                    images[0].style.width = (boxWidth - sizeH) + 'px'
-                    images[1].style.height = sizeH + 'px'
-                    images[1].style.width = sizeH + 'px'
-                    images[2].style.height = sizeH + 'px'
-                    images[2].style.width = sizeH + 'px'
-                    break;
-            
                 case 5:
                     const sizeL = Math.ceil(boxWidth / 3)
                     images[1].style.height = sizeL + 'px'
                     images[2].style.height = (boxHeight - sizeL) + 'px'
                     break;
             }
+        }
+
+        /**
+         * 设置瀑布流布局
+         */
+        setWaterFall() {
+            const col = this.options.waterfallColumn
+
+            for (let i = 0, l = col; i < l; i++) {
+                const column = document.createElement('div')
+                column.className = 'waterfallColumn'
+                column.style.width = `${100 / col}%`
+                this.columns.push(column)
+                this.galleryBox.appendChild(column)
+            }
+
+            const images = this.getImageDomElements()
+            images.forEach(img => {
+                setTimeout(() => {
+                    this.addBox(img)
+                }, 700)
+            })
+        }
+
+        getMinIndex() {
+            this.columns.sort((a, b) => a.clientHeight - b.clientHeight)
+            let min = this.columns[0]
+
+            return min
+        }
+
+        addBox(box) {
+            const min = this.getMinIndex()
+            box.className = 'waterfallBox'
+            min.appendChild(box)
         }
 
         /**
