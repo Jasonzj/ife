@@ -20,9 +20,15 @@
         constructor(containerSelector) {
             this.container = document.querySelector(containerSelector)
             this.LAYOUT = {
-                PUZZLE: 1,
-                WATERFALL: 2,
-                BARREL: 3
+                PUZZLE: 1,      // 拼图
+                WATERFALL: 2,   // 瀑布流
+                BARREL: 3       // 木桶
+            }
+            this.options = {
+                layout: 1,                  // 布局类型
+                waterfallColumn: 4,         // 瀑布流布局列数
+                fullscreenState: false,     // 是否全屏
+                images: [],                 // 图片数组
             }
         }
 
@@ -33,6 +39,14 @@
          * @param {object} option 配置项
          */
         setImage(image, option) {
+            if (typeof image === 'string') {
+                image = [image]
+            }
+
+            for (const key in this.options) {
+                this.options[key] = option[key] || this.options[key]
+            }
+            
             this.addImage(image)
         }
 
@@ -42,7 +56,7 @@
          * @return {HTMLElement[]} 相册所有图像对应的 DOM 元素组成的数组
          */
         getImageDomElements() {
-            
+            return this.options.images
         }
 
         /**
@@ -59,6 +73,7 @@
                 const wrap = document.createElement('div')
                 wrap.className = 'galleryBox'
                 wrap.innerHTML = `<img src=${img}>`
+                this.options.images.push(wrap)
                 this.container.appendChild(wrap)
             })
         }
@@ -69,7 +84,16 @@
          * @return {boolean} 是否全部移除成功
          */
         removeImage(image) {
+            if (typeof image === 'string') {
+                image = [image]
+            }
 
+            const imageArr = this.options.images
+
+            image.forEach(ele => {
+                imageArr = imageArr.filter(img => ele === img)
+                ele.remove()
+            })
         }
 
         /**
@@ -77,7 +101,7 @@
          * @param {number} layout 布局值，IfeAlbum.LAYOUT 中的值
          */
         setLayout(layout) {
-
+            this.options.layout = layout
         }
 
         /**
@@ -85,7 +109,7 @@
          * @return {number} 布局枚举类型的值
          */
         getLayout() {
-
+            return this.options.layout
         }
 
         /**
