@@ -45,13 +45,20 @@
             if (typeof image === 'string') {
                 image = [image]
             }
-
+            
+            // 初始化配置
             for (const key in this.options) {
                 this.options[key] = option[key] || this.options[key]
             }
             
-            this.addCacheImage(image)
-            this.setLayout(option.layout)
+            // 初始化图片容器
+            this.galleryBox = document.createElement('div')
+            this.galleryBox.className = 'galleryBox'
+            this.container.appendChild(this.galleryBox)
+
+            // 初始布局和图片
+            this.addImage(image)
+            this.setLayout(option.layout, true)
         }
 
         /**
@@ -64,26 +71,27 @@
         }
 
         /**
-         * 向相册添加缓存图片
+         * 初始化图片
          * @param {(string|string[])} image 一张图片的 URL 或多张图片 URL 组成的数组
+         * @param {Boolean} bool 是否把图片直接添加到容器
          */
-        addCacheImage(image) {
+        addImage(image, bool = false) {
             if (typeof image === 'string') {
                 image = [image]
             }
-            
-            const galleryBox = document.createElement('div')
-            galleryBox.className = 'galleryBox'
 
             image.forEach(imgUrl => {
                 const wrap = document.createElement('div')
                 const img = new Image()
                 img.src = imgUrl
                 wrap.appendChild(img)
-                this.options.images.push(wrap)
-            })
 
-            this.galleryBox = galleryBox
+                this.options.images.push(wrap)
+
+                if (bool) {
+                    this.addBox(wrap)
+                }
+            })
         }
 
         /**
@@ -108,19 +116,24 @@
          * 设置相册的布局
          * @param {number} layout 布局值，IfeAlbum.LAYOUT 中的值
          */
-        setLayout(layout) {
+        setLayout(layout, init) {
             this.options.layout = layout
             this.clearLayout()
 
             switch (layout) {
                 case 1: this.setPuzzle() 
                     break
-                case 2: this.setWaterFall()
+                case 2: 
+                    if (init) {
+                        window.onload = () => {
+                            this.setWaterFall()
+                        }
+                        return false
+                    }
+                    this.setWaterFall()
                     break
                 // case 3: this.setBarrel()
             }
-
-            this.container.appendChild(this.galleryBox)
         }
 
         /**
@@ -136,8 +149,10 @@
          */
         clearLayout() {
             const node = this.galleryBox
-            while (node.firstChild) {
-                node.firstChild.remove()
+            if (node) {
+                while (node.firstChild) {
+                    node.firstChild.remove()
+                }
             }
         }
 
@@ -145,17 +160,18 @@
          * 设置拼图布局
          */
         setPuzzle() {
-            const images = this.getImageDomElements()
+            const images = this.getImageDomElements().slice(0, 6)
             const boxHeight = this.options.puzzleHeight
             const boxWidth = parseInt(window.getComputedStyle(this.container, null).getPropertyValue('width'))
             this.galleryBox.style.height = this.options.puzzleHeight + 'px'
 
             images.forEach(img => {
                 img.className = 'puzzleBox'
+                img.style.height = ''
                 this.galleryBox.appendChild(img)
             })
 
-            this.addClass(this.galleryBox, `count${images.length}`)
+            this.galleryBox.className = `galleryBox count${images.length}`
 
             if (images.length === 5) {
                 const sizeL = Math.ceil(boxWidth / 3)
@@ -181,11 +197,14 @@
 
             const images = this.getImageDomElements()
 
-            window.onload = () => {
-                images.forEach(img => {
-                    this.addImage(img)
-                })
-            }
+            images.forEach(img => this.addBox(img))
+        }
+
+        /**
+         * 设置木桶布局
+         */
+        setBarrel() {
+
         }
 
         /**
@@ -200,16 +219,25 @@
          * 根据layout添加图片到容器中
          * @param {HTMLElement} box 需要添加容器的dom
          */
-        addImage(box) {
+        addBox(box) {
+            box.style.height = ''
+
             switch (this.options.layout) {
                 case 1:
-                    
+                    this.setPuzzle()
+                    break 
+
                 case 2:
                     const min = this.getMinWaterfallColumn()
                     box.className = 'waterfallBox'
                     min.appendChild(box)
                     break
+                
+                case 3:
+                    
+                    break
             }
+            
         }
 
         /**

@@ -21,17 +21,22 @@
                 "http://placehold.it/1300x1250/449F93/fff",
                 "http://placehold.it/800x400/936FBC/fff",
                 "http://placehold.it/800x400/936FBC/fff",
-                "http://placehold.it/800x400/936FBC/fff"
+                // "http://placehold.it/800x400/936FBC/fff",
+                // "http://placehold.it/1300x1250/449F93/fff",
             ],
             {
-                layout: 2,
+                layout: 1,
                 fullscreenState: true
             }
         )
 
-        // setTimeout(() => {
-        //     gallery.setLayout(1)
-        // }, 3000)
+        setTimeout(() => {
+            gallery.setLayout(2)
+        }, 3000)
+
+        setTimeout(() => {
+            gallery.addImage('http://placehold.it/1300x1250/449F93/fff', true)
+        }, 4000)
     </script>
 </body>
 </html>
