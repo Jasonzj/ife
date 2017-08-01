@@ -149,3 +149,19 @@
 .waterfallColumn {
     float: left;
 }
+
+/* barrel */
+.barrelRow {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.barrelBox {
+    display: inline-block;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.barrelBox img {
+    height: 100%;
+}

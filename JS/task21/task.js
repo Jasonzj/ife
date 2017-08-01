@@ -65,14 +65,11 @@
  			var self = this;
  			var num = 0;
  			self.output.innerHTML = '';
- 			for (var i = 0; i < arr.length; i++) {
- 				if (i > 9) {
- 					num++; 
- 					if (i === arr.length - 1) {
-						console.log(num)
- 						self.setArr(arr, num);
- 					}
- 				} else {
+ 			for (var i = 0, l = arr.length; i < l; i++) {
+				if (l > 10) {
+					self.setArr(arr, l - 10)
+					return
+				} else {
  					self.output.innerHTML += "<span class='smallbox' index="+ i +">"+ arr[i] +"</span>";
  				}
  			}

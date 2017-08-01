@@ -30,6 +30,7 @@
                 waterfallColumn: 4,         // 瀑布流布局列数
                 fullscreenState: false,     // 是否全屏
                 puzzleHeight: 500,          // 拼图高度
+                barrelMinHeight: 150,       // 木桶布局最小行高
                 images: [],                 // 图片数组
             }
             this.columns = []
@@ -132,7 +133,14 @@
                     }
                     this.setWaterFall()
                     break
-                // case 3: this.setBarrel()
+                case 3: 
+                    if (init) {
+                        window.onload = () => {
+                            this.setBarrel()
+                        }
+                        return false
+                    }
+                    this.setBarrel()
             }
         }
 
@@ -204,6 +212,24 @@
          * 设置木桶布局
          */
         setBarrel() {
+            const images = this.getImageDomElements()
+            const row = document.createElement('div')
+            const wrapWid = this.galleryBox.clientWidth
+            let imgsWid = 0
+
+            row.className = 'barrelRow'
+            row.style.height = `${this.options.barrelMinHeight}px`
+            this.galleryBox.appendChild(row)
+
+
+            images.forEach(img => {
+                img.className = 'barrelBox'
+                row.appendChild(img)
+                imgsWid += img.clientWidth
+            })
+
+            console.log(imgsWid, wrapWid)
+            // const rows = this.getBarrelRow(images)
 
         }
 
@@ -213,6 +239,30 @@
          */
         getMinWaterfallColumn() {
             return this.columns.sort((a, b) => a.clientHeight - b.clientHeight)[0]
+        }
+
+        getBarrelRow(photos) {
+            // let _ratio = 0,
+            //     _photos = [],
+            //     _rows = []
+            
+            // photos.forEach(item => {
+            //     _photos.push(item)
+            //     _ratio += item.width / item.height
+            //     console.log(item)
+            //     console.log(item.firstChild, item.clientHeight)
+            //     // if (_ratio > this.ratio) {
+            //     //     _rows.push({
+            //     //         ratio: _ratio,
+            //     //         photos: _photos
+            //     //     })
+            //     //     _photos = []
+            //     //     _ratio = 0
+            //     // }
+            // })
+
+            // // this.photos = _photos
+            // // return _rows
         }
 
         /**
@@ -234,7 +284,7 @@
                     break
                 
                 case 3:
-                    
+
                     break
             }
             

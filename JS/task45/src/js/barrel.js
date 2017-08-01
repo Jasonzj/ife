@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-07-03 14:42:38 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-07-03 16:35:10
+ * @Last Modified time: 2017-08-01 16:37:53
  */
 
 export class Barrel {
