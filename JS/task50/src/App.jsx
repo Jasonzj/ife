@@ -14,6 +14,7 @@ import rootReducer from 'reducers'
 // container
 import HomeContainer from 'containers/HomeContainer'
 import ShowLists from 'containers/ShowLists'
+import NotFound from 'containers/404.jsx'
 
 // lazyContainer
 import Create from 'bundle-loader?lazy&name=create-[name]!containers/Create/index.js'
@@ -33,11 +34,9 @@ const store = createStore(
 )
 
 // router
-const Loading = () => <div>Loading...</div>
-
 const createComponent = component => () => (
     <Bundle load={component}>
-        { Component => Component ? <Component /> : <Loading /> }
+        { Component => <Component /> }
     </Bundle>
 )
 
@@ -52,6 +51,7 @@ const App = () => (
                 <Route path="/editor/:id" component={createComponent(Editor)} />
                 <Route path="/check/:id" component={createComponent(Editor)} />
                 <Route path="/data/:id" component={createComponent(Editor)} />
+                <Route path="*" component={NotFound} />
             </HomeContainer>
         </Router>
     </Provider>
