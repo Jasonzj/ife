@@ -6,6 +6,7 @@ import Bundle from './bundle.js'
 import {
     HashRouter as Router,
     Route,
+    Switch
 } from 'react-router-dom'
 
 // renducers
@@ -45,13 +46,15 @@ const App = () => (
     <Provider store={store}>
         <Router>
             <HomeContainer>
-                <Route exact path="/" component={ShowLists} />
-                <Route path="/create" component={createComponent(Create)} />
-                <Route path="/newQuestion" component={createComponent(Editor)} />
-                <Route path="/editor/:id" component={createComponent(Editor)} />
-                <Route path="/check/:id" component={createComponent(Editor)} />
-                <Route path="/data/:id" component={createComponent(Editor)} />
-                <Route path="*" component={NotFound} />
+                <Switch>
+                    <Route exact path="/" component={ShowLists} />
+                    <Route path="/create" component={createComponent(Create)} />
+                    <Route path="/newQuestion" component={createComponent(Editor)} />
+                    <Route path="/editor/:id" component={createComponent(Editor)} />
+                    <Route path="/check/:id" component={createComponent(Editor)} />
+                    <Route path="/data/:id" component={createComponent(Editor)} />
+                    <Route component={NotFound} />
+                </Switch>
             </HomeContainer>
         </Router>
     </Provider>
