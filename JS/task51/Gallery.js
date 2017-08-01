@@ -50,7 +50,7 @@
                 this.options[key] = option[key] || this.options[key]
             }
             
-            this.addImage(image)
+            this.addCacheImage(image)
             this.setLayout(option.layout)
         }
 
@@ -64,29 +64,26 @@
         }
 
         /**
-         * 向相册添加图片
-         * 在拼图布局下，根据图片数量重新计算布局方式；其他布局下向尾部追加图片
+         * 向相册添加缓存图片
          * @param {(string|string[])} image 一张图片的 URL 或多张图片 URL 组成的数组
          */
-        addImage(image) {
+        addCacheImage(image) {
             if (typeof image === 'string') {
                 image = [image]
             }
             
-            const gallerybox = document.createElement('div')
-            gallerybox.className = 'galleryBox'
-            gallerybox.style.height = this.options.puzzleHeight + 'px'
+            const galleryBox = document.createElement('div')
+            galleryBox.className = 'galleryBox'
 
             image.forEach(imgUrl => {
                 const wrap = document.createElement('div')
-                // wrap.innerHTML = `<img src=${img}>`
                 const img = new Image()
                 img.src = imgUrl
                 wrap.appendChild(img)
                 this.options.images.push(wrap)
             })
 
-            this.galleryBox = gallerybox
+            this.galleryBox = galleryBox
         }
 
         /**
@@ -134,6 +131,9 @@
             return this.options.layout
         }
 
+        /**
+         * 清除相册布局
+         */
         clearLayout() {
             const node = this.galleryBox
             while (node.firstChild) {
@@ -148,6 +148,7 @@
             const images = this.getImageDomElements()
             const boxHeight = this.options.puzzleHeight
             const boxWidth = parseInt(window.getComputedStyle(this.container, null).getPropertyValue('width'))
+            this.galleryBox.style.height = this.options.puzzleHeight + 'px'
 
             images.forEach(img => {
                 img.className = 'puzzleBox'
@@ -156,12 +157,10 @@
 
             this.addClass(this.galleryBox, `count${images.length}`)
 
-            switch (images.length) {
-                case 5:
-                    const sizeL = Math.ceil(boxWidth / 3)
-                    images[1].style.height = sizeL + 'px'
-                    images[2].style.height = (boxHeight - sizeL) + 'px'
-                    break;
+            if (images.length === 5) {
+                const sizeL = Math.ceil(boxWidth / 3)
+                images[1].style.height = sizeL + 'px'
+                images[2].style.height = (boxHeight - sizeL) + 'px'
             }
         }
 
@@ -170,6 +169,7 @@
          */
         setWaterFall() {
             const col = this.options.waterfallColumn
+            this.galleryBox.style.height = ''
 
             for (let i = 0, l = col; i < l; i++) {
                 const column = document.createElement('div')
@@ -180,24 +180,36 @@
             }
 
             const images = this.getImageDomElements()
-            images.forEach(img => {
-                setTimeout(() => {
-                    this.addBox(img)
-                }, 700)
-            })
+
+            window.onload = () => {
+                images.forEach(img => {
+                    this.addImage(img)
+                })
+            }
         }
 
-        getMinIndex() {
-            this.columns.sort((a, b) => a.clientHeight - b.clientHeight)
-            let min = this.columns[0]
-
-            return min
+        /**
+         * 获取瀑布流最小列
+         * @returns {HTMLElement} 最小列dom
+         */
+        getMinWaterfallColumn() {
+            return this.columns.sort((a, b) => a.clientHeight - b.clientHeight)[0]
         }
 
-        addBox(box) {
-            const min = this.getMinIndex()
-            box.className = 'waterfallBox'
-            min.appendChild(box)
+        /**
+         * 根据layout添加图片到容器中
+         * @param {HTMLElement} box 需要添加容器的dom
+         */
+        addImage(box) {
+            switch (this.options.layout) {
+                case 1:
+                    
+                case 2:
+                    const min = this.getMinWaterfallColumn()
+                    box.className = 'waterfallBox'
+                    min.appendChild(box)
+                    break
+            }
         }
 
         /**
