@@ -224,6 +224,7 @@
             this.galleryBox.appendChild(row)
 
             let _photos = []
+            let _ratio = 0
 
             this.options.imageUrls.forEach(url => {
                 const wrap = document.createElement('div')
@@ -235,10 +236,21 @@
                 img.onload = () => {
                     wrap.setAttribute('data-width', img.width)
                     wrap.setAttribute('data-height', img.height)
-                    _photos.push(wrap)
+
+                    _photos.push({
+                        dom: wrap,
+                        ratio: img.width / img.height
+                    })
+                    
+                    _ratio += img.width / img.height
                     imgsWid += img.width
+
                     if (imgsWid > wrapWid) {
+                        const rowHeight = this.container.clientWidth - (_photos.length - 1)
+                        
+                        row.style.height = (rowHeight / _ratio) + 'px'
                         this.rows.push(_photos)
+                        _photos.forEach(item => item.dom.style.width = (item.ratio * rowHeight / _ratio) + 'px')
                         _photos = []
                     }
                 }
