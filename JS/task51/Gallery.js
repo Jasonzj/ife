@@ -34,6 +34,7 @@
                 images: [],                 // 图片数组
             }
             this.columns = []
+            this.rows = []
         }
 
         /**
@@ -48,6 +49,7 @@
             }
             
             // 初始化配置
+            this.options.imageUrls = image
             for (const key in this.options) {
                 this.options[key] = option[key] || this.options[key]
             }
@@ -221,16 +223,26 @@
             row.style.height = `${this.options.barrelMinHeight}px`
             this.galleryBox.appendChild(row)
 
+            let _photos = []
 
-            images.forEach(img => {
-                img.className = 'barrelBox'
-                row.appendChild(img)
-                imgsWid += img.clientWidth
+            this.options.imageUrls.forEach(url => {
+                const wrap = document.createElement('div')
+                const img = new Image()
+                wrap.className = 'barrelBox'
+                img.src = url
+                wrap.appendChild(img)
+                row.appendChild(wrap)
+                img.onload = () => {
+                    wrap.setAttribute('data-width', img.width)
+                    wrap.setAttribute('data-height', img.height)
+                    _photos.push(wrap)
+                    imgsWid += img.width
+                    if (imgsWid > wrapWid) {
+                        this.rows.push(_photos)
+                        _photos = []
+                    }
+                }
             })
-
-            console.log(imgsWid, wrapWid)
-            // const rows = this.getBarrelRow(images)
-
         }
 
         /**
