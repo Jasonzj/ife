@@ -31,11 +31,12 @@
                 fullscreenState: false,     // 是否全屏
                 puzzleHeight: 500,          // 拼图高度
                 barrelMinHeight: 150,       // 木桶布局最小行高
+                gutter: { x: 10, y: 10 },   // 木桶布局间距
                 images: [],                 // 图片数组
                 imageUrls: []               // 图片链接数组
             }
+            // this.rows = []              // 木桶布局行数组
             this.columns = []           // 瀑布流列数组
-            this.rows = []              // 木桶布局行数组
             this.nPhotos = []           // 木桶布局未加入行数组
             this.nPhotosWrap = null     // 木桶布局未加入行容器
         }
@@ -141,6 +142,12 @@
                     this.setWaterFall()
                     break
                 case 3:
+                    if (init) {
+                        window.onload = () => {
+                            this.setBarrel()
+                        }
+                        return false
+                    }
                     this.setBarrel()
             }
         }
@@ -163,6 +170,10 @@
                     node.firstChild.remove()
                 }
             }
+            this.options.images.forEach(img => {
+                img.style.width = ''
+                img.style.margin = ''
+            })
         }
 
         /**
@@ -195,11 +206,13 @@
         setWaterFall() {
             const col = this.options.waterfallColumn
             this.galleryBox.style.height = ''
+            this.columns = []
 
             for (let i = 0, l = col; i < l; i++) {
                 const column = document.createElement('div')
                 column.className = 'waterfallColumn'
-                column.style.width = `${100 / col}%`
+                column.style.marginRight = this.options.gutter.x + 'px'
+                column.style.width = `${this.galleryBox.clientWidth / col - this.options.gutter.x}px`
                 this.columns.push(column)
                 this.galleryBox.appendChild(column)
             }
@@ -214,32 +227,10 @@
          */
         setBarrel() {
             this.ratio = this.container.clientWidth / this.options.barrelMinHeight
-            this.getBarrelRow(this.options.imageUrls).then((rows) => {
-                rows.forEach(row => {
-                    const div = document.createElement('div')
-                    const conHeight = this.container.clientWidth
-                    
-                    div.className = 'barrelRow'
-                    div.style.height = conHeight / row.ratio + 'px'
-                    div.innerHTML = row.photos
-                        .map(photo => `<div class='barrelBox'><img src="${photo.url}"></div>`)
-                        .join('')
-
-                    this.galleryBox.appendChild(div)
-                })
-
-                if (this.nPhotos.length) {
-                    this.nPhotosWrap = document.createElement('div')
-                    this.nPhotosWrap.className = 'barrelRow'
-                    this.nPhotosWrap.style.height = this.options.barrelMinHeight + 'px'
-
-                    this.nPhotosWrap.innerHTML = this.nPhotos
-                        .map(obj => `<div class='barrelBox'><img src="${obj.url}"></div>`)
-                        .join('')
-
-                    this.galleryBox.appendChild(this.nPhotosWrap)
-                }
-            })
+            this.nPhotos = []           
+            this.nPhotosWrap = null     
+            const images = this.getImageDomElements()
+            images.forEach(img => this.addBox(img, img.firstChild.width, img.firstChild.height))
         }
 
         /**
@@ -250,43 +241,12 @@
             return this.columns.sort((a, b) => a.clientHeight - b.clientHeight)[0]
         }
 
-        getBarrelRow(photos) {
-            let _ratio = 0,
-                _count = 0,
-                _photos = [],
-                _rows = []
-
-            return new Promise((resolve, reject) => {
-                photos.forEach((url, i) => {
-                    const img = new Image()
-                    img.src = url
-                    img.onload = () => {
-                        const _imgRatio = img.width / img.height
-                        _ratio += img.width / img.height
-                        _count += 1
-                        _photos.push({
-                            url,
-                            ratio: _imgRatio
-                        })
-
-                        if (_ratio > this.ratio) {
-                            _rows.push({
-                                ratio: _ratio,
-                                photos: _photos
-                            })
-                            _photos = []
-                            _ratio = 0
-                        }
-
-                        if (_count === photos.length) {
-                            this.nPhotos = _photos
-                            resolve(_rows)
-                        }
-                    }
-                })
-            })
-        }
-
+        /**
+         * 木桶布局追加图片
+         * @param {String} url 图片链接
+         * @param {Number} ratio 图片比例
+         * @param {HTMLElement} dom 图片dom
+         */
         appendBarrel(url, ratio, dom) {
             const nPhotos = this.nPhotos
             const nPhotosWrap = this.nPhotosWrap
@@ -296,13 +256,16 @@
                 url,
                 ratio
             })
+
             dom.className = 'barrelBox'
+            dom.style.marginRight = this.options.gutter.x + 'px'
             nPhotosWrap.appendChild(dom)
 
             const total = nPhotos.reduce((a, b) => a + b.ratio, 0)
 
+            // 超过当前比例
             if (total > this.ratio) {
-                const conHeight = this.container.clientWidth
+                const conHeight = this.container.clientWidth - ((nPhotos.length - 1) * this.options.gutter.x)
                 const rowHeight = conHeight / total
 
                 nPhotosWrap.style.height = rowHeight + 'px'
@@ -313,8 +276,6 @@
                     })
                 this.nPhotos = []
             }
-
-            
         }
 
         /**
@@ -330,8 +291,10 @@
                     break 
 
                 case 2:
+                    console.log('1');
                     const min = this.getMinWaterfallColumn()
                     box.className = 'waterfallBox'
+                    box.style.marginBottom = this.options.gutter.y + 'px'
                     min.appendChild(box)
                     break
                 
@@ -339,6 +302,7 @@
                     if (!this.nPhotos.length) {
                         this.nPhotosWrap = document.createElement('div')
                         this.nPhotosWrap.className = 'barrelRow'
+                        this.nPhotosWrap.style.marginBottom = this.options.gutter.y + 'px'
                         this.nPhotosWrap.style.height = this.options.barrelMinHeight + 'px'
                         this.galleryBox.appendChild(this.nPhotosWrap)
                     }
@@ -357,7 +321,8 @@
          * @param {number} [y] 图片之间的纵向间距，如果是 undefined 则等同于 x
          */
         setGutter(x, y) {
-
+            this.options.gutter = {x, y}
+            this.setLayout(this.options.layout)
         }
 
         /**
