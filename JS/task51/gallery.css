@@ -160,6 +160,8 @@
     display: inline-block;
     box-sizing: border-box;
     height: 100%;
+    font-size: 0;
+    -webkit-text-size-adjust:none;
 }
 
 .barrelBox img {
