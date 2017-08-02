@@ -32,6 +32,7 @@
                 puzzleHeight: 500,          // 拼图高度
                 barrelMinHeight: 150,       // 木桶布局最小行高
                 images: [],                 // 图片数组
+                imageUrls: []               // 图片链接数组
             }
             this.columns = []
             this.rows = []
@@ -60,7 +61,9 @@
             this.container.appendChild(this.galleryBox)
 
             // 初始布局和图片
-            this.addImage(image)
+            if (option.layout !== 3) {
+                this.addImage(image)
+            }
             this.setLayout(option.layout, true)
         }
 
@@ -214,47 +217,77 @@
          * 设置木桶布局
          */
         setBarrel() {
-            const images = this.getImageDomElements()
-            const row = document.createElement('div')
-            const wrapWid = this.galleryBox.clientWidth
-            let imgsWid = 0
-
-            row.className = 'barrelRow'
-            row.style.height = `${this.options.barrelMinHeight}px`
-            this.galleryBox.appendChild(row)
-
-            let _photos = []
-            let _ratio = 0
-
-            this.options.imageUrls.forEach(url => {
-                const wrap = document.createElement('div')
-                const img = new Image()
-                wrap.className = 'barrelBox'
-                img.src = url
-                wrap.appendChild(img)
-                row.appendChild(wrap)
-                img.onload = () => {
-                    wrap.setAttribute('data-width', img.width)
-                    wrap.setAttribute('data-height', img.height)
-
-                    _photos.push({
-                        dom: wrap,
-                        ratio: img.width / img.height
-                    })
+            this.ratio = this.container.clientWidth / this.options.barrelMinHeight
+            this.getBarrelRow(this.options.imageUrls).then((rows) => {
+                rows.forEach(row => {
+                    console.log(row)
+                    const div = document.createElement('div')
+                    const rowHeight = this.container.clientWidth - (row.photos.length - 1)
                     
-                    _ratio += img.width / img.height
-                    imgsWid += img.width
+                    div.className = 'barrelRow'
+                    div.style.height = parseInt(rowHeight / row.ratio) + 'px'
+                    div.innerHTML = row.photos.map(photo => {
+                        return `<div class='barrelBox'><img src="${photo}"></div>`
+                    }).join('')
 
-                    if (imgsWid > wrapWid) {
-                        const rowHeight = this.container.clientWidth - (_photos.length - 1)
-                        
-                        row.style.height = (rowHeight / _ratio) + 'px'
-                        this.rows.push(_photos)
-                        _photos.forEach(item => item.dom.style.width = (item.ratio * rowHeight / _ratio) + 'px')
-                        _photos = []
-                    }
-                }
+                    this.galleryBox.appendChild(div)
+                })
             })
+            // rows.forEach(row => {
+            //     console.log(row)
+                // const div = document.createElement('div')
+                // const rowHeight = this.container.clientWidth - (row.photos.length - 1)
+                
+                // div.className = 'barrelRow'
+                // div.style.height = parseInt(rowHeight / row.ratio) + 'px'
+                // div.innerHTML = row.photos.map(photo => {
+                //     return `<div class='barrelBox'>${photo}</div>`
+                // }).join('')
+
+                // this.galleryBox.appendChild(div)
+            // })
+            // const images = this.getImageDomElements()
+            // const row = document.createElement('div')
+            // const wrapWid = this.galleryBox.clientWidth
+            // let imgsWid = 0
+
+            // row.className = 'barrelRow'
+            // row.style.height = `${this.options.barrelMinHeight}px`
+            // this.galleryBox.appendChild(row)
+
+            // let _photos = []
+            // let _ratio = 0
+
+            // this.options.imageUrls.forEach(url => {
+            //     const wrap = document.createElement('div')
+            //     const img = new Image()
+            //     wrap.className = 'barrelBox'
+            //     img.src = url
+            //     wrap.appendChild(img)
+            //     // row.appendChild(wrap)
+            //     img.onload = () => {
+            //         // wrap.setAttribute('data-width', img.width)
+            //         // wrap.setAttribute('data-height', img.height)
+
+            //         _photos.push({
+            //             dom: wrap,
+            //             ratio: img.width / img.height
+            //         })
+                    
+            //         _ratio += img.width / img.height
+            //         imgsWid += img.width
+
+            //         if (imgsWid > wrapWid) {
+            //             const rowHeight = this.container.clientWidth - (_photos.length - 1)
+                        
+            //             row.style.height = (rowHeight / _ratio) + 'px'
+            //             this.rows.push(_photos)
+            //             _photos.forEach(item => item.dom.style.width = (item.ratio * rowHeight / _ratio) + 'px')
+            //             _photos = []
+            //         }
+            //     }
+            // })
+
         }
 
         /**
@@ -266,27 +299,37 @@
         }
 
         getBarrelRow(photos) {
-            // let _ratio = 0,
-            //     _photos = [],
-            //     _rows = []
-            
-            // photos.forEach(item => {
-            //     _photos.push(item)
-            //     _ratio += item.width / item.height
-            //     console.log(item)
-            //     console.log(item.firstChild, item.clientHeight)
-            //     // if (_ratio > this.ratio) {
-            //     //     _rows.push({
-            //     //         ratio: _ratio,
-            //     //         photos: _photos
-            //     //     })
-            //     //     _photos = []
-            //     //     _ratio = 0
-            //     // }
-            // })
+            let _ratio = 0,
+                _count = 0,
+                _photos = [],
+                _rows = []
 
-            // // this.photos = _photos
-            // // return _rows
+            
+            
+            return new Promise((resolve, reject) => {
+                photos.forEach(url => {
+                    const img = new Image()
+                    img.src = url
+                    img.onload = () => {
+                        _photos.push(url)
+                        _ratio += img.width / img.height
+                        _count += 1
+
+                        if (_ratio > this.ratio) {
+                            _rows.push({
+                                ratio: _ratio,
+                                photos: _photos
+                            })
+                            _photos = []
+                            _ratio = 0
+                        }
+
+                        if (_count == photos.length) {
+                            resolve(_rows)
+                        }
+                    }
+                })
+            })
         }
 
         /**
