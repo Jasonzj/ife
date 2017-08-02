@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
 // scss
@@ -8,7 +8,7 @@ import './Calendar.scss'
 import CalendarHead from './subComponent/CalendarHead'
 import CalendarBody from './subComponent/CalendarBody'
 
-class Calendar extends Component {
+class Calendar extends PureComponent {
     constructor({ date }) {
         super()
 

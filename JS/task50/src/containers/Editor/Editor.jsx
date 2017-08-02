@@ -335,7 +335,6 @@ class Editor extends PureComponent {
     }
 
     render() {
-        console.log(this.state)
         const { dialog, diglogFunc, dialogMsg } = this.props
 
         return (
