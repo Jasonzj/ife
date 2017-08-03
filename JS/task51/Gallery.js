@@ -28,9 +28,12 @@
             this.options = {
                 layout: 2,                  // 布局类型
                 waterfallColumn: 4,         // 瀑布流布局列数
-                fullscreenState: false,     // 是否全屏
+                fullScreen: false,          // 是否全屏
                 puzzleHeight: 500,          // 拼图高度
-                barrelMinHeight: 150,       // 木桶布局最小行高
+                barrelHeight: {             // 木桶布局最小行高
+                    min: 100,
+                    max: 150
+                },       
                 gutter: { x: 10, y: 10 },   // 木桶布局间距
                 images: [],                 // 图片数组
             }
@@ -234,7 +237,8 @@
          * 设置木桶布局
          */
         setBarrel() {
-            this.ratio = this.container.clientWidth / this.options.barrelMinHeight
+            this.minRatio = this.container.clientWidth / this.options.barrelHeight.min
+            this.maxRatio = this.container.clientWidth / this.options.barrelHeight.max
             this.nPhotos = []           
             this.nPhotosWrap = null     
             const images = this.getImageDomElements()
@@ -272,7 +276,8 @@
             const total = nPhotos.reduce((a, b) => a + b.ratio, 0)
 
             // 超过当前比例
-            if (total > this.ratio) {
+            console.log(this.minRatio, this.maxRatio)
+            if (total < this.minRatio && total > this.maxRatio) {
                 const conHeight = this.container.clientWidth - ((nPhotos.length - 1) * this.options.gutter.x)
                 const rowHeight = conHeight / total
 
@@ -282,6 +287,7 @@
                     .forEach((wrap, i, self) => {
                         wrap.style.width = this.nPhotos[i].ratio * rowHeight + 'px'
                     })
+
                 this.nPhotos = []
             }
         }
@@ -311,7 +317,7 @@
                         this.nPhotosWrap = document.createElement('div')
                         this.nPhotosWrap.className = 'barrelRow'
                         this.nPhotosWrap.style.marginBottom = this.options.gutter.y + 'px'
-                        this.nPhotosWrap.style.height = this.options.barrelMinHeight + 'px'
+                        this.nPhotosWrap.style.height = (this.options.barrelHeight.min + this.options.barrelHeight.max) / 2 + 'px'
                         this.galleryBox.appendChild(this.nPhotosWrap)
                     }
                     const ratio = wid / hei
@@ -363,14 +369,14 @@
          * 允许点击图片时全屏浏览图片
          */
         enableFullscreen() {
-
+            this.options.fullScreen = true
         }
 
         /**
          * 禁止点击图片时全屏浏览图片
          */
         disableFullscreen() {
-
+            this.options.fullScreen = false
         }
 
         /**
@@ -378,37 +384,7 @@
          * @return {boolean} 是否允许全屏浏览
          */
         isFullscreenEnabled() {
-
-        }
-
-        /**
-         * 设置木桶模式每行图片数的上下限
-         * @param {number} min 最少图片数（含）
-         * @param {number} max 最多图片数（含）
-         */
-        setBarrelBin(min, max) {
-
-            if (min === undefined || max === undefined || min > max) {
-                console.error('...')
-                return;
-            }
-
-        }
-
-        /**
-         * 获取木桶模式每行图片数的上限
-         * @return {number} 最多图片数（含）
-         */
-        getBarrelBinMax() {
-
-        }
-
-        /**
-         * 获取木桶模式每行图片数的下限
-         * @return {number} 最少图片数（含）
-         */
-        getBarrelBinMin() {
-
+            return this.options.fullScreen
         }
 
         /**
@@ -416,8 +392,13 @@
          * @param {number} min 最小高度
          * @param {number} max 最大高度
          */
-        setBarrelHeight(min, max) {
-
+        setBarrelHeight(min = 100, max = 150) {
+            if (min > max) {
+                console.error('最小高度必须低于最大高度')
+                return false
+            }
+            this.options.barrelHeight = { min, max }
+            this.updateLayout()
         }
 
         /**
@@ -425,7 +406,7 @@
          * @return {number} 最多图片数（含）
          */
         getBarrelHeightMax() {
-
+            return this.options.barrelHeight.max
         }
 
         /**
@@ -433,7 +414,7 @@
          * @return {number} 最少图片数（含）
          */
         getBarrelHeightMin() {
-
+            return this.options.barrelHeight.min
         }
 
         /**
