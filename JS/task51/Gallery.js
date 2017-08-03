@@ -37,6 +37,14 @@
             this.columns = []           // 瀑布流列数组
             this.nPhotos = []           // 木桶布局未加入行数组
             this.nPhotosWrap = null     // 木桶布局未加入行容器
+            this.resizeTimer = null     // 木桶布局自适应timer
+            this.onresize = false       // 监听容器宽度
+            
+            window.onresize = () => {
+                if (this.onresize) {
+                    this.resizeUpdate(200)
+                }
+            }
         }
 
         /**
@@ -126,9 +134,12 @@
             this.clearLayout()
 
             switch (layout) {
-                case 1: this.setPuzzle() 
+                case 1: 
+                    this.onresize = false
+                    this.setPuzzle() 
                     break
                 case 2: 
+                    this.onresize = false
                     if (init) {
                         window.onload = () => {
                             this.setWaterFall()
@@ -138,6 +149,7 @@
                     this.setWaterFall()
                     break
                 case 3:
+                    this.onresize = true
                     if (init) {
                         window.onload = () => {
                             this.setBarrel()
@@ -169,6 +181,7 @@
             this.options.images.forEach(img => {
                 img.style.width = ''
                 img.style.margin = ''
+                img.style.border = ''
             })
         }
 
@@ -207,8 +220,6 @@
             for (let i = 0, l = col; i < l; i++) {
                 const column = document.createElement('div')
                 column.className = 'waterfallColumn'
-                // column.style.marginRight = this.options.gutter.x + 'px'
-                // column.style.width = `${(this.galleryBox.clientWidth / col) - this.options.gutter.x}px`
                 column.style.width = `${(100 / col)}%`
                 this.columns.push(column)
                 this.galleryBox.appendChild(column)
@@ -290,7 +301,6 @@
                 case 2:
                     const min = this.getMinWaterfallColumn()
                     box.className = 'waterfallBox'
-                    // box.style.marginBottom = this.options.gutter.y + 'px'
                     box.style.borderBottom = this.options.gutter.y + 'px solid transparent'
                     box.style.borderRight = this.options.gutter.x + 'px solid transparent'
                     min.appendChild(box)
@@ -425,9 +435,18 @@
         getBarrelHeightMin() {
 
         }
-        
-        addClass(target, classN) {
-            target.classList.add(classN)
+
+        /**
+         * 节流更新布局
+         * @param {Number} wait 更新周期时间
+         */
+        resizeUpdate(wait) {
+            if (!this.resizeTimer) {
+                this.resizeTimer = setTimeout(() => {
+                    this.resizeTimer = null
+                    this.updateLayout()
+                }, wait)
+            }
         }
     }
 
