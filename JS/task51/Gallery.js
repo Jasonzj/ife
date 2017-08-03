@@ -26,7 +26,7 @@
                 BARREL: 3       // 木桶
             }
             this.options = {
-                layout: 1,                  // 布局类型
+                layout: 2,                  // 布局类型
                 waterfallColumn: 4,         // 瀑布流布局列数
                 fullscreenState: false,     // 是否全屏
                 puzzleHeight: 500,          // 拼图高度
@@ -67,7 +67,6 @@
 
         /**
          * 获取相册所有图像对应的 DOM 元素
-         * 可以不是 ，而是更外层的元素
          * @return {HTMLElement[]} 相册所有图像对应的 DOM 元素组成的数组
          */
         getImageDomElements() {
@@ -75,7 +74,7 @@
         }
 
         /**
-         * 初始化图片
+         * 添加图片
          * @param {(string|string[])} image 一张图片的 URL 或多张图片 URL 组成的数组
          * @param {Boolean} bool 是否把图片直接添加到容器
          */
@@ -122,7 +121,7 @@
          * 设置相册的布局
          * @param {number} layout 布局值，IfeAlbum.LAYOUT 中的值
          */
-        setLayout(layout, init) {
+        setLayout(layout = 2, init) {
             this.options.layout = layout
             this.clearLayout()
 
@@ -208,8 +207,9 @@
             for (let i = 0, l = col; i < l; i++) {
                 const column = document.createElement('div')
                 column.className = 'waterfallColumn'
-                column.style.marginRight = this.options.gutter.x + 'px'
-                column.style.width = `${this.galleryBox.clientWidth / col - this.options.gutter.x}px`
+                // column.style.marginRight = this.options.gutter.x + 'px'
+                // column.style.width = `${(this.galleryBox.clientWidth / col) - this.options.gutter.x}px`
+                column.style.width = `${(100 / col)}%`
                 this.columns.push(column)
                 this.galleryBox.appendChild(column)
             }
@@ -288,10 +288,11 @@
                     break 
 
                 case 2:
-                    console.log('1');
                     const min = this.getMinWaterfallColumn()
                     box.className = 'waterfallBox'
-                    box.style.marginBottom = this.options.gutter.y + 'px'
+                    // box.style.marginBottom = this.options.gutter.y + 'px'
+                    box.style.borderBottom = this.options.gutter.y + 'px solid transparent'
+                    box.style.borderRight = this.options.gutter.x + 'px solid transparent'
                     min.appendChild(box)
                     break
                 
@@ -311,15 +312,41 @@
         }
 
         /**
+         * 更新布局
+         */
+        updateLayout() {
+            this.setLayout(this.options.layout)
+        }
+
+        /**
          * 设置图片之间的间距
          * 注意这个值仅代表图片间的间距，不应直接用于图片的 margin 属性，如左上角图的左边和上边应该紧贴相册的左边和上边
          * 相册本身的 padding 始终是 0，用户想修改相册外框的空白需要自己设置相框元素的 padding
          * @param {number}  x  图片之间的横向间距
-         * @param {number} [y] 图片之间的纵向间距，如果是 undefined 则等同于 x
+         * @param {number}  y  图片之间的纵向间距，如果是 undefined 则等同于 x
+         * @return {Boolean} 
          */
-        setGutter(x, y) {
+        setGutter(x = 10, y = 10) {
+            if (x < 0 || y < 0) {
+                console.error('图片间距必须大于等于0')
+                return false
+            }
             this.options.gutter = {x, y}
-            this.setLayout(this.options.layout)
+            this.updateLayout()
+            return true
+        }
+
+        /**
+         * 设置瀑布流列数
+         * @param {Number} column 瀑布流列数
+         */
+        setWaterfallColumn(column = 4) {
+            if (!Number.isInteger(column) || column < 0) {
+                console.error('瀑布流列数必须为正整数')
+                return false
+            }
+            this.options.waterfallColumn = column
+            this.updateLayout()
         }
 
         /**
