@@ -33,9 +33,7 @@
                 barrelMinHeight: 150,       // 木桶布局最小行高
                 gutter: { x: 10, y: 10 },   // 木桶布局间距
                 images: [],                 // 图片数组
-                imageUrls: []               // 图片链接数组
             }
-            // this.rows = []              // 木桶布局行数组
             this.columns = []           // 瀑布流列数组
             this.nPhotos = []           // 木桶布局未加入行数组
             this.nPhotosWrap = null     // 木桶布局未加入行容器
@@ -53,7 +51,6 @@
             }
             
             // 初始化配置
-            this.options.imageUrls = image
             for (const key in this.options) {
                 this.options[key] = option[key] || this.options[key]
             }
@@ -355,7 +352,7 @@
         setBarrelBin(min, max) {
 
             if (min === undefined || max === undefined || min > max) {
-                console.error('...');
+                console.error('...')
                 return;
             }
 
