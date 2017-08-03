@@ -31,8 +31,8 @@
                 fullScreen: false,          // 是否全屏
                 puzzleHeight: 500,          // 拼图高度
                 barrelHeight: {             // 木桶布局最小行高
-                    min: 100,
-                    max: 150
+                    min: 200,
+                    max: 300
                 },       
                 gutter: { x: 10, y: 10 },   // 木桶布局间距
                 images: [],                 // 图片数组
@@ -276,8 +276,8 @@
             const total = nPhotos.reduce((a, b) => a + b.ratio, 0)
 
             // 超过当前比例
-            console.log(this.minRatio, this.maxRatio)
-            if (total < this.minRatio && total > this.maxRatio) {
+            // if (total < this.minRatio && total > this.maxRatio) {
+            if (total > this.minRatio - 2) {
                 const conHeight = this.container.clientWidth - ((nPhotos.length - 1) * this.options.gutter.x)
                 const rowHeight = conHeight / total
 
@@ -317,7 +317,7 @@
                         this.nPhotosWrap = document.createElement('div')
                         this.nPhotosWrap.className = 'barrelRow'
                         this.nPhotosWrap.style.marginBottom = this.options.gutter.y + 'px'
-                        this.nPhotosWrap.style.height = (this.options.barrelHeight.min + this.options.barrelHeight.max) / 2 + 'px'
+                        this.nPhotosWrap.style.height = this.options.barrelHeight.min + 'px'
                         this.galleryBox.appendChild(this.nPhotosWrap)
                     }
                     const ratio = wid / hei
@@ -336,8 +336,6 @@
 
         /**
          * 设置图片之间的间距
-         * 注意这个值仅代表图片间的间距，不应直接用于图片的 margin 属性，如左上角图的左边和上边应该紧贴相册的左边和上边
-         * 相册本身的 padding 始终是 0，用户想修改相册外框的空白需要自己设置相框元素的 padding
          * @param {number}  x  图片之间的横向间距
          * @param {number}  y  图片之间的纵向间距，如果是 undefined 则等同于 x
          * @return {Boolean} 
@@ -393,8 +391,8 @@
          * @param {number} max 最大高度
          */
         setBarrelHeight(min = 100, max = 150) {
-            if (min > max) {
-                console.error('最小高度必须低于最大高度')
+            if (min > max || (max - min) < 20) {
+                console.error('最小高度必须低于最大高度, 且上下限最少相差20')
                 return false
             }
             this.options.barrelHeight = { min, max }
