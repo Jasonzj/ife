@@ -107,13 +107,15 @@
                 const img = new Image()
                 img.src = imgUrl
                 wrap.appendChild(img)
-                this.options.images.push(wrap)
+                
+                if (!bool) {
+                    this.options.images.push(wrap)
+                    return false
+                }
 
-                if (bool) {
-                    img.onload = () => {
-                        // this.options.images.push(wrap)
-                        this.addBox(wrap, img.width, img.height)
-                    }
+                img.onload = () => {
+                    this.options.images.push(wrap)
+                    this.addBox(wrap, img.width, img.height)
                 }
             })
         }
@@ -501,7 +503,6 @@
                 wrapImgs[i].src = imgs[imageIndex].firstChild.src
                 wrapImgs[i].setAttribute('index', imageIndex)
             }
-
         }
 
         bindClickHandle() {
