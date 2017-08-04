@@ -32,7 +32,7 @@
                 puzzleHeight: 500,          // 拼图高度
                 barrelHeight: {             // 木桶布局最小行高
                     min: 200,
-                    max: 300
+                    max: 250
                 },       
                 gutter: { x: 10, y: 10 },   // 木桶布局间距
                 images: [],                 // 图片数组
@@ -43,6 +43,7 @@
             this.resizeTimer = null     // 木桶布局自适应timer
             this.onresize = false       // 监听容器宽度
             
+            // 监听屏幕
             window.onresize = () => {
                 if (this.onresize) {
                     this.resizeUpdate(200)
@@ -259,13 +260,14 @@
          * @param {Number} ratio 图片比例
          * @param {HTMLElement} dom 图片dom
          */
-        appendBarrel(url, ratio, dom) {
+        appendBarrel(url, ratio, dom, wid) {
             const nPhotos = this.nPhotos
             const nPhotosWrap = this.nPhotosWrap
             const nPhotosDoms = nPhotosWrap.getElementsByClassName('barrelBox')
 
             nPhotos.push({
                 url,
+                wid,
                 ratio
             })
 
@@ -276,18 +278,19 @@
             const total = nPhotos.reduce((a, b) => a + b.ratio, 0)
 
             // 超过当前比例
-            // if (total < this.minRatio && total > this.maxRatio) {
-            if (total > this.minRatio - 2) {
+            // if (total > this.minRatio && total < this.maxRatio) {
+            // if ((width > this.container.clientWidth && total > this.minRatio)) {
+            if (total > this.minRatio) {
                 const conHeight = this.container.clientWidth - ((nPhotos.length - 1) * this.options.gutter.x)
                 const rowHeight = conHeight / total
 
                 nPhotosWrap.style.height = rowHeight + 'px'
 
-                Array.from(nPhotosDoms)
-                    .forEach((wrap, i, self) => {
-                        wrap.style.width = this.nPhotos[i].ratio * rowHeight + 'px'
-                    })
-
+                // Array.from(nPhotosDoms)
+                //     .forEach((wrap, i) => {
+                //         wrap.style.width = this.nPhotos[i].ratio * rowHeight + 'px'
+                //     })
+                
                 this.nPhotos = []
             }
         }
@@ -321,7 +324,7 @@
                         this.galleryBox.appendChild(this.nPhotosWrap)
                     }
                     const ratio = wid / hei
-                    this.appendBarrel(box.firstChild.src, ratio, box)
+                    this.appendBarrel(box.firstChild.src, ratio, box, wid)
                     break
             }
             
@@ -332,6 +335,20 @@
          */
         updateLayout() {
             this.setLayout(this.options.layout)
+        }
+
+        /**
+         * 设置拼图布局容器高度
+         * @param {number} [height=500] 
+         * @returns {Boolean}
+         */
+        setPuzzleHeight(height = 500) {
+            if (!Number.isInteger(height) || height < 0) {
+                console.error('拼图布局高度必须是正整数')
+                return false
+            }
+            this.options.puzzleHeight = height
+            return true
         }
 
         /**
@@ -353,6 +370,7 @@
         /**
          * 设置瀑布流列数
          * @param {Number} column 瀑布流列数
+         * @return {Boolean} 
          */
         setWaterfallColumn(column = 4) {
             if (!Number.isInteger(column) || column < 0) {
@@ -361,6 +379,7 @@
             }
             this.options.waterfallColumn = column
             this.updateLayout()
+            return true
         }
 
         /**
@@ -390,9 +409,9 @@
          * @param {number} min 最小高度
          * @param {number} max 最大高度
          */
-        setBarrelHeight(min = 100, max = 150) {
-            if (min > max || (max - min) < 20) {
-                console.error('最小高度必须低于最大高度, 且上下限最少相差20')
+        setBarrelHeight(min = 200, max = 300) {
+            if (min > max || (max - min) < 100) {
+                console.error('最小高度必须低于最大高度, 且上下限最少相差100')
                 return false
             }
             this.options.barrelHeight = { min, max }
