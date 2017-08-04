@@ -283,7 +283,7 @@
             if (total > this.minRatio) {
                 const conHeight = this.container.clientWidth - ((nPhotos.length - 1) * this.options.gutter.x)
                 const rowHeight = conHeight / total
-
+                
                 nPhotosWrap.style.height = rowHeight + 'px'
 
                 // Array.from(nPhotosDoms)
