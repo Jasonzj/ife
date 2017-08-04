@@ -42,13 +42,20 @@
             this.nPhotosWrap = null     // 木桶布局未加入行容器
             this.resizeTimer = null     // 木桶布局自适应timer
             this.onresize = false       // 监听容器宽度
+            this.imgIndex = 0
             
+            this.init()
+        }
+
+        init() {
             // 监听屏幕
             window.onresize = () => {
                 if (this.onresize) {
                     this.resizeUpdate(200)
                 }
             }
+            this.bindClickHandle()
+            this.setDialog()
         }
 
         /**
@@ -95,16 +102,16 @@
                 image = [image]
             }
 
-            image.forEach(imgUrl => {
+            image.forEach((imgUrl, i) => {
                 const wrap = document.createElement('div')
                 const img = new Image()
                 img.src = imgUrl
                 wrap.appendChild(img)
-
                 this.options.images.push(wrap)
 
                 if (bool) {
                     img.onload = () => {
+                        // this.options.images.push(wrap)
                         this.addBox(wrap, img.width, img.height)
                     }
                 }
@@ -177,6 +184,7 @@
          */
         clearLayout() {
             const node = this.galleryBox
+            this.imgIndex = 0
             if (node) {
                 while (node.firstChild) {
                     node.firstChild.remove()
@@ -283,7 +291,7 @@
             if (total > this.minRatio) {
                 const conHeight = this.container.clientWidth - ((nPhotos.length - 1) * this.options.gutter.x)
                 const rowHeight = conHeight / total
-                
+
                 nPhotosWrap.style.height = rowHeight + 'px'
 
                 // Array.from(nPhotosDoms)
@@ -301,6 +309,7 @@
          */
         addBox(box, wid, hei) {
             box.style.height = ''
+            box.firstChild.setAttribute('index', this.imgIndex++)
 
             switch (this.options.layout) {
                 case 1:
@@ -445,6 +454,68 @@
                     this.updateLayout()
                 }, wait)
             }
+        }
+
+        setDialog() {
+            const dialog = `
+                <div class="gallery-dialog">
+                    <span class="gallery-dialog-close">X</span>
+                    <div class="gallery-dialog-img">
+                        <img id="gallery-dialogImg" src="http://placehold.it/1105x645/449F93/fff" />
+                    </div>
+                    <div class="gallery-dialog-list">
+                        <img src="" alt=""/>
+                        <img src="" alt=""/>
+                        <img src="" alt=""/>
+                        <img src="" alt=""/>
+                        <img src="" alt=""/>
+                    </div>
+                </div>
+            `
+            this.container.innerHTML += dialog
+            this.dialogImg = document.querySelector('#gallery-dialogImg')
+            this.dialog = document.querySelector('.gallery-dialog')
+        }
+
+        setThumbnail(index) {
+            const wrap = document.querySelector('.gallery-dialog-list')
+            const wrapImgs = Array.from(wrap.getElementsByTagName('img'))
+            const imgs = this.getImageDomElements()
+            let len = imgs.length
+
+            if (len > 5) {
+                len = 5
+            }
+
+            let imageIndex = index
+
+            if (index > 1) {
+                imageIndex -= 2
+            } else if (index <= 1) {
+                imageIndex = 0
+            } else if (index === imgs.length) {
+                imageIndex = imgs.length - 4
+            }
+            
+            for (let i = 0; i < len; i++, imageIndex++) {
+                wrapImgs[i].src = imgs[imageIndex].firstChild.src
+                wrapImgs[i].setAttribute('index', imageIndex)
+            }
+
+        }
+
+        bindClickHandle() {
+            this.container.addEventListener('click', (e) => {
+                if (e.target.nodeName === 'IMG') {
+                    const index = parseInt(e.target.getAttribute('index'))
+                    this.setThumbnail(index)
+                    this.dialogImg.src = e.target.src
+                    this.dialog.style.display = 'block'
+                }
+                if (e.target.className === 'gallery-dialog-close') {
+                    this.dialog.style.display = 'none'
+                }
+            })
         }
     }
 

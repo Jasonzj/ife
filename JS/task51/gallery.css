@@ -170,3 +170,54 @@
 .barrelBox img {
     height: 100%;
 }
+
+/* dialog */
+.gallery-dialog {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.85);
+    z-index: 100;
+}
+
+.gallery-dialog-img {
+    width: 100%;
+    height: calc(100% - 200px);
+    overflow: hidden;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+
+.gallery-dialog-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.gallery-dialog-list {
+    width: 100%;
+    height: 200px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+    -webkit-justify-content: space-around;
+    justify-content: space-around;
+    -webkit-align-items: center;
+    align-items: center;
+}
+
+.gallery-dialog-list img {
+    max-height: calc(100% - 10px);
+    width: 250px;
+    margin: 5px;
+    cursor: pointer;
+}
