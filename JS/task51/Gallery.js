@@ -193,7 +193,6 @@
                 }
             }
             this.options.images.forEach(img => {
-                img.style.width = ''
                 img.style.margin = ''
                 img.style.border = ''
             })
