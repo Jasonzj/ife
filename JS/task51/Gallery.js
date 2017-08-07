@@ -42,7 +42,8 @@
             this.nPhotosWrap = null     // 木桶布局未加入行容器
             this.resizeTimer = null     // 木桶布局自适应timer
             this.onresize = false       // 监听容器宽度
-            this.imgIndex = 0
+            this.imgIndex = 0           // 图片索引
+            this.cacheWidth = this.container.clientWidth
             
             this.init()
         }
@@ -269,14 +270,13 @@
          * @param {Number} ratio 图片比例
          * @param {HTMLElement} dom 图片dom
          */
-        appendBarrel(url, ratio, dom, wid) {
+        appendBarrel(url, ratio, dom) {
             const nPhotos = this.nPhotos
             const nPhotosWrap = this.nPhotosWrap
             const nPhotosDoms = nPhotosWrap.getElementsByClassName('barrelBox')
 
             nPhotos.push({
                 url,
-                wid,
                 ratio
             })
 
@@ -334,7 +334,7 @@
                         this.galleryBox.appendChild(this.nPhotosWrap)
                     }
                     const ratio = wid / hei
-                    this.appendBarrel(box.firstChild.src, ratio, box, wid)
+                    this.appendBarrel(box.firstChild.src, ratio, box)
                     break
             }
             
@@ -450,10 +450,13 @@
          */
         resizeUpdate(wait) {
             if (!this.resizeTimer) {
-                this.resizeTimer = setTimeout(() => {
-                    this.resizeTimer = null
-                    this.updateLayout()
-                }, wait)
+                if (this.cacheWidth !== this.container.clientWidth) {   // 如果宽度变化才执行更新
+                    this.resizeTimer = setTimeout(() => {
+                        this.resizeTimer = null
+                        this.updateLayout()
+                        this.cacheWidth = this.container.clientWidth
+                    }, wait)
+                }
             }
         }
 
@@ -502,16 +505,17 @@
 
             let imageIndex = index
 
-            if (index > 1) {
+            if (index > 1 && index < (imgs.length - 2)) {
                 imageIndex -= 2
             } else if (index <= 1) {
                 imageIndex = 0
-            } else if (index === imgs.length) {
-                imageIndex = imgs.length - 4
+            } else if (index >= (imgs.length - 2)) {
+                imageIndex = imgs.length - len
             }
             
             // 刷新缩略图列表图片
             for (let i = 0; i < len; i++, imageIndex++) {
+                console.log(imageIndex)
                 wrapImgs[i].className = ''
                 wrapImgs[i].src = imgs[imageIndex].firstChild.src
                 wrapImgs[i].setAttribute('index', imageIndex)
