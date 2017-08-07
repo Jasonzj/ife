@@ -55,7 +55,7 @@
                 }
             }
             this.bindClickHandle()
-            this.setDialog()
+            this.setView()
         }
 
         /**
@@ -458,14 +458,14 @@
             }
         }
 
-        setDialog() {
-            const dialog = `
-                <div class="gallery-dialog">
-                    <span class="gallery-dialog-close">X</span>
-                    <div class="gallery-dialog-img">
-                        <img id="gallery-dialogImg" src="http://placehold.it/1105x645/449F93/fff" />
+        setView() {
+            const view = `
+                <div class="gallery-view">
+                    <span class="gallery-view-close">X</span>
+                    <div class="gallery-view-img">
+                        <img class="gallery-viewImg" src="http://placehold.it/1105x645/449F93/fff" />
                     </div>
-                    <div class="gallery-dialog-list">
+                    <div class="gallery-view-list">
                         <img src="" alt=""/>
                         <img src="" alt=""/>
                         <img src="" alt=""/>
@@ -474,13 +474,13 @@
                     </div>
                 </div>
             `
-            this.container.innerHTML += dialog
-            this.dialogImg = document.querySelector('#gallery-dialogImg')
-            this.dialog = document.querySelector('.gallery-dialog')
+            this.container.innerHTML += view
+            this.viewImg = document.querySelector('.gallery-viewImg')
+            this.view = document.querySelector('.gallery-view')
         }
 
         setThumbnail(index) {
-            const wrap = document.querySelector('.gallery-dialog-list')
+            const wrap = document.querySelector('.gallery-view-list')
             const wrapImgs = Array.from(wrap.getElementsByTagName('img'))
             const imgs = this.getImageDomElements()
             let len = imgs.length
@@ -500,21 +500,27 @@
             }
             
             for (let i = 0; i < len; i++, imageIndex++) {
+                wrapImgs[i].className = ''
                 wrapImgs[i].src = imgs[imageIndex].firstChild.src
                 wrapImgs[i].setAttribute('index', imageIndex)
+                if (imageIndex === index) {
+                    wrapImgs[i].classList.add('gallery-view--current')
+                }
             }
         }
 
         bindClickHandle() {
             this.container.addEventListener('click', (e) => {
-                if (e.target.nodeName === 'IMG') {
+                if (e.target.nodeName === 'IMG' 
+                    && e.target.className !== 'gallery-viewImg'
+                ) {
+                    this.viewImg.src = e.target.src
+                    this.view.style.display = 'block'
                     const index = parseInt(e.target.getAttribute('index'))
                     this.setThumbnail(index)
-                    this.dialogImg.src = e.target.src
-                    this.dialog.style.display = 'block'
                 }
-                if (e.target.className === 'gallery-dialog-close') {
-                    this.dialog.style.display = 'none'
+                if (e.target.className === 'gallery-view-close') {
+                    this.view.style.display = 'none'
                 }
             })
         }

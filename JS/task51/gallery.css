@@ -172,7 +172,7 @@
 }
 
 /* dialog */
-.gallery-dialog {
+.gallery-view {
     display: none; 
     position: fixed;
     top: 0;
@@ -183,7 +183,7 @@
     z-index: 100;
 }
 
-.gallery-dialog-img {
+.gallery-view-img {
     width: 100%;
     height: calc(100% - 200px);
     overflow: hidden;
@@ -195,14 +195,14 @@
     align-items: center;
 }
 
-.gallery-dialog-close {
+.gallery-view-close {
     position: absolute;
     top: 10px;
     right: 10px;
     cursor: pointer;
 }
 
-.gallery-dialog-list {
+.gallery-view-list {
     width: 100%;
     height: 200px;
     display: -webkit-flex;
@@ -215,9 +215,13 @@
     align-items: center;
 }
 
-.gallery-dialog-list img {
+.gallery-view-list img {
     max-height: calc(100% - 10px);
     width: 250px;
     margin: 5px;
     cursor: pointer;
+}
+
+.gallery-view--current {
+    border: 3px solid yellow
 }
