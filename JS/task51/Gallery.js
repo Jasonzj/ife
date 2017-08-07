@@ -288,24 +288,11 @@
             const total = nPhotos.reduce((a, b) => a + b.ratio, 0)
 
             // 超过当前比例
-            // if (total > this.minRatio && total < this.maxRatio) {
-            // if ((width > this.container.clientWidth && total > this.minRatio)) {
-            if (total > this.minRatio) {
-                let containerWid = this.container.clientWidth
-                // if (document.documentElement.clientHeight < document.documentElement.offsetHeight - 4 === false) {
-                //     containerWid -= 15
-                // }
-                console.log(this.container.offsetWidth)
-                const conHeight = containerWid - ((nPhotos.length - 1) * this.options.gutter.x)
+            // if (total < this.minRatio && total > this.maxRatio) {
+            if (total > this.minRatio - 2) {
+                const conHeight = this.container.clientWidth - ((nPhotos.length - 1) * this.options.gutter.x)
                 const rowHeight = conHeight / total
-
                 nPhotosWrap.style.height = rowHeight + 'px'
-
-                // Array.from(nPhotosDoms)
-                //     .forEach((wrap, i) => {
-                //         wrap.style.width = this.nPhotos[i].ratio * rowHeight + 'px'
-                //     })
-                
                 this.nPhotos = []
             }
         }
