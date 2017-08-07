@@ -29,7 +29,7 @@
                 layout: 2,                  // 布局类型
                 waterfallColumn: 4,         // 瀑布流布局列数
                 fullScreen: false,          // 是否全屏
-                puzzleHeight: 500,          // 拼图高度
+                puzzleHeight: 600,          // 拼图高度
                 barrelHeight: {             // 木桶布局最小行高
                     min: 200,
                     max: 250
@@ -208,9 +208,10 @@
             const boxWidth = parseInt(window.getComputedStyle(this.container, null).getPropertyValue('width'))
             this.galleryBox.style.height = this.options.puzzleHeight + 'px'
 
-            images.forEach(img => {
+            images.forEach((img, i) => {
                 img.className = 'puzzleBox'
                 img.style.height = ''
+                img.firstChild.setAttribute('index', i)
                 this.galleryBox.appendChild(img)
             })
 
@@ -290,7 +291,12 @@
             // if (total > this.minRatio && total < this.maxRatio) {
             // if ((width > this.container.clientWidth && total > this.minRatio)) {
             if (total > this.minRatio) {
-                const conHeight = this.container.clientWidth - ((nPhotos.length - 1) * this.options.gutter.x)
+                let containerWid = this.container.clientWidth
+                // if (document.documentElement.clientHeight < document.documentElement.offsetHeight - 4 === false) {
+                //     containerWid -= 15
+                // }
+                console.log(this.container.offsetWidth)
+                const conHeight = containerWid - ((nPhotos.length - 1) * this.options.gutter.x)
                 const rowHeight = conHeight / total
 
                 nPhotosWrap.style.height = rowHeight + 'px'
@@ -515,7 +521,6 @@
             
             // 刷新缩略图列表图片
             for (let i = 0; i < len; i++, imageIndex++) {
-                console.log(imageIndex)
                 wrapImgs[i].className = ''
                 wrapImgs[i].src = imgs[imageIndex].firstChild.src
                 wrapImgs[i].setAttribute('index', imageIndex)

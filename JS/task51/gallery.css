@@ -1,12 +1,28 @@
 * {
     margin: 0;
     padding: 0;
-    /* overflow-y: hidden; */
 }
 
-*::-webkit-scrollbar {display:none}
+html {
+  overflow-y: scroll;
+}
+
+:root {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+:root body {
+  position: absolute;
+}
+
+body {
+  width: 100vw;
+  overflow: hidden;
+}
 
 .gallery {
+    /* width: calc(80% + 100vw - 100%); */
     width: 80%;
     margin: 0 auto;
 }
@@ -40,15 +56,13 @@
     left: 0;
     width: 66.66667%;
     height: 100%;
-    clip-path: url(clip.svg#clip1);
-    -webkit-clip-path: polygon(0% 0%, 100% 0%, 50% 100%, 0% 100%);
 }
 .count2 > .puzzleBox:nth-child(2) {
     position: absolute;
     right: 0;
     width: 66.66667%;
     height: 100%;
-    clip-path: url(clip.svg#clip2);
+    clip-path: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMCIgaGVpZ2h0PSIwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogICAgPGNsaXBQYXRoIGlkPSJjbGlwIiBjbGlwUGF0aFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCI+CiAgICAgICAgPHBvbHlnb24gcG9pbnRzPSIwLjUgMCwxIDAsMSAxLDAgMSI+CiAgICAgICAgPC9wb2x5Z29uPgogICAgPC9jbGlwUGF0aD4KPC9zdmc+#clip);
     -webkit-clip-path: polygon(50% 0%, 100% 0%, 100% 100%, 0% 100%);
 }
 .count3 > .puzzleBox:first-child {
