@@ -458,6 +458,10 @@
             }
         }
 
+        /**
+         * 初始化查看图片结构
+         * @memberof Gallery
+         */
         setView() {
             const view = `
                 <div class="gallery-view">
@@ -465,13 +469,7 @@
                     <div class="gallery-view-img">
                         <img class="gallery-viewImg" src="http://placehold.it/1105x645/449F93/fff" />
                     </div>
-                    <div class="gallery-view-list">
-                        <img src="" alt=""/>
-                        <img src="" alt=""/>
-                        <img src="" alt=""/>
-                        <img src="" alt=""/>
-                        <img src="" alt=""/>
-                    </div>
+                    <div class="gallery-view-list"></div>
                 </div>
             `
             this.container.innerHTML += view
@@ -479,14 +477,28 @@
             this.view = document.querySelector('.gallery-view')
         }
 
+        /**
+         * 设置缩略图
+         * @param {Number} index 当前点击图片索引
+         */
         setThumbnail(index) {
             const wrap = document.querySelector('.gallery-view-list')
-            const wrapImgs = Array.from(wrap.getElementsByTagName('img'))
             const imgs = this.getImageDomElements()
+            let wrapImgs = wrap.getElementsByTagName('img')
             let len = imgs.length
 
+            // 最多显示5张缩略图
             if (len > 5) {
                 len = 5
+            }
+
+            // 如果列表图片数量不等于len就创建len个img
+            if (wrapImgs.length !== len) {
+                for (let i = 0; i < len; i++) {
+                    const image = document.createElement('img')
+                    wrap.appendChild(image)
+                }
+                wrapImgs = Array.from(wrap.getElementsByTagName('img'))
             }
 
             let imageIndex = index
@@ -499,16 +511,22 @@
                 imageIndex = imgs.length - 4
             }
             
+            // 刷新缩略图列表图片
             for (let i = 0; i < len; i++, imageIndex++) {
                 wrapImgs[i].className = ''
                 wrapImgs[i].src = imgs[imageIndex].firstChild.src
                 wrapImgs[i].setAttribute('index', imageIndex)
+
+                // 高亮当前缩略图
                 if (imageIndex === index) {
                     wrapImgs[i].classList.add('gallery-view--current')
                 }
             }
         }
 
+        /**
+         * 点击事件绑定
+         */
         bindClickHandle() {
             this.container.addEventListener('click', (e) => {
                 if (e.target.nodeName === 'IMG' 
