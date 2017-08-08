@@ -1,10 +1,10 @@
 /**
  * Gallery
- * Version: v0.0.1
+ * Version: v0.2.2
  * @Author: Jason 
  */
 
-;((root, factory) => {
+ ;((root, factory) => {
     if (typeof define === 'function' && define.amd) {
         define(factory)
     } else if (typeof exports === 'object') {
@@ -12,7 +12,7 @@
     } else {
         root.Gallery = factory()
     }
-})(this, () => {
+})(window, () => {
 
     'use strict'
 
@@ -20,20 +20,12 @@
         constructor(containerSelector) {
             this.container = document.querySelector(containerSelector)
             this.galleryBox = null
-            this.LAYOUT = {
-                PUZZLE: 1,      // 拼图
-                WATERFALL: 2,   // 瀑布流
-                BARREL: 3       // 木桶
-            }
             this.options = {
                 layout: 2,                  // 布局类型
                 waterfallColumn: 4,         // 瀑布流布局列数
-                fullScreen: false,          // 是否全屏
+                fullScreen: false,           // 是否全屏
                 puzzleHeight: 600,          // 拼图高度
-                barrelHeight: {             // 木桶布局最小行高
-                    min: 200,
-                    max: 250
-                },       
+                barrelMinHeight: 200,       // 木桶布局最小行高     
                 gutter: { x: 10, y: 10 },   // 木桶布局间距
                 images: [],                 // 图片数组
             }
@@ -43,7 +35,7 @@
             this.resizeTimer = null     // 木桶布局自适应timer
             this.onresize = false       // 监听容器宽度
             this.imgIndex = 0           // 图片索引
-            this.cacheWidth = this.container.clientWidth
+            this.cacheWidth = this.container.clientWidth  // 图片宽度缓存
             
             this.init()
         }
@@ -131,7 +123,7 @@
                 image = [image]
             }
 
-            const imageArr = this.options.images
+            let imageArr = this.options.images
 
             image.forEach(ele => {
                 imageArr = imageArr.filter(img => ele === img)
@@ -249,8 +241,7 @@
          * 设置木桶布局
          */
         setBarrel() {
-            this.minRatio = this.container.clientWidth / this.options.barrelHeight.min
-            this.maxRatio = this.container.clientWidth / this.options.barrelHeight.max
+            this.minRatio = this.galleryBox.clientWidth / this.options.barrelMinHeight
             this.nPhotos = []           
             this.nPhotosWrap = null     
             const images = this.getImageDomElements()
@@ -271,7 +262,7 @@
          * @param {Number} ratio 图片比例
          * @param {HTMLElement} dom 图片dom
          */
-        appendBarrel(url, ratio, dom) {
+        appendBarrel(url, ratio, dom, wid, hei) {
             const nPhotos = this.nPhotos
             const nPhotosWrap = this.nPhotosWrap
             const nPhotosDoms = nPhotosWrap.getElementsByClassName('barrelBox')
@@ -288,12 +279,15 @@
             const total = nPhotos.reduce((a, b) => a + b.ratio, 0)
 
             // 超过当前比例
-            // if (total < this.minRatio && total > this.maxRatio) {
-            if (total > this.minRatio - 2) {
-                const conHeight = this.container.clientWidth - ((nPhotos.length - 1) * this.options.gutter.x)
-                const rowHeight = conHeight / total
+            if (total > this.minRatio) {
+                const lastPhoto = nPhotos.pop()
+                const conHeight = this.galleryBox.clientWidth - ((nPhotos.length - 1) * this.options.gutter.x)
+                const rowHeight = conHeight / (total - lastPhoto.ratio)
                 nPhotosWrap.style.height = rowHeight + 'px'
+
+                dom.remove()
                 this.nPhotos = []
+                this.addBox(dom, wid, hei)         
             }
         }
 
@@ -323,11 +317,11 @@
                         this.nPhotosWrap = document.createElement('div')
                         this.nPhotosWrap.className = 'barrelRow'
                         this.nPhotosWrap.style.marginBottom = this.options.gutter.y + 'px'
-                        this.nPhotosWrap.style.height = this.options.barrelHeight.min + 'px'
+                        this.nPhotosWrap.style.height = this.options.barrelMinHeight + 'px'
                         this.galleryBox.appendChild(this.nPhotosWrap)
                     }
                     const ratio = wid / hei
-                    this.appendBarrel(box.firstChild.src, ratio, box)
+                    this.appendBarrel(box.firstChild.src, ratio, box, wid, hei)
                     break
             }
             
@@ -351,6 +345,7 @@
                 return false
             }
             this.options.puzzleHeight = height
+            this.updateLayout()
             return true
         }
 
@@ -412,21 +407,13 @@
          * @param {number} min 最小高度
          * @param {number} max 最大高度
          */
-        setBarrelHeight(min = 200, max = 300) {
-            if (min > max || (max - min) < 100) {
-                console.error('最小高度必须低于最大高度, 且上下限最少相差100')
+        setBarrelHeight(min = 200) {
+            if (!Number.isInteger(min) || min < 0) {
+                console.error('木桶布局最小高度必须为正整数')
                 return false
             }
-            this.options.barrelHeight = { min, max }
+            this.options.barrelMinHeight = min
             this.updateLayout()
-        }
-
-        /**
-         * 获取木桶模式每行高度的上限
-         * @return {number} 最多图片数（含）
-         */
-        getBarrelHeightMax() {
-            return this.options.barrelHeight.max
         }
 
         /**
@@ -434,7 +421,7 @@
          * @return {number} 最少图片数（含）
          */
         getBarrelHeightMin() {
-            return this.options.barrelHeight.min
+            return this.options.barrelMinHeight
         }
 
         /**
@@ -526,6 +513,7 @@
             this.container.addEventListener('click', (e) => {
                 if (e.target.nodeName === 'IMG' 
                     && e.target.className !== 'gallery-viewImg'
+                    && this.options.fullScreen
                 ) {
                     this.viewImg.src = e.target.src
                     this.view.style.display = 'block'
