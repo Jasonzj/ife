@@ -22,7 +22,6 @@ body {
 }
 
 .gallery {
-    /* width: calc(80% + 100vw - 100%); */
     width: 80%;
     margin: 0 auto;
 }
@@ -31,6 +30,7 @@ body {
     flex-wrap: wrap;
     position: relative;
     width: 100%;
+    min-width: 500px;
     overflow: hidden;
     font-size: 0;
     -webkit-text-size-adjust:none;
@@ -185,7 +185,7 @@ body {
     height: 100%;
 }
 
-/* dialog */
+/* gallery-view */
 .gallery-view {
     display: none; 
     position: fixed;
