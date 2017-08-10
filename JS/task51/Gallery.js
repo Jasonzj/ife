@@ -186,6 +186,7 @@
                 }
             }
             this.options.images.forEach(img => {
+                img.style.width = ''
                 img.style.margin = ''
                 img.style.border = ''
             })
@@ -284,6 +285,12 @@
                 const conHeight = this.galleryBox.clientWidth - ((nPhotos.length - 1) * this.options.gutter.x)
                 const rowHeight = conHeight / (total - lastPhoto.ratio)
                 nPhotosWrap.style.height = rowHeight + 'px'
+
+                Array.from(nPhotosDoms)
+                    .forEach((wrap, i, self) => {
+                        if (i === self.length - 1) return false
+                        wrap.style.width = this.nPhotos[i].ratio * rowHeight + 'px'
+                    })
 
                 dom.remove()
                 this.nPhotos = []
