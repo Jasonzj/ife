@@ -44,10 +44,10 @@ const Choose = ({
                     check={check}
                     chooseId={id}
                     disabled={disabled}
+                    noTextarea={noTextarea}
+                    removeOption={removeOption}
                     setOptionTitle={setOptionTitle}
                     setOptionChecked={setOptionChecked}
-                    removeOption={removeOption}
-                    noTextarea={noTextarea}
                 />
             ))
         }

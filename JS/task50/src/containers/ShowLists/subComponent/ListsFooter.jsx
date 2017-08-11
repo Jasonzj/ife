@@ -9,10 +9,10 @@ import Button from 'components/Button'
 import { AtoggleAllChecked, AsetDialog, AremoveAllQuestion } from 'action/questionnaires'
 
 const ListsFooter = ({
-    toogleAllChecked,
+    isChecked,
     setDialog,
     isAllchecked,
-    isChecked,
+    toogleAllChecked,
     removeAllQuestion
 }) => (
     <tfoot className="lists__table__footer">
@@ -44,10 +44,10 @@ const ListsFooter = ({
 )
 
 ListsFooter.propTypes = {
-    toogleAllChecked: PropTypes.func,
     setDialog: PropTypes.func,
-    isAllchecked: PropTypes.bool,
     isChecked: PropTypes.bool,
+    isAllchecked: PropTypes.bool,
+    toogleAllChecked: PropTypes.func,
     removeAllQuestion: PropTypes.func
 }
 

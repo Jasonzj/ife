@@ -17,7 +17,7 @@ const HomeContainer = ({ children }) => (
 )
 
 HomeContainer.propTypes = {
-    children: PropTypes.array
+    children: PropTypes.element
 }
 
 export default HomeContainer

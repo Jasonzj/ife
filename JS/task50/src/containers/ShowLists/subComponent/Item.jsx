@@ -9,13 +9,13 @@ const Item = ({
     id,
     title,
     endTime,
-    stateText,
-    stateClassName,
-    isChecked,
-    toggleChecked,
     setDialog,
     btnStateT,
     btnStateF,
+    isChecked,
+    stateText,
+    toggleChecked,
+    stateClassName,
     removeQuestion
 }) => (
     <tr>
@@ -23,8 +23,8 @@ const Item = ({
             <input
                 type="checkbox"
                 checked={isChecked}
-                onChange={() => toggleChecked(id)}
                 disabled={btnStateF}
+                onChange={() => toggleChecked(id)}
             />
         </td>
         <td>{title}</td>
@@ -53,8 +53,8 @@ const Item = ({
             </Link>
             <Link to={`/data/${id}`}>
                 <Button
-                    className={btnStateF}
                     disabled={btnStateF}
+                    className={btnStateF}
                 >
                     查看数据
                 </Button>

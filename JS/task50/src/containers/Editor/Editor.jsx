@@ -340,48 +340,48 @@ class Editor extends PureComponent {
         return (
             <div className="editor">
                 <EditorTitle
+                    disabled={!!this.check}
                     className="editor__head"
                     setTitle={[this.setTitle]}
                     message={this.state.title}
-                    disabled={!!this.check}
                 />
                 <EditorMain
                     test={this.state}
-                    chooses={this.state.chooses}
-                    checkBoxs={this.state.checkBoxs}
-                    setOptionTitle={this.setOptionTitle}
-                    setOptionChecked={this.setOptionChecked}
-                    removeOption={this.removeOption}
-                    setChooseTitle={this.setChooseTitle}
-                    addOption={this.addOption}
-                    removeChoose={this.removeChoose}
-                    reuseChoose={this.reuseChoose}
-                    moveChoose={this.moveChoose}
-                    disabled={this.disabled}
                     check={this.check}
                     checkData={this.data}
+                    disabled={this.disabled}
+                    addOption={this.addOption}
+                    chooses={this.state.chooses}
+                    moveChoose={this.moveChoose}
+                    reuseChoose={this.reuseChoose}
+                    removeChoose={this.removeChoose}
+                    removeOption={this.removeOption}
                     getChartData={this.getChartData}
+                    checkBoxs={this.state.checkBoxs}
+                    setOptionTitle={this.setOptionTitle}
+                    setChooseTitle={this.setChooseTitle}
+                    setOptionChecked={this.setOptionChecked}
                 />
                 {
                     !this.check &&
                     <EditorAdd
                         showAddBox={this.state.showAddBox}
-                        toggleAddBoxHandle={() => this.toggleBool('showAddBox')}
                         addRadio={() => this.addChoose('radio')}
                         addCheckBox={() => this.addChoose('checkbox')}
                         addTextarea={() => this.addChoose('textarea')}
+                        toggleAddBoxHandle={() => this.toggleBool('showAddBox')}
                     />
                 }
                 {
                     !this.check &&
                     <EditorFooter
+                        setDialog={this.setDialog}
                         setEndTime={this.setEndTime}
-                        showCalendar={this.state.showCalendar}
-                        toggleCalendarHandle={() => this.toggleBool('showCalendar')}
                         endTime={this.state.endTime}
+                        showCalendar={this.state.showCalendar}
                         saveQuestion={() => this.addQuestion(0)}
                         releaseQuestion={() => this.addQuestion(1)}
-                        setDialog={this.setDialog}
+                        toggleCalendarHandle={() => this.toggleBool('showCalendar')}
                     />
                 }
                 <ReactCSSTransitionGroup

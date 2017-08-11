@@ -48,18 +48,18 @@ const EditorMain = ({
 
 
 EditorMain.propTypes = {
-    chooses: PropTypes.array,
-    setOptionTitle: PropTypes.func,
-    removeOption: PropTypes.func,
-    setChooseTitle: PropTypes.func,
-    addOption: PropTypes.func,
-    removeChoose: PropTypes.func,
-    reuseChoose: PropTypes.func,
-    moveChoose: PropTypes.func,
-    setOptionChecked: PropTypes.func,
-    disabled: PropTypes.bool,
     check: PropTypes.bool,
+    disabled: PropTypes.bool,
     checkData: PropTypes.bool,
+    chooses: PropTypes.array,
+    addOption: PropTypes.func,
+    moveChoose: PropTypes.func,
+    reuseChoose: PropTypes.func,
+    removeChoose: PropTypes.func,
+    removeOption: PropTypes.func,
+    setOptionTitle: PropTypes.func,
+    setChooseTitle: PropTypes.func,
+    setOptionChecked: PropTypes.func,
     getChartData: PropTypes.func
 }
 

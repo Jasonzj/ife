@@ -7,29 +7,29 @@ import EditorTitle from 'components/EditorTitle'
 const Options = ({
     type,
     check,
+    message,
     disabled,
     chooseId,
     optionId,
+    noTextarea,
     removeOption,
-    message,
     setOptionTitle,
-    setOptionChecked,
-    noTextarea
+    setOptionChecked
 }) => (
     <div className="options">
         <input
-            name={`${type}${chooseId}`}
             type={type}
-            disabled={disabled}
             defaultValue=""
+            disabled={disabled}
+            name={`${type}${chooseId}`}
             onChange={e => setOptionChecked(chooseId, optionId, e.target)}
         />
         {
             noTextarea &&
             <EditorTitle
+                message={message}
                 disabled={!!check}
                 className="option__title"
-                message={message}
                 setTitle={[setOptionTitle, chooseId, optionId]}
             />
         }
@@ -46,16 +46,16 @@ const Options = ({
 )
 
 Options.propTypes = {
-    message: PropTypes.string,
+    check: PropTypes.bool,
     type: PropTypes.string,
     disabled: PropTypes.bool,
+    message: PropTypes.string,
     chooseId: PropTypes.number,
     optionId: PropTypes.number,
-    setOptionTitle: PropTypes.func,
-    setOptionChecked: PropTypes.func,
-    removeOption: PropTypes.func,
     noTextarea: PropTypes.bool,
-    check: PropTypes.bool
+    removeOption: PropTypes.func,
+    setOptionTitle: PropTypes.func,
+    setOptionChecked: PropTypes.func
 }
 
 export default Options

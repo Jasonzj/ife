@@ -71,13 +71,13 @@ class Lists extends Component {
                     lists.map(item => (
                         <Item
                             key={item.id}
-                            stateText={stateTexts[item.state]}
-                            stateClassName={item.state === 1 ? 'color--success' : ''}
-                            toggleChecked={toggleChecked}
                             setDialog={setDialog}
+                            toggleChecked={toggleChecked}
                             btnStateT={item.state ? 0 : 1}
                             btnStateF={item.state ? 1 : 0}
                             removeQuestion={removeQuestion}
+                            stateText={stateTexts[item.state]}
+                            stateClassName={item.state === 1 ? 'color--success' : ''}
                             {...item}
                         />
                     ))
@@ -93,8 +93,8 @@ class Lists extends Component {
                             dialog &&
                             <Dialog
                                 message={message}
-                                close={() => setDialog(false, null)}
                                 onClick={dialogFunc}
+                                close={() => setDialog(false, null)}
                             />
                         }
                     </ReactCSSTransitionGroup>
@@ -105,14 +105,14 @@ class Lists extends Component {
 }
 
 Lists.propTypes = {
+    history: PropTypes.any,
     lists: PropTypes.array,
     dialog: PropTypes.bool,
-    toggleChecked: PropTypes.func,
-    removeQuestion: PropTypes.func,
+    message: PropTypes.string,
     setDialog: PropTypes.func,
     dialogFunc: PropTypes.func,
-    message: PropTypes.string,
-    history: PropTypes.any,
+    toggleChecked: PropTypes.func,
+    removeQuestion: PropTypes.func,
     changeEndState: PropTypes.func
 }
 
