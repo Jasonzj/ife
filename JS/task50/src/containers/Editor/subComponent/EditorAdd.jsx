@@ -6,11 +6,11 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import Button from 'components/Button'
 
 const EditorAdd = ({
-    showAddBox,
-    toggleAddBoxHandle,
     addRadio,
+    showAddBox,
+    addTextarea,
     addCheckBox,
-    addTextarea
+    toggleAddBoxHandle
 }) => (
     <div className="editor__add">
         <ReactCSSTransitionGroup

@@ -8,12 +8,12 @@ import Button from 'components/Button'
 
 const EditorFooter = ({
     endTime,
+    setDialog,
     setEndTime,
     showCalendar,
-    toggleCalendarHandle,
     saveQuestion,
     releaseQuestion,
-    setDialog
+    toggleCalendarHandle
 }) => (
     <div className="editor__footer">
         <div>
