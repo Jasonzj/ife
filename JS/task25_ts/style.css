@@ -3,6 +3,10 @@ body {
   color: #444;
 }
 
+h2 {
+    font-size: 18px;
+}
+
 /* layout */
 
 .box {
@@ -80,4 +84,20 @@ input {
 
 .place {
     text-align: center;
+}
+
+.tree-icon {
+    cursor: pointer;
+}
+
+.tree-icon::after {
+    content: '[+]';
+}
+
+.tree-icon.show::after {
+    content: '[-]';
+}
+
+.tree-icon.hide::after {
+    content: ''
 }
