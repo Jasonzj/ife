@@ -13,6 +13,7 @@ interface ArrayConstructor {
 class JTree {
     data: any
     root: Element
+    treeArr: Element[]
     titleClassName: string
     wrapClassName: string
     iconClassName: string
@@ -23,6 +24,7 @@ class JTree {
         this.titleClassName = this.config.titleClass || 'tree_title'
         this.wrapClassName = this.config.wrapClass || 'tree_wrap'
         this.iconClassName = this.config.iconClass || 'tree_icon'
+        this.treeArr = []
 
         this.init()
     }
@@ -82,6 +84,20 @@ class JTree {
                 item.classList[name]('show')
             }
         })
+    }
+
+    traverseDF(node) {
+        const stack = []
+
+        while (node !== null) {
+            this.treeArr.push(node)
+            if (node.children.length !== 0) {
+                for (let i = node.children.length - 1; i >= 0; i--) {
+                    stack.push(node.children[i])
+                }
+            }
+            node = stack.pop()
+        }
     }
 
     bindEvent() {
