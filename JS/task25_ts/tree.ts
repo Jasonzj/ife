@@ -1,9 +1,0 @@
-class JTree {
-    constructor() {
-
-    }
-
-    init() {
-        
-    }
-}
