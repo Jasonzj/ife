@@ -6,10 +6,6 @@ interface ITree{
     iconClass?: string
 }
 
-interface ArrayConstructor {
-    from(arrayLike: any, mapFn?, thisArg?): Array<any>
-}
-
 class JTree {
     data: any
     root: Element
