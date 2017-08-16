@@ -14,18 +14,9 @@ var JTree = (function () {
                 var bool = state === 'true' ? false : true;
                 _this.toggleTree(children, target, bool);
             }
-            switch (targetName) {
-                case 'add':
-                    _this.addNode(root);
-                    break;
-                case 'remove':
-                    _this.removeNode(root);
-                    break;
-                case 'rename':
-                    var resText = parent.innerText;
-                    var result = _this.setPrompt('请输入修改节点的名称', resText).trim();
-                    parent.innerText = result;
-            }
+            var funcName = { 'add': 'addNode', 'remove': 'removeNode' }[targetName];
+            if (funcName)
+                _this[funcName](root);
         };
         this.root = document.querySelector(this.config.root);
         this.data = this.config.data;

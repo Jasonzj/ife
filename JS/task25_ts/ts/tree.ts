@@ -90,18 +90,8 @@ class JTree {
             this.toggleTree(children, target, bool)
         }
 
-        switch (targetName) {
-            case 'add': 
-                this.addNode(root)
-                break
-            case 'remove':
-                this.removeNode(root)
-                break
-            case 'rename':
-                // const resText = parent.innerText
-                // const result = this.setPrompt('请输入修改节点的名称', resText).trim()
-                // parent.innerText = result
-        }
+        const funcName = { 'add': 'addNode', 'remove': 'removeNode' }[targetName]
+        if (funcName) this[funcName](root)
     }
 
     addNode(dom: Element) {
