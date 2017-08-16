@@ -54,7 +54,7 @@ class JTree {
         icon.setAttribute('state', 'false')
         title.className = this.titleClassName
         title.innerHTML = `${text}`
-
+        
         if (bool) {
             icon.classList.add('hide')
         }
@@ -65,11 +65,10 @@ class JTree {
                 <a name="remove">删除</a>
                 <a name="rename">重命名</a>
             </div>`
-        
+
         title.innerHTML += operation
         title.appendChild(icon)
         wrap.appendChild(title)
-
         return wrap
     }
 
@@ -79,10 +78,11 @@ class JTree {
 
     clickEvent = (e) => {
         const target: any = e.target
-        const className: any = target.className
+        const className: string = target.className
         const targetName: string = target.name
-        const parent: Element = target.parentNode.parentNode
+        const parent: Element = target.parentElement.parentElement
         const children: Element[] = Array.from(parent.children)
+        const root = parent.parentElement
 
         if (className.includes(this.config.iconClass)) {
             const state: string = target.getAttribute('state')
@@ -92,12 +92,37 @@ class JTree {
 
         switch (targetName) {
             case 'add': 
-                const text = this.setPrompt('请输入添加节点的名称')
-                const node = this.createNode(text, true)
-                node.classList.add('show')
-                parent.parentNode.appendChild(node)
+                this.addNode(root)
                 break
             case 'remove':
+                this.removeNode(root)
+                break
+            case 'rename':
+                // const resText = parent.innerText
+                // const result = this.setPrompt('请输入修改节点的名称', resText).trim()
+                // parent.innerText = result
+        }
+    }
+
+    addNode(dom: Element) {
+        const text = this.setPrompt('请输入添加节点的名称')
+        const node = this.createNode(text, true)
+        const children = Array.from(dom.children)
+        const icon = dom.querySelector(`.${this.iconClassName}`)
+
+        node.classList.add('show')
+        dom.appendChild(node)
+        this.toggleTree(children, icon, true)
+    }
+
+    removeNode(dom: Element) {
+        const parent = dom.parentElement
+        const children = parent.children
+        const icon = parent.querySelector(`.${this.iconClassName}`)
+        dom.remove()
+
+        if (children.length === 1) {
+            icon.className = `${this.iconClassName} hide`
         }
     }
 
@@ -107,8 +132,13 @@ class JTree {
         bool: boolean
     ) {
         const name: string = bool ? 'add' : 'remove'
+        const iconClassName: string = icon.className
         icon.setAttribute('state', `${bool}`)
         icon.classList[name]('show')
+
+        if (iconClassName.includes('hide')) {
+            icon.classList.remove('hide')
+        }
 
         children.forEach(item => {
             if (item.className !== this.config.titleClass) {

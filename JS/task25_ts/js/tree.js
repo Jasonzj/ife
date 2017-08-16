@@ -6,8 +6,9 @@ var JTree = (function () {
             var target = e.target;
             var className = target.className;
             var targetName = target.name;
-            var parent = target.parentNode.parentNode;
+            var parent = target.parentElement.parentElement;
             var children = Array.from(parent.children);
+            var root = parent.parentElement;
             if (className.includes(_this.config.iconClass)) {
                 var state = target.getAttribute('state');
                 var bool = state === 'true' ? false : true;
@@ -15,12 +16,15 @@ var JTree = (function () {
             }
             switch (targetName) {
                 case 'add':
-                    var text = _this.setPrompt('请输入添加节点的名称');
-                    var node = _this.createNode(text, true);
-                    node.classList.add('show');
-                    parent.parentNode.appendChild(node);
+                    _this.addNode(root);
                     break;
                 case 'remove':
+                    _this.removeNode(root);
+                    break;
+                case 'rename':
+                    var resText = parent.innerText;
+                    var result = _this.setPrompt('请输入修改节点的名称', resText).trim();
+                    parent.innerText = result;
             }
         };
         this.root = document.querySelector(this.config.root);
@@ -64,11 +68,33 @@ var JTree = (function () {
     JTree.prototype.setPrompt = function (text, resText) {
         return prompt(text, resText).trim();
     };
+    JTree.prototype.addNode = function (dom) {
+        var text = this.setPrompt('请输入添加节点的名称');
+        var node = this.createNode(text, true);
+        var children = Array.from(dom.children);
+        var icon = dom.querySelector("." + this.iconClassName);
+        node.classList.add('show');
+        dom.appendChild(node);
+        this.toggleTree(children, icon, true);
+    };
+    JTree.prototype.removeNode = function (dom) {
+        var parent = dom.parentElement;
+        var children = parent.children;
+        var icon = parent.querySelector("." + this.iconClassName);
+        dom.remove();
+        if (children.length === 1) {
+            icon.className = this.iconClassName + " hide";
+        }
+    };
     JTree.prototype.toggleTree = function (children, icon, bool) {
         var _this = this;
         var name = bool ? 'add' : 'remove';
+        var iconClassName = icon.className;
         icon.setAttribute('state', "" + bool);
         icon.classList[name]('show');
+        if (iconClassName.includes('hide')) {
+            icon.classList.remove('hide');
+        }
         children.forEach(function (item) {
             if (item.className !== _this.config.titleClass) {
                 item.classList[name]('show');
