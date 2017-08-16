@@ -4,6 +4,7 @@ body {
 }
 
 h2 {
+    margin: 0;
     font-size: 18px;
 }
 
@@ -21,24 +22,24 @@ h2 {
     display: none;
 }
 
-
 .tree-body.show {
     display: block;
 }
 
-.tree-header{
+.tree-title{
+    display: inline-block;
     position: relative;
     cursor: pointer;
 }
 
-.tree-header:hover .operation{
+.tree-title:hover .operation{
     display: block;
 }
 
 .operation{
     position: absolute;
-    right: -165px;
-    top: -2px;
+    right: -185px;
+    top: 0;
     padding-left: 10px;
 }
 
@@ -71,19 +72,9 @@ input {
     border: 2px solid #1abc9c;
 }
 
-.tree-body div.active,
-.tree-body.active label {
-    color: #1abc9c;
-    font-weight: bold;
-}
-
 .tree-body label span.current {
     color: red;
     font-weight: bold;
-}
-
-.place {
-    text-align: center;
 }
 
 .tree-icon {

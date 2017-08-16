@@ -36,37 +36,68 @@ class JTree {
 
     initTree(data: any, dom: Element) {
         for (const titleName in data) {
-            const wrap: Element = document.createElement('div')
-            const title: Element = document.createElement('h2')
-            const icon: Element = document.createElement('span')
-            wrap.className = this.wrapClassName
-            icon.className = this.iconClassName
-            icon.setAttribute('state', 'false')
-            title.className = this.titleClassName
-            title.innerHTML = `${titleName}`
-            
-            if (JTree.isEmptyObject(data[titleName])) {
-                icon.classList.add('hide')
-            }
-            
-            title.appendChild(icon)
-            wrap.appendChild(title)
+            const bool = JTree.isEmptyObject(data[titleName])
+            const wrap = this.createNode(titleName, bool)
+
             dom.appendChild(wrap)
             this.initTree(data[titleName], wrap)
         }
     }
 
+    createNode(text, bool) {
+        const wrap: Element = document.createElement('div')
+        const title: Element = document.createElement('h2')
+        const icon: Element = document.createElement('span')
+
+        wrap.className = this.wrapClassName
+        icon.className = this.iconClassName
+        icon.setAttribute('state', 'false')
+        title.className = this.titleClassName
+        title.innerHTML = `${text}`
+
+        if (bool) {
+            icon.classList.add('hide')
+        }
+
+        const operation = `
+            <div class="operation">
+                <a name="add">添加</a>
+                <a name="remove">删除</a>
+                <a name="rename">重命名</a>
+            </div>`
+        
+        title.innerHTML += operation
+        title.appendChild(icon)
+        wrap.appendChild(title)
+
+        return wrap
+    }
+
+    setPrompt(text: string, resText?: string) {
+        return prompt(text, resText).trim()
+    }
+
     clickEvent = (e) => {
         const target: any = e.target
         const className: any = target.className
+        const targetName: string = target.name
+        const parent: Element = target.parentNode.parentNode
+        const children: Element[] = Array.from(parent.children)
 
         if (className.includes(this.config.iconClass)) {
             const state: string = target.getAttribute('state')
             const bool: boolean = state === 'true' ? false : true
-            const parent: Element = target.parentNode.parentNode
-            const children: Element[] = Array.from(parent.children)
-            
             this.toggleTree(children, target, bool)
+        }
+
+        switch (targetName) {
+            case 'add': 
+                const text = this.setPrompt('请输入添加节点的名称')
+                const node = this.createNode(text, true)
+                node.classList.add('show')
+                parent.parentNode.appendChild(node)
+                break
+            case 'remove':
         }
     }
 
