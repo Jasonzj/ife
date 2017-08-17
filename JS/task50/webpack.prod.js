@@ -66,14 +66,15 @@ module.exports = {
         ]
     },
     plugins: [
-        new ExtractTextPlugin('style.css'),
+        new webpack.BannerPlugin('Copyright by jason925645402@gamil.com'),
+        new ExtractTextPlugin('css/style-[chunkhash:6].css'),
         new htmlWebpackPlugin({
             filename: 'index.html',
             template: 'index.html'
         }),
         new webpack.optimize.CommonsChunkPlugin({
             names: ['vendor'],
-            filename: 'vendor.js'
+            filename: 'js/[name]-[chunkhash:6].js'
         }),
         new webpack.DefinePlugin({
             'process.env': {
