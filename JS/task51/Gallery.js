@@ -4,7 +4,7 @@
  * @Author: Jason 
  */
 
- ;((root, factory) => {
+;((root, factory) => {
     if (typeof define === 'function' && define.amd) {
         define(factory)
     } else if (typeof exports === 'object') {
@@ -126,9 +126,13 @@
             let imageArr = this.options.images
 
             image.forEach(ele => {
-                imageArr = imageArr.filter(img => ele === img)
-                ele.remove()
+                let index = imageArr.indexOf(ele)
+                if (index > 0) {
+                    imageArr.splice(index, 1)
+                }
             })
+
+            this.updateLayout()
         }
 
         /**
@@ -522,9 +526,9 @@
                     && e.target.className !== 'gallery-viewImg'
                     && this.options.fullScreen
                 ) {
+                    const index = parseInt(e.target.getAttribute('index'))
                     this.viewImg.src = e.target.src
                     this.view.style.display = 'block'
-                    const index = parseInt(e.target.getAttribute('index'))
                     this.setThumbnail(index)
                 }
                 if (e.target.className === 'gallery-view-close') {
