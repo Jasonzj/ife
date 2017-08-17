@@ -3,23 +3,29 @@ interface ITree{
     data: any,
     wrapClass?: string,
     titleClass?: string,
-    iconClass?: string
+    iconClass?: string,
+    searchInputClass: string,
+    buttonBoxClass: string
 }
 
 class JTree {
     data: any
     root: Element
+    btnBox: Element
+    searchInp: Element
     treeArr: Element[]
     titleClassName: string
     wrapClassName: string
     iconClassName: string
     
     constructor(public config: ITree) {
-        this.root = document.querySelector(this.config.root)
-        this.data = this.config.data
-        this.titleClassName = this.config.titleClass || 'tree_title'
-        this.wrapClassName = this.config.wrapClass || 'tree_wrap'
-        this.iconClassName = this.config.iconClass || 'tree_icon'
+        this.data = config.data
+        this.root = document.querySelector(config.root)
+        this.btnBox = document.querySelector(config.buttonBoxClass)
+        this.searchInp = document.querySelector(config.searchInputClass)
+        this.titleClassName = config.titleClass || 'tree_title'
+        this.wrapClassName = config.wrapClass || 'tree_wrap'
+        this.iconClassName = config.iconClass || 'tree_icon'
         this.treeArr = []
 
         this.init()
@@ -44,12 +50,13 @@ class JTree {
         const wrap: Element = document.createElement('div')
         const title: Element = document.createElement('h2')
         const icon: Element = document.createElement('span')
+        const span: Element = document.createElement('span')
 
         wrap.className = this.wrapClassName
         icon.className = this.iconClassName
         icon.setAttribute('state', 'false')
         title.className = this.titleClassName
-        title.innerHTML = `${text}`
+        span.innerHTML = `${text}`
         
         if (bool) {
             icon.classList.add('hide')
@@ -62,8 +69,9 @@ class JTree {
                 <a name="rename">重命名</a>
             </div>`
 
-        title.innerHTML += operation
+        title.appendChild(span)
         title.appendChild(icon)
+        title.innerHTML += operation
         wrap.appendChild(title)
         return wrap
     }
@@ -88,6 +96,10 @@ class JTree {
 
         const funcName = { 'add': 'addNode', 'remove': 'removeNode' }[targetName]
         if (funcName) this[funcName](root)
+
+        if (e.target.nodeName === 'BUTTON') {
+            if (this[targetName]) this[targetName]()
+        }
     }
 
     addNode(dom: Element) {
@@ -133,29 +145,69 @@ class JTree {
         })
     }
 
-    traverseDF(node) {
-        const stack = []
+    dirSearch() {
+        const text = this.searchInp.value.trim()
+        const result = this.traverseDF(this.root, this.titleClassName, text)
+        const alertText = { '0': '没查询到', '1': '查询到了' }[result.length]
+        if (alertText) alert(alertText)
+        else if (result.length > 1) alert(`找到${result.length}个同名文件`)
 
-        while (node !== null) {
-            this.treeArr.push(node)
-            if (node.children.length !== 0) {
+        result.forEach(item => {
+            item.classList.add('current')
+            this.treeShow(item.parentElement.parentElement)
+        })
+
+        this.treeArr = result
+    }
+
+    cleanSearch() {
+        this.treeArr.forEach(item => item.classList.remove('current'))
+    }
+
+    traverseDF(
+        node: Element,
+        classN: string,
+        text: string
+    ) {
+        const stack = []
+        const result = []
+
+        while (node) {
+            if (node.className.includes(classN)) {
+                const dom: Element = node.firstElementChild
+                const searchText: string = dom.innerHTML.trim() 
+                if (searchText === text) {
+                    result.push(dom)
+                }
+            }
+            if (node.children) {
                 for (let i = node.children.length - 1; i >= 0; i--) {
                     stack.push(node.children[i])
                 }
             }
             node = stack.pop()
         }
+
+        return result
+    }
+
+    treeShow(node: Element) {
+        const parent: Element = node.parentElement
+        const className: string = parent.className
+
+        if (className.includes(this.wrapClassName)) {
+            const children = Array.from(parent.children)
+            const icon = parent.querySelector(`.${this.iconClassName}`)
+            this.toggleTree(children, icon, true)
+            this.treeShow(parent)
+        }
     }
 
     bindEvent() {
         this.root.addEventListener('click', this.clickEvent)
+        this.btnBox.addEventListener('click', this.clickEvent)
     }
 
-    /**
-     * 判断空对象
-     * @static
-     * @return {Boolean} 是空对象返回ture，否则false
-     */
     static isEmptyObject = (obj) => {
         for (const key in obj) {
             return false
@@ -199,5 +251,7 @@ new JTree({
     wrapClass: 'tree-body',
     titleClass: 'tree-title',
     iconClass: 'tree-icon',
+    searchInputClass: '.inp',
+    buttonBoxClass: '.buttonBox',
     data
 })

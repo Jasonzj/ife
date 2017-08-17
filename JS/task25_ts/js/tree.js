@@ -17,12 +17,18 @@ var JTree = (function () {
             var funcName = { 'add': 'addNode', 'remove': 'removeNode' }[targetName];
             if (funcName)
                 _this[funcName](root);
+            if (e.target.nodeName === 'BUTTON') {
+                if (_this[targetName])
+                    _this[targetName]();
+            }
         };
-        this.root = document.querySelector(this.config.root);
-        this.data = this.config.data;
-        this.titleClassName = this.config.titleClass || 'tree_title';
-        this.wrapClassName = this.config.wrapClass || 'tree_wrap';
-        this.iconClassName = this.config.iconClass || 'tree_icon';
+        this.data = config.data;
+        this.root = document.querySelector(config.root);
+        this.btnBox = document.querySelector(config.buttonBoxClass);
+        this.searchInp = document.querySelector(config.searchInputClass);
+        this.titleClassName = config.titleClass || 'tree_title';
+        this.wrapClassName = config.wrapClass || 'tree_wrap';
+        this.iconClassName = config.iconClass || 'tree_icon';
         this.treeArr = [];
         this.init();
     }
@@ -42,17 +48,19 @@ var JTree = (function () {
         var wrap = document.createElement('div');
         var title = document.createElement('h2');
         var icon = document.createElement('span');
+        var span = document.createElement('span');
         wrap.className = this.wrapClassName;
         icon.className = this.iconClassName;
         icon.setAttribute('state', 'false');
         title.className = this.titleClassName;
-        title.innerHTML = "" + text;
+        span.innerHTML = "" + text;
         if (bool) {
             icon.classList.add('hide');
         }
         var operation = "\n            <div class=\"operation\">\n                <a name=\"add\">\u6DFB\u52A0</a>\n                <a name=\"remove\">\u5220\u9664</a>\n                <a name=\"rename\">\u91CD\u547D\u540D</a>\n            </div>";
-        title.innerHTML += operation;
+        title.appendChild(span);
         title.appendChild(icon);
+        title.innerHTML += operation;
         wrap.appendChild(title);
         return wrap;
     };
@@ -92,28 +100,60 @@ var JTree = (function () {
             }
         });
     };
-    JTree.prototype.traverseDF = function (node) {
+    JTree.prototype.dirSearch = function () {
+        var _this = this;
+        var text = this.searchInp.value.trim();
+        var result = this.traverseDF(this.root, this.titleClassName, text);
+        var alertText = { '0': '没查询到', '1': '查询到了' }[result.length];
+        if (alertText)
+            alert(alertText);
+        else if (result.length > 1)
+            alert("\u627E\u5230" + result.length + "\u4E2A\u540C\u540D\u6587\u4EF6");
+        result.forEach(function (item) {
+            item.classList.add('current');
+            _this.treeShow(item.parentElement.parentElement);
+        });
+        this.treeArr = result;
+    };
+    JTree.prototype.cleanSearch = function () {
+        this.treeArr.forEach(function (item) { return item.classList.remove('current'); });
+    };
+    JTree.prototype.traverseDF = function (node, classN, text) {
         var stack = [];
-        while (node !== null) {
-            this.treeArr.push(node);
-            if (node.children.length !== 0) {
+        var result = [];
+        while (node) {
+            if (node.className.includes(classN)) {
+                var dom = node.firstElementChild;
+                var searchText = dom.innerHTML.trim();
+                if (searchText === text) {
+                    result.push(dom);
+                }
+            }
+            if (node.children) {
                 for (var i = node.children.length - 1; i >= 0; i--) {
                     stack.push(node.children[i]);
                 }
             }
             node = stack.pop();
         }
+        return result;
+    };
+    JTree.prototype.treeShow = function (node) {
+        var parent = node.parentElement;
+        var className = parent.className;
+        if (className.includes(this.wrapClassName)) {
+            var children = Array.from(parent.children);
+            var icon = parent.querySelector("." + this.iconClassName);
+            this.toggleTree(children, icon, true);
+            this.treeShow(parent);
+        }
     };
     JTree.prototype.bindEvent = function () {
         this.root.addEventListener('click', this.clickEvent);
+        this.btnBox.addEventListener('click', this.clickEvent);
     };
     return JTree;
 }());
-/**
- * 判断空对象
- * @static
- * @return {Boolean} 是空对象返回ture，否则false
- */
 JTree.isEmptyObject = function (obj) {
     for (var key in obj) {
         return false;
@@ -152,6 +192,8 @@ new JTree({
     wrapClass: 'tree-body',
     titleClass: 'tree-title',
     iconClass: 'tree-icon',
+    searchInputClass: '.inp',
+    buttonBoxClass: '.buttonBox',
     data: data
 });
 //# sourceMappingURL=tree.js.map
