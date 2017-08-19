@@ -1,17 +1,13 @@
-const pkg = require('./package.json')
 const path = require('path')
 const htmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
 
 module.exports = {
-    entry: {
-        app: './src/entry.js',
-        vendor: Object.keys(pkg.dependencies)
-    },
+    entry: './src/entry.js',
     output: {
         path: path.resolve(__dirname, 'build'),
-        filename: 'js/[name]-[chunkhash:6].js',
-        chunkFilename: 'js/[name]-[chunkhash:6].js'
+        filename: 'js/[name].js',
+        chunkFilename: 'js/[name].js'
     },
     resolve: {
         extensions: ['.js', '.jsx', '.scss'],
@@ -20,25 +16,25 @@ module.exports = {
             path.join(__dirname, './src')
         ],
         alias: {
-            "action" : path.resolve(__dirname, 'src/action'),
-            "components" : path.resolve(__dirname, 'src/components'),
-            "containers" : path.resolve(__dirname, 'src/containers'),
-            "reducers" : path.resolve(__dirname, 'src/reducers'),
-            "utils" : path.resolve(__dirname, 'src/utils'),
-            "public" : path.resolve(__dirname, './public'),
-            "mock" : path.resolve(__dirname, './mock')
+            action: path.resolve(__dirname, 'src/action'),
+            components: path.resolve(__dirname, 'src/components'),
+            containers: path.resolve(__dirname, 'src/containers'),
+            reducers: path.resolve(__dirname, 'src/reducers'),
+            utils: path.resolve(__dirname, 'src/utils'),
+            public: path.resolve(__dirname, './public'),
+            mock: path.resolve(__dirname, './mock')
         }
     },
     module: {
         rules: [
             {
                 test: /\.(js|jsx)$/,
-                loader: 'babel-loader',
+                loader: 'babel-loader?cacheDirectory',
                 exclude: path.resolve(__dirname, 'node_modules')
             },
             {
                 test: /\.scss$/,
-                use:[
+                use: [
                     {
                         loader: 'style-loader'
                     },
@@ -48,9 +44,9 @@ module.exports = {
                     {
                         loader: 'postcss-loader',
                         options: {
-                            plugins: (loader) => [
+                            plugins: loader => [
                                 require('autoprefixer')({
-                                    browsers: ["last 5 versions"]
+                                    browsers: ['last 5 versions']
                                 })
                             ]
                         }
@@ -73,7 +69,7 @@ module.exports = {
         historyApiFallback: true,
         inline: true,
         port: 8000,
-        contentBase: path.resolve(__dirname, "build"),
+        contentBase: path.resolve(__dirname, 'build'),
         stats: {
             modules: false,
             chunks: false
@@ -84,10 +80,6 @@ module.exports = {
             filename: 'index.html',
             template: 'index.html'
         }),
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.optimize.CommonsChunkPlugin({
-            names: ['vendor'],
-            filename: 'vendor.js'
-        })
+        new webpack.HotModuleReplacementPlugin()
     ]
 }

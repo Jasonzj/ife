@@ -21,20 +21,20 @@ module.exports = {
             path.join(__dirname, './src')
         ],
         alias: {
-            "action" : path.resolve(__dirname, 'src/action'),
-            "components" : path.resolve(__dirname, 'src/components'),
-            "containers" : path.resolve(__dirname, 'src/containers'),
-            "reducers" : path.resolve(__dirname, 'src/reducers'),
-            "utils" : path.resolve(__dirname, 'src/utils'),
-            "public" : path.resolve(__dirname, './public'),
-            "mock" : path.resolve(__dirname, './mock')
+            action: path.resolve(__dirname, 'src/action'),
+            components: path.resolve(__dirname, 'src/components'),
+            containers: path.resolve(__dirname, 'src/containers'),
+            reducers: path.resolve(__dirname, 'src/reducers'),
+            utils: path.resolve(__dirname, 'src/utils'),
+            public: path.resolve(__dirname, './public'),
+            mock: path.resolve(__dirname, './mock')
         }
     },
     module: {
         rules: [
             {
                 test: /\.(js|jsx)$/,
-                loader: 'babel-loader',
+                loader: 'babel-loader?cacheDirectory',
                 exclude: path.resolve(__dirname, 'node_modules')
             },
             {
@@ -47,9 +47,9 @@ module.exports = {
                         {
                             loader: 'postcss-loader',
                             options: {
-                                plugins: (loader) => [
+                                plugins: loader => [
                                     require('autoprefixer')({
-                                        browsers: ["last 5 versions"]
+                                        browsers: ['last 5 versions']
                                     })
                                 ]
                             }
@@ -66,30 +66,54 @@ module.exports = {
         ]
     },
     plugins: [
+        // 插入头
         new webpack.BannerPlugin('Copyright by jason925645402@gamil.com'),
+
+        // css分割
         new ExtractTextPlugin('css/style-[chunkhash:6].css'),
+
+        // html
         new htmlWebpackPlugin({
             filename: 'index.html',
             template: 'index.html'
         }),
+
+        // 代码分割
         new webpack.optimize.CommonsChunkPlugin({
             names: ['vendor'],
             filename: 'js/[name]-[chunkhash:6].js'
         }),
+
+        // react开启生产环境压缩
         new webpack.DefinePlugin({
             'process.env': {
-                'NODE_ENV': JSON.stringify('production')
+                NODE_ENV: JSON.stringify('production')
             }
         }),
+
         new webpack.LoaderOptionsPlugin({
             minimize: true
         }),
+
+        // 代码压缩
         new webpack.optimize.UglifyJsPlugin({
+            beautify: false,
+            comments: false,
             compress: {
-                warnings: true
+                warnings: false,
+                drop_console: true,
+                collapse_vars: true,
+                reduce_vars: true
             }
         }),
-        new webpack.optimize.AggressiveMergingPlugin(),
-        new webpack.optimize.OccurrenceOrderPlugin()
+
+        // 改善chunk传输
+        new webpack.optimize.AggressiveMergingPlugin({
+            minSizeReduce: 1.5,
+            moveToParents: true
+        }),
+
+        // 排序输出
+        new webpack.optimize.OccurrenceOrderPlugin(),
     ]
 }
