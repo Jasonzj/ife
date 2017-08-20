@@ -3,11 +3,22 @@ const path = require('path')
 const htmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const webpack = require('webpack')
+const bundleAnalyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 module.exports = {
     entry: {
         app: './src/entry.js',
-        vendor: Object.keys(pkg.dependencies)
+        vendor: [
+            'react',
+            'react-dom',
+            'react-router',
+            'react-router-dom',
+            'redux',
+            'redux-localstorage',
+            'react-redux',
+            'react-addons-css-transition-group'
+        ],
+        d3: ['react-d3']
     },
     output: {
         path: path.resolve(__dirname, 'build'),
@@ -78,10 +89,15 @@ module.exports = {
             template: 'index.html'
         }),
 
-        // 代码分割
+        // 代码分割(抽取公共模块)
         new webpack.optimize.CommonsChunkPlugin({
-            names: ['vendor'],
+            names: ['vendor', 'd3'],
             filename: 'js/[name]-[chunkhash:6].js'
+        }),
+
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'manifest',
+            minChunks: Infinity
         }),
 
         // react开启生产环境压缩
@@ -91,6 +107,7 @@ module.exports = {
             }
         }),
 
+        // 抽取 manifest
         new webpack.LoaderOptionsPlugin({
             minimize: true
         }),
@@ -114,6 +131,6 @@ module.exports = {
         }),
 
         // 排序输出
-        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.optimize.OccurrenceOrderPlugin()
     ]
 }
