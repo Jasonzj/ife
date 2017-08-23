@@ -76,9 +76,9 @@
         const createSpaceship = (msg) => {
             if (msg.id === false) return false
 
-            let newSpaceship = null,
-                systems = SpaceshipGlobal.getSystem().spaceshipSystem, // 获取能源和引擎数组
-                systemValues = SpaceshipGlobal.getSystem().spaceshipSystemValues  // 获取能源和引擎字符串数组
+            let newSpaceship = null
+            let systems = SpaceshipGlobal.getSystem().spaceshipSystem  // 获取能源和引擎数组
+            let systemValues = SpaceshipGlobal.getSystem().spaceshipSystemValues  // 获取能源和引擎字符串数组
 
             newSpaceship = new Spaceship( // 新建飞船实例，根据指令选择不同能源和引擎
                 msg.id,     // 飞船编号
@@ -174,10 +174,10 @@
             }
 
             if (msg.length > 8) {   // 判断二进制大于八则表示有power指令
-                let engine = msg.substr(10, 1),
-                    energy = msg.substr(11, 1),
-                    power = parseInt(msg.substr(msg.length - 2, 2)),    // 截取最后2位
-                    systemValues = SpaceshipGlobal.getSystem().spaceshipSystemValues  // 获取能源和引擎字符串数组
+                let engine = msg.substr(10, 1)
+                let energy = msg.substr(11, 1)
+                let power = parseInt(msg.substr(msg.length - 2, 2))    // 截取最后2位
+                let systemValues = SpaceshipGlobal.getSystem().spaceshipSystemValues  // 获取能源和引擎字符串数组
                 
                 // engine, energy 动力，能源
                 command.engine = systemValues[engine - 1]
@@ -264,8 +264,8 @@
      */
     const DC = (() => {
         
-        const data = {},
-              tbody = document.querySelector('.monitor-body')
+        const data = {}
+        const tbody = document.querySelector('.monitor-body')
 
 
         /**
