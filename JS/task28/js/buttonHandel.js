@@ -43,11 +43,11 @@
      * [buttonHandel 按钮事件绑定]
      */
     const buttonHandel = (function() {
-        let command = document.querySelector('.command'),
-            system = document.querySelector('.system'),
-            ships = Array.apply(null, Array(SPACE_COUNT)).map(
+        let command = document.querySelector('.command')
+        let system = document.querySelector('.system')
+        let ships = Array.apply(null, Array(SPACE_COUNT)).map(
                 (item, i) => i + 1
-            ) // 创建按飞船数量排列的数组，如[1, 2, 3, 4];
+        ) // 创建按飞船数量排列的数组，如[1, 2, 3, 4];
 
         /**
          * [createBtn 创建按钮飞船对呀控制按钮]
@@ -80,13 +80,13 @@
          * @param {Event} e 
          */
         function btnEvent(e) {
-            const target = e.target,
-                parent = target.parentNode
+            const target = e.target
+            const parent = target.parentNode
 
-            let id = parseInt(parent.getAttribute('data-id')), // 获取按钮指令对应的id
-                cmd = target.className, // 获取按钮指令对应的class(指令)
-                msg = Message.setMessage('id', id, 'commond', cmd), // 设置msg的id和commond
-                spaceshipQueue = SpaceshipGlobal.getQueue() // 从全局飞船管理获得飞船队列
+            let id = parseInt(parent.getAttribute('data-id'))  // 获取按钮指令对应的id
+            let cmd = target.className  // 获取按钮指令对应的class(指令)
+            let msg = Message.setMessage('id', id, 'commond', cmd) // 设置msg的id和commond
+            let spaceshipQueue = SpaceshipGlobal.getQueue() // 从全局飞船管理获得飞船队列
 
             // 控制台按钮
             if (target.nodeName === 'BUTTON') {
