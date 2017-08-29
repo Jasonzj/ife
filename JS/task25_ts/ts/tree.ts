@@ -31,12 +31,12 @@ class JTree {
         this.init()
     }
 
-    init() {
+    private init() {
         this.initTree(this.data, this.root)
         this.bindEvent()
     }
 
-    initTree(data: any, dom: Element) {
+    private initTree(data: any, dom: Element) {
         for (const titleName in data) {
             const bool = JTree.isEmptyObject(data[titleName])
             const wrap = this.createNode(titleName, bool)
@@ -46,7 +46,7 @@ class JTree {
         }
     }
 
-    createNode(text, bool) {
+    private createNode(text, bool) {
         const wrap: Element = document.createElement('div')
         const title: Element = document.createElement('h2')
         const icon: Element = document.createElement('span')
@@ -76,11 +76,11 @@ class JTree {
         return wrap
     }
 
-    setPrompt(text: string, resText?: string) {
+    private setPrompt(text: string, resText?: string) {
         return prompt(text, resText).trim()
     }
 
-    clickEvent = (e) => {
+    private clickEvent = (e) => {
         const target: any = e.target
         const className: string = target.className
         const targetName: string = target.name
@@ -102,7 +102,7 @@ class JTree {
         }
     }
 
-    addNode(dom: Element) {
+    private addNode(dom: Element) {
         const text = this.setPrompt('请输入添加节点的名称')
         const node = this.createNode(text, true)
         const children = Array.from(dom.children)
@@ -113,7 +113,7 @@ class JTree {
         this.toggleTree(children, icon, true)
     }
 
-    removeNode(dom: Element) {
+    private removeNode(dom: Element) {
         const parent = dom.parentElement
         const children = parent.children
         const icon = parent.querySelector(`.${this.iconClassName}`)
@@ -124,7 +124,7 @@ class JTree {
         }
     }
 
-    toggleTree(
+    private toggleTree(
         children: Element[],
         icon: Element,
         bool: boolean
@@ -145,7 +145,7 @@ class JTree {
         })
     }
 
-    dirSearch() {
+    private dirSearch() {
         const text = this.searchInp.value.trim()
         const result = this.traverseDF(this.root, this.titleClassName, text)
         const alertText = { '0': '没查询到', '1': '查询到了' }[result.length]
@@ -160,11 +160,11 @@ class JTree {
         this.treeArr = result
     }
 
-    cleanSearch() {
+    private cleanSearch() {
         this.treeArr.forEach(item => item.classList.remove('current'))
     }
 
-    traverseDF(
+    private traverseDF(
         node: Element,
         classN: string,
         text: string
@@ -191,7 +191,7 @@ class JTree {
         return result
     }
 
-    treeShow(node: Element) {
+    private treeShow(node: Element) {
         const parent: Element = node.parentElement
         const className: string = parent.className
 
@@ -203,7 +203,7 @@ class JTree {
         }
     }
 
-    bindEvent() {
+    private bindEvent() {
         this.root.addEventListener('click', this.clickEvent)
         this.btnBox.addEventListener('click', this.clickEvent)
     }
