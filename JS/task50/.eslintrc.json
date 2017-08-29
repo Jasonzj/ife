@@ -63,6 +63,7 @@
         "no-underscore-dangle": 0,
         "import/prefer-default-export": 0,
         "import/first": 0,
+        "import/no-webpack-loader-syntax": 0,
         "react/no-array-index-key": 0,
         "react/sort-comp": 0,
         "class-methods-use-this": 0,
