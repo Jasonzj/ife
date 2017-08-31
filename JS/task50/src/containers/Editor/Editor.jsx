@@ -399,7 +399,8 @@ class Editor extends PureComponent {
                     }
                 </ReactCSSTransitionGroup>
                 {
-                    this.check && !this.data &&
+                    this.check &&
+                    !this.data &&
                     <div className="editor__btn">
                         <Link to="/">
                             <Button
