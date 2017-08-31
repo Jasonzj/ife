@@ -1,0 +1,30 @@
+{
+  "name": "j-gallery",
+  "version": "1.0.0",
+  "description": "a picture layout library",
+  "main": "index.js",
+  "directories": {
+    "example": "example",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jasonzj/Gallery.git"
+  },
+  "keywords": [
+    "gallery"
+  ],
+  "author": "jason <Jason925645402@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jasonzj/Gallery/issues"
+  },
+  "homepage": "https://github.com/Jasonzj/Gallery#readme",
+  "devDependencies": {
+    "chai": "^4.1.1",
+    "mocha": "^3.5.0"
+  }
+}

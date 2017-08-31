@@ -5,10 +5,23 @@
 [查看Demo](http://www.jasonzj.me/gallery/index.html)
 
 ## 使用方法
-1. 在HTML中引入gallery.min.js和gallery.min.css
+1. 在HTML中引入gallery.min.js和gallery.min.css(压缩文件已使用babel编译成es5语法)
 ```html
 <link rel="stylesheet" href="./gallery.min.css">
 <script src="./gallery.min.js">
+```
+或者
+```shell
+npm install j-gallery --save-dev
+```
+ES5
+```javascript
+var obj = require('j-gallery')
+var Gallery = obj.Gallery
+```
+ES6
+```javascript
+import { Gallery, css } = 'j-gallery'
 ```
 
 2. 定义一个根图片容器，并指定类名、宽度(宽度支持百分比)

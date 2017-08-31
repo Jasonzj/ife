@@ -38,8 +38,7 @@ module.exports = {
                 exclude: path.resolve(__dirname, 'node_modules')
             },
             {
-                test: /\.scss$/,
-                exclude: path.resolve(__dirname, 'node_modules'),
+                test: /\.(css|scss)$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: [
@@ -66,7 +65,7 @@ module.exports = {
         ]
     },
     plugins: [
-        new ExtractTextPlugin('/css/[name]-[chunkhash:6].css'),
+        new ExtractTextPlugin('./css/[name]-[chunkhash:6].css'),
         new htmlWebpackPlugin({
             filename: 'index.html',
             template: 'index.html'
