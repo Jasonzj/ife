@@ -47,10 +47,11 @@ class JTree {
     }
 
     private createNode(text, bool) {
-        const wrap: Element = document.createElement('div')
-        const title: Element = document.createElement('h2')
-        const icon: Element = document.createElement('span')
-        const span: Element = document.createElement('span')
+        const domCreateElement = document.createElement.bind(document)
+        const wrap: Element = domCreateElement('div')
+        const title: Element = domCreateElement('h2')
+        const icon: Element = domCreateElement('span')
+        const span: Element = domCreateElement('span')
 
         wrap.className = this.wrapClassName
         icon.className = this.iconClassName

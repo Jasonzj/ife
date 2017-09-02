@@ -45,10 +45,11 @@ var JTree = (function () {
         }
     };
     JTree.prototype.createNode = function (text, bool) {
-        var wrap = document.createElement('div');
-        var title = document.createElement('h2');
-        var icon = document.createElement('span');
-        var span = document.createElement('span');
+        var domCreateElement = document.createElement.bind(document);
+        var wrap = domCreateElement('div');
+        var title = domCreateElement('h2');
+        var icon = domCreateElement('span');
+        var span = domCreateElement('span');
         wrap.className = this.wrapClassName;
         icon.className = this.iconClassName;
         icon.setAttribute('state', 'false');
