@@ -1,5 +1,4 @@
-// import React from 'react'
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
@@ -39,7 +38,7 @@ const getDispatch = dispatch => ({
     getState,
     getDispatch
 )
-class Lists extends Component {
+class Lists extends PureComponent {
     componentWillMount() {
         const { lists, history, changeEndState } = this.props
         if (!lists.length) {
