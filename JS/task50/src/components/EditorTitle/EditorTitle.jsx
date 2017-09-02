@@ -29,10 +29,8 @@ class EditorTitle extends PureComponent {
     }
 
     editInputFocus(node) {
-        new Promise((rej) => {
-            rej(node)
-        }).then((input) => {
-            input && input.focus()
+        setTimeout(() => {
+            node && node.focus()
         })
     }
 
