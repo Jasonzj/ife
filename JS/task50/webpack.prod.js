@@ -1,9 +1,7 @@
-const pkg = require('./package.json')
 const path = require('path')
-const htmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const webpack = require('webpack')
-const bundleAnalyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 module.exports = {
     entry: {
@@ -84,7 +82,7 @@ module.exports = {
         new ExtractTextPlugin('css/style-[chunkhash:6].css'),
 
         // html
-        new htmlWebpackPlugin({
+        new HtmlWebpackPlugin({
             filename: 'index.html',
             template: 'index.html'
         }),
