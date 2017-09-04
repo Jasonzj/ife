@@ -14,9 +14,9 @@ module.exports = {
             'redux',
             'redux-localstorage',
             'react-redux',
-            'react-addons-css-transition-group'
-        ],
-        d3: ['react-d3']
+            'react-addons-css-transition-group',
+            'react-d3'
+        ]
     },
     output: {
         path: path.resolve(__dirname, 'build'),
@@ -89,7 +89,7 @@ module.exports = {
 
         // 代码分割(抽取公共模块)
         new webpack.optimize.CommonsChunkPlugin({
-            names: ['vendor', 'd3'],
+            names: ['vendor'],
             filename: 'js/[name]-[chunkhash:6].js'
         }),
 
