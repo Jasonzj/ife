@@ -14,14 +14,14 @@ module.exports = {
             'redux',
             'redux-localstorage',
             'react-redux',
-            'react-addons-css-transition-group',
-            'react-d3'
-        ]
+            'react-addons-css-transition-group'
+        ],
+        d3: ['react-d3']
     },
     output: {
         path: path.resolve(__dirname, 'build'),
-        filename: 'js/[name]-[chunkhash:6].js',
-        chunkFilename: 'js/[name]-[chunkhash:6].js'
+        filename: 'js/[name]-[chunkhash].js',
+        chunkFilename: 'js/[name]-[chunkhash].js'
     },
     resolve: {
         extensions: ['.js', '.jsx', '.scss'],
@@ -79,7 +79,7 @@ module.exports = {
         new webpack.BannerPlugin('Copyright by jason925645402@gamil.com'),
 
         // css分割
-        new ExtractTextPlugin('css/style-[chunkhash:6].css'),
+        new ExtractTextPlugin('css/style-[chunkhash].css'),
 
         // html
         new HtmlWebpackPlugin({
@@ -89,8 +89,8 @@ module.exports = {
 
         // 代码分割(抽取公共模块)
         new webpack.optimize.CommonsChunkPlugin({
-            names: ['vendor'],
-            filename: 'js/[name]-[chunkhash:6].js'
+            names: ['vendor', 'd3'],
+            filename: 'js/[name]-[chunkhash].js'
         }),
 
         new webpack.optimize.CommonsChunkPlugin({
