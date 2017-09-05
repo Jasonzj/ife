@@ -46,7 +46,7 @@
     "webpack-dev-server": "^2.5.1"
   },
   "dependencies": {
-    "j-gallery": "^1.1.6",
+    "j-gallery": "^1.1.7",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1"

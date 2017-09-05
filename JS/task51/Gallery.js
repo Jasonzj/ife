@@ -1,6 +1,6 @@
 /**
  * Gallery
- * Version: v1.1.6
+ * Version: v1.1.7
  * @Author: Jason 
  */
 
@@ -317,42 +317,55 @@
         /**
          * 根据layout添加图片到容器中
          * @param {HTMLElement} box 需要添加容器的dom
+         * @param {Number} wid 图片的宽度
+         * @param {Number} hei 图片的高度
+         * @param {Boolean} bool 
          */
-        addBox(box, wid, hei, bool) {
+        addBox(...args) {
+            const box = args[0]
+            const bool = args[3]
             box.style.height = ''
             
             if (!bool) {
                 box.firstChild.setAttribute('index', this.imgIndex++)
             }
 
-            switch (this.options.layout) {
-                case 1:
-                    this.setPuzzle()
-                    break 
+            const funcNameArr = ['setPuzzle', 'addWaterFall', 'addBarrel']
+            const funcName = funcNameArr[this.options.layout - 1]
+            const func = this[funcName]
+            func && func.apply(this, args)
+        }
 
-                case 2:
-                    const min = this.getMinWaterfallColumn()
-                    const gutter = this.options.gutter
-                    box.className = 'waterfallBox'
-                    box.style.borderBottom = gutter.y + 'px solid transparent'
-                    box.style.borderRight = gutter.x + 'px solid transparent'
-                    min.appendChild(box)
-                    break
-                
-                case 3:
-                    if (!this.nPhotos.length) {
-                        const options = this.options
-                        const nPhotosWrap = this.nPhotosWrap = document.createElement('div')
-                        nPhotosWrap.className = 'barrelRow'
-                        nPhotosWrap.style.marginBottom = options.gutter.y + 'px'
-                        nPhotosWrap.style.height = options.barrelMinHeight + 'px'
-                        this.galleryBox.appendChild(nPhotosWrap)
-                    }
-                    const ratio = wid / hei
-                    this.appendBarrel(box.firstChild.src, ratio, box, wid, hei)
-                    break
+        /**
+         * 添加瀑布流图片
+         * @param {HTMLElement} box 需要添加容器的dom
+         */
+        addWaterFall(box) {
+            const min = this.getMinWaterfallColumn()
+            const gutter = this.options.gutter
+            box.className = 'waterfallBox'
+            box.style.borderBottom = gutter.y + 'px solid transparent'
+            box.style.borderRight = gutter.x + 'px solid transparent'
+            min.appendChild(box)
+        }
+
+        /**
+         * 添加木桶图片
+         * @param {HTMLElement} box 需要添加容器的dom
+         * @param {Number} wid 图片的宽度
+         * @param {Number} hei 图片的高度
+         */
+        addBarrel(box, wid, hei) {
+            if (!this.nPhotos.length) {
+                const options = this.options
+                const nPhotosWrap = this.nPhotosWrap = document.createElement('div')
+                nPhotosWrap.className = 'barrelRow'
+                nPhotosWrap.style.marginBottom = options.gutter.y + 'px'
+                nPhotosWrap.style.height = options.barrelMinHeight + 'px'
+                this.galleryBox.appendChild(nPhotosWrap)
             }
-            
+            const ratio = wid / hei
+            this.appendBarrel(box.firstChild.src, ratio, box, wid, hei)
         }
 
         /**
@@ -496,7 +509,7 @@
         setThumbnail(index) {
             const wrap = document.querySelector('.gallery-view-list')
             const imgs = this.getImageDomElements()
-            let wrapImgs = wrap.querySelectorAll('img')
+            let wrapImgs =  Array.from(wrap.querySelectorAll('img'))
             let len = imgs.length
 
             // 最多显示5张缩略图
