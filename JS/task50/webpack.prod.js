@@ -112,13 +112,9 @@ module.exports = {
 
         // 代码压缩
         new webpack.optimize.UglifyJsPlugin({
-            beautify: false,
             comments: false,
             compress: {
-                warnings: false,
-                drop_console: true,
-                collapse_vars: true,
-                reduce_vars: true
+                warnings: false
             }
         }),
 
