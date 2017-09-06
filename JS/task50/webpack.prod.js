@@ -84,13 +84,22 @@ module.exports = {
         // html
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: 'index.html'
+            template: 'index.html',
+            inject: true,
+            minify: {
+                removeComments: true,       // 去注释
+                collapseWhitespace: true,   // 压缩空格
+                removeAttributeQuotes: true // 去除属性引用
+            },
+            // 必须通过上面的 CommonsChunkPlugin 的依赖关系自动添加 js，css 等
+            chunksSortMode: 'dependency'
         }),
 
         // 代码分割(抽取公共模块)
         new webpack.optimize.CommonsChunkPlugin({
             names: ['vendor', 'd3'],
-            filename: 'js/[name]-[chunkhash].js'
+            filename: 'js/[name]-[chunkhash].js',
+            minChunks: Infinity
         }),
 
         new webpack.optimize.CommonsChunkPlugin({
