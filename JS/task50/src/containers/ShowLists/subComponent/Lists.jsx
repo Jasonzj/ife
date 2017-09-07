@@ -53,6 +53,15 @@ class Lists extends PureComponent {
         })
     }
 
+    checkData(chooses, e) {
+        const check = chooses.every((item) => item.checkeds.length)
+
+        if (!check) {
+            alert('当前问卷数据不足，请稍后再试')
+            e.preventDefault()
+        }
+    }
+
     render() {
         const {
             lists,
@@ -76,6 +85,7 @@ class Lists extends PureComponent {
                             btnStateF={item.state ? 1 : 0}
                             removeQuestion={removeQuestion}
                             stateText={stateTexts[item.state]}
+                            checkData={this.checkData}
                             stateClassName={item.state === 1 ? 'color--success' : ''}
                             {...item}
                         />

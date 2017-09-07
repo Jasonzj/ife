@@ -9,6 +9,8 @@ const Item = ({
     id,
     title,
     endTime,
+    chooses,
+    checkData,
     setDialog,
     btnStateT,
     btnStateF,
@@ -51,7 +53,10 @@ const Item = ({
             <Link to={`/check/${id}`}>
                 <Button className={1}>查看问卷</Button>
             </Link>
-            <Link to={`/data/${id}`}>
+            <Link
+                to={`/data/${id}`}
+                onClick={e => checkData(chooses, e)}
+            >
                 <Button
                     disabled={btnStateF}
                     className={btnStateF}
@@ -68,13 +73,15 @@ Item.propTypes = {
     title: PropTypes.string,
     stateClassName: PropTypes.string,
     endTime: PropTypes.string,
+    chooses: PropTypes.array,
     stateText: PropTypes.string,
     isChecked: PropTypes.bool,
     toggleChecked: PropTypes.func,
+    checkData: PropTypes.func,
     setDialog: PropTypes.func,
     btnStateT: PropTypes.number,
     btnStateF: PropTypes.number,
-    removeQuestion: PropTypes.func,
+    removeQuestion: PropTypes.func
 }
 
 export default Item
