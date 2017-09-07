@@ -1,7 +1,6 @@
 import data from 'mock/data.json'
 
 const questionnaires = (state, action) => {
-    let list = null
     switch (action.type) {
         case 'TOGGLE_ALL_CHECKED':
             if (state.state) {
@@ -13,7 +12,7 @@ const questionnaires = (state, action) => {
             }
 
         case 'TOGGLE_CHECKED':
-            if (state.id !== parseInt(action.id)) {
+            if (state.id !== parseInt(action.id, 10)) {
                 return state
             }
 
@@ -23,7 +22,7 @@ const questionnaires = (state, action) => {
             }
 
         case 'SET_QUESTION':
-            if (state.id !== parseInt(action.id)) {
+            if (state.id !== parseInt(action.id, 10)) {
                 return state
             }
 
@@ -34,13 +33,13 @@ const questionnaires = (state, action) => {
                 chooses: action.chooses,
                 state: action.state
             }
-        
+
         case 'REMOVE_ALL_QUESTION':
             return !state.isChecked
 
         case 'REMOVE_QUESTION':
             return state.id !== action.id
-        
+
         case 'ADD_QUESTION':
             return {
                 id: state.length,
@@ -52,7 +51,7 @@ const questionnaires = (state, action) => {
             }
 
         case 'ADD_OPTION_CHECKED':
-            if (state.id !== parseInt(action.id)) {
+            if (state.id !== parseInt(action.id, 10)) {
                 return state
             }
 
@@ -69,9 +68,9 @@ const questionnaires = (state, action) => {
                     }
                 })
             }
-        
+
         case 'CHANGE_STATE':
-            if (state.id !== parseInt(action.id)) {
+            if (state.id !== parseInt(action.id, 10)) {
                 return state
             }
 

@@ -331,6 +331,9 @@ class Editor extends Component {
 
             case 'textarea':
                 return choose.checkeds.filter(checked => checked[0]).length
+
+            default:
+                return null
         }
     }
 
