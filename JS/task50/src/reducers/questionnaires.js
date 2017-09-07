@@ -59,7 +59,10 @@ const questionnaires = (state, action) => {
                 ...state,
                 chooses: action.chooses.map((choose) => {
                     const checkeds = choose.checkeds
-                    checkeds.push(choose.cacheChecked)
+
+                    if (choose.cacheChecked.some(item => item)) {
+                        checkeds.push(choose.cacheChecked)
+                    }
 
                     return {
                         ...choose,

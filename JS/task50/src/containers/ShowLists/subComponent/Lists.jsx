@@ -54,7 +54,9 @@ class Lists extends PureComponent {
     }
 
     checkData(chooses, e) {
-        const check = chooses.every((item) => item.checkeds.length)
+        const check = chooses
+            .filter(item => item.type !== 'textarea')
+            .every(choose => choose.checkeds.length)
 
         if (!check) {
             alert('当前问卷数据不足，请稍后再试')
