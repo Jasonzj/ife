@@ -1,38 +1,24 @@
 import React from 'react'
-import { createStore, compose } from 'redux'
-import persistState from 'redux-localstorage'
 import { Provider } from 'react-redux'
-import Bundle from './bundle.js'
+import Bundle from './bundle'
+import store from './store'
 import {
     HashRouter as Router,
     Route,
     Switch
 } from 'react-router-dom'
 
-// renducers
-import rootReducer from 'reducers'
-
 // container
 import HomeContainer from 'containers/HomeContainer'
 import ShowLists from 'containers/ShowLists'
-import NotFound from 'containers/404.jsx'
+import NotFound from 'containers/404'
 
 // lazyContainer
-import Create from 'bundle-loader?lazy&name=create-[name]!containers/Create/index.js'
-import Editor from 'bundle-loader?lazy&name=editor-[name]!containers/Editor/index.js'
+import Create from 'bundle-loader?lazy&name=create-[name]!containers/Create/index'
+import Editor from 'bundle-loader?lazy&name=editor-[name]!containers/Editor/index'
 
 // scss
 import './app.scss'
-
-// store
-const enhancer = compose(
-    persistState()
-)
-
-const store = createStore(
-    rootReducer,
-    enhancer
-)
 
 // router
 const createComponent = component => () => (
