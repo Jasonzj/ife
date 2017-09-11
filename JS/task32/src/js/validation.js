@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-21 15:38:17 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-23 11:13:36
+ * @Last Modified time: 2017-09-11 17:43:16
  */
 
 import { getValueLen } from './function';

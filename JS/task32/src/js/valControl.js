@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-22 22:01:00 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-23 11:39:36
+ * @Last Modified time: 2017-09-11 17:59:03
  */
 
 import { Validator } from './validation'
@@ -33,6 +33,7 @@ export class ValControl extends Validator{
         this.validators = config.validators  // 验证规则数组
         this.success = config.success   // 正确返回的文本
         this.fails = config.fail        // 错误返回的文本
+        this.linkage = config.linkage
 
         // 根据button判断
         this.config.type === 'button' ? this.init(ele, true) : this.init(ele)
@@ -153,7 +154,13 @@ export class ValControl extends Validator{
     blurHandel() {
         const self = this,
             msg = self.setValidator()
-        
+
+        if (self.linkage) {     // 如果linkage存在着联动对应的input
+            const dom = document.querySelector(`#${self.linkage}`)
+            dom.blur()
+            dom.focus()
+        }
+
         if (!msg.correct) {
             self.prompt.innerHTML = msg.msg
             self.prompt.parentNode.className = "error"
@@ -163,7 +170,6 @@ export class ValControl extends Validator{
         self.prompt.innerHTML = msg.msg
         self.prompt.parentNode.className = "correct"
         self.ele.setAttribute('data-validation', 'true') 
-        
     }
 
     /**

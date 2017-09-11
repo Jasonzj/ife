@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-23 11:26:25 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-23 11:31:25
+ * @Last Modified time: 2017-09-11 18:02:48
  */
 
 import './css/style.scss'
@@ -23,7 +23,8 @@ const form1 = {
         type: 'text',
         validators: ['isNowEmpty', 'lengthBetween:4:16'],
         success: '密码可用',
-        fail: ['密码不能为空', '密码格式有误']
+        fail: ['密码不能为空', '密码格式有误'],
+        linkage: 'passwordMore'
     },
     passwordMore: {
         id: 'passwordMore',
@@ -70,21 +71,22 @@ const form2 = {
         fail: ['名称不能为空', '名称格式有误']
     },
     password: {
-        id: 'password',
+        id: 'password2',
         label: '密码',
         type: 'text',
         validators: ['isNowEmpty', 'lengthBetween:4:12'],
         success: '密码可用',
-        fail: ['密码不能为空', '密码格式有误']
+        fail: ['密码不能为空', '密码格式有误'],
+        linkage: 'passwordMore2'
     },
     passwordMore: {
-        id: 'passwordMore',
+        id: 'passwordMore2',
         label: '密码确认',
         type: 'text',
         validators: ['isNowEmpty', 'isSame'],
         success: '密码一致',
         fail: ['不能为空', '密码不一致'],
-        compare: 'password'
+        compare: 'password2'
     },
     phone: {
         id: 'phone',

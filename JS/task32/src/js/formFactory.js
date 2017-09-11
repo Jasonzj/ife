@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-22 21:30:35 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-23 11:23:25
+ * @Last Modified time: 2017-09-11 17:47:49
  */
 
 import { ValControl } from './valControl'
@@ -37,7 +37,7 @@ export class FormFactory {
         this.form = document.createElement('form')
         this.box = document.querySelector(box) 
         this.config = config    // 表单配置
-        this.fn = null  // 用于存放需要比较的文本框实例
+        this.fn = []  // 用于存放需要比较的文本框实例
 
         this.init()
     }
@@ -95,17 +95,19 @@ export class FormFactory {
             new ValControl(input, config[key], p)
             
             if (config[key].compare) {  // 如果有compare(比较属性)则给fn赋值并在创建好表单后执行
-                this.fn = () => {
+                this.fn.push(() => {
                     const compareInp = document.querySelector('#' + config[key].compare)
                     new ValControl([input, compareInp], config[key], p)
-                }
+                })
             }
         }
 
         self.box.appendChild(self.form)
         
-        if (self.fn) {  // 执行比较实例
-            self.fn()
+        if (this.fn.length) {
+            this.fn.forEach(func => {
+                func && func()
+            })
         }
     }
 
