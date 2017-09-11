@@ -1,6 +1,6 @@
 /**
  * Gallery
- * Version: v1.1.7
+ * Version: v1.2.0
  * @Author: Jason 
  */
 
@@ -19,7 +19,6 @@
     class Gallery {
         constructor(containerSelector) {
             this.container = document.querySelector(containerSelector)
-            this.galleryBox = null
             this.options = {
                 layout: 2,                  // 布局类型
                 waterfallColumn: 4,         // 瀑布流布局列数
@@ -29,6 +28,7 @@
                 gutter: { x: 10, y: 10 },   // 木桶布局间距
                 images: [],                 // 图片数组
             }
+            this.galleryBox = null      // 图片容器
             this.columns = []           // 瀑布流列数组
             this.nPhotos = []           // 木桶布局未加入行数组
             this.nPhotosWrap = null     // 木桶布局未加入行容器
@@ -159,9 +159,7 @@
                 case 2: 
                     this.onresize = false
                     if (init) {
-                        window.onload = () => {
-                            this.setWaterFall()
-                        }
+                        window.onload = () => this.setWaterFall()
                         return false
                     }
                     this.setWaterFall()
@@ -169,9 +167,7 @@
                 case 3:
                     this.onresize = true
                     if (init) {
-                        window.onload = () => {
-                            this.setBarrel()
-                        }
+                        window.onload = () => this.setBarrel()
                         return false
                     }
                     this.setBarrel()
@@ -475,6 +471,7 @@
                 const clientWidth = this.container.clientWidth
                 if (this.cacheWidth !== clientWidth) {   // 如果宽度变化才执行更新
                     resizeTime = setTimeout(() => {
+                        clearTimeout(resizeTime)
                         resizeTime = null
                         this.updateLayout()
                         this.cacheWidth = clientWidth

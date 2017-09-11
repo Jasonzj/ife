@@ -16,8 +16,7 @@ npm install j-gallery --save-dev
 ```
 ES5
 ```javascript
-var obj = require('j-gallery')
-var Gallery = obj.Gallery
+var Gallery = require('j-gallery').Gallery
 ```
 ES6
 ```javascript

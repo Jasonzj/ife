@@ -1,6 +1,6 @@
 {
   "name": "j-gallery",
-  "version": "1.1.7",
+  "version": "1.2.0",
   "description": "a picture layout library",
   "main": "index.js",
   "directories": {
@@ -8,7 +8,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --recursive"
+    "test": "mocha --recursive",
+    "build": "rm -rf dist/*; postcss --use autoprefixer cssnano -o dist/gallery.min.css src/gallery.css --no-map; babel src/gallery.js | uglifyjs > dist/gallery.min.js"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,13 @@
   },
   "homepage": "https://github.com/Jasonzj/Gallery#readme",
   "devDependencies": {
+    "autoprefixer": "^7.1.4",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
     "chai": "^4.1.1",
-    "mocha": "^3.5.0"
+    "cssnano": "^3.10.0",
+    "mocha": "^3.5.0",
+    "postcss-cli": "^4.1.0",
+    "uglify-js": "^3.0.28"
   }
 }

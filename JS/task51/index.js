@@ -1,4 +1,4 @@
 module.exports = {
-    Gallery: require('./gallery.min'),
-    css: require('./gallery.min.css')
+    Gallery: require('./dist/gallery.min'),
+    css: require('./dist/gallery.min.css')
 }
