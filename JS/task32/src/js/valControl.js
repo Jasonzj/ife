@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-22 22:01:00 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-09-11 17:59:03
+ * @Last Modified time: 2017-09-12 14:19:18
  */
 
 import { Validator } from './validation'
@@ -135,8 +135,7 @@ export class ValControl extends Validator{
      * @memberof ValControl
      */
     setValidator() {
-        const self = this,
-            eles = null
+        const self = this
 
         self.cache = []     // 清空规则缓存队列
 

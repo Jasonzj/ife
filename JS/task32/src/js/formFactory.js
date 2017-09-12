@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-22 21:30:35 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-09-11 17:47:49
+ * @Last Modified time: 2017-09-12 14:33:54
  */
 
 import { ValControl } from './valControl'
@@ -19,14 +19,15 @@ export class FormFactory {
      * @param {Object} config 表单配置
      * {    
      *     {
-     *         id: 'username',     // input的ID
-     *         label: '姓名',       // label的文本 
-     *         type: 'text',       // input类型, 可选['text', 'mail...', 'button']
-     *         validators: ['isNowEmpty', 'lengthBetween:4:16'],    // 验证规则可选多个
-     *         fail: ['名称不能为空', '名称格式有误'],   // 验证错误文本对应验证规则数组
-     *         success: '密码可用',     // 验证正确文本
-     *         compare: 'password',     // 可选，比较的input元素ID，validators规则需要加入isSame规则
-     *         noMust: true             // 可选，默认为必须，选了则不必须
+     *         id: 'username',                                        // input的ID
+     *         label: '姓名',                                         // label的文本 
+     *         type: 'text',                                         // input类型, 可选['text', 'mail...', 'button']
+     *         validators: ['isNowEmpty', 'lengthBetween:4:16'],     // 验证规则可选多个
+     *         fail: ['名称不能为空', '名称格式有误'],                 // 验证错误文本对应验证规则数组
+     *         success: '密码可用',                                  // 验证正确文本
+     *         compare: 'password',                                 // 可选，比较的input元素ID，validators规则需要加入isSame规则
+     *         noMust: true,                                        // 可选，默认为必填，true则不必填
+     *         linkage: 'passwordMore2'                             // 可选，联动验证比如密码和密码确认，值为需要联动的input Id名
      *     },
      *     {...}
      * }
@@ -58,10 +59,15 @@ export class FormFactory {
         const self = this,
             config = self.config
 
-        for (const key in config) {
-            if (config[key].type === "button") {    // 如果是button则创建button跳过本次循环
-                this.createBtn(config[key])
-                continue
+        const keys = Object.keys(config)
+        keys.forEach(key => {
+            const value = config[key]
+            const type = value.type
+            const id = value.id
+
+            if (type === "button") {    // 如果是button则创建button跳过本次循环
+                this.createBtn(value)
+                return
             }
 
             // createElement
@@ -71,14 +77,14 @@ export class FormFactory {
                 p = document.createElement('p')
         
             // label
-            label.innerHTML = config[key].label
-            label.htmlFor = config[key].id
+            label.innerHTML = value.label
+            label.htmlFor = id
 
             // input
             input.className = 'input_text'
-            input.type = config[key].type
-            input.id = config[key].id
-            config[key].noMust  // 如果有noMust(不是必填)属性则设置验证属性为true
+            input.type = type
+            input.id = id
+            value.noMust  // 如果有noMust(不是必填)属性则设置验证属性为true
                 ? input.setAttribute('data-validation', 'true') 
                 : input.setAttribute('data-validation', 'false')
 
@@ -92,15 +98,15 @@ export class FormFactory {
             self.form.appendChild(div)
 
             // 为input添加规则
-            new ValControl(input, config[key], p)
+            new ValControl(input, value, p)
             
-            if (config[key].compare) {  // 如果有compare(比较属性)则给fn赋值并在创建好表单后执行
+            if (value.compare) {  // 如果有compare(比较属性)则给fn赋值并在创建好表单后执行
                 this.fn.push(() => {
-                    const compareInp = document.querySelector('#' + config[key].compare)
-                    new ValControl([input, compareInp], config[key], p)
+                    const compareInp = document.querySelector('#' + value.compare)
+                    new ValControl([input, compareInp], value, p)
                 })
             }
-        }
+        })
 
         self.box.appendChild(self.form)
         
