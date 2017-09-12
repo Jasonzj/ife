@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-21 15:38:17 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-09-11 17:43:16
+ * @Last Modified time: 2017-09-12 14:38:24
  */
 
 import { getValueLen } from './function';
@@ -89,7 +89,7 @@ const Validator = (() => {
          */
         start() {
             for (let i = 0, validatorFunc; validatorFunc = this.cache[i++];) {
-                const msg = validatorFunc();
+                const msg = validatorFunc && validatorFunc();
                 if (msg) {
                     return msg 
                 }
