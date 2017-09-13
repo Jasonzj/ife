@@ -1,7 +1,7 @@
 /**
  * Gallery
  * Version: v1.2.0
- * @Author: Jason 
+ * @Author: Jason
  */
 
 ;((root, factory) => {
@@ -24,7 +24,7 @@
                 waterfallColumn: 4,         // 瀑布流布局列数
                 fullScreen: false,           // 是否全屏
                 puzzleHeight: 600,          // 拼图高度
-                barrelMinHeight: 200,       // 木桶布局最小行高     
+                barrelMinHeight: 200,       // 木桶布局最小行高
                 gutter: { x: 10, y: 10 },   // 木桶布局间距
                 images: [],                 // 图片数组
             }
@@ -36,7 +36,7 @@
             this.onresize = false       // 监听容器宽度
             this.imgIndex = 0           // 图片索引
             this.cacheWidth = this.container.clientWidth  // 图片宽度缓存
-            
+
             this.init()
         }
 
@@ -61,12 +61,12 @@
             if (typeof image === 'string') {
                 image = [image]
             }
-            
+
             // 初始化配置
             for (const key in this.options) {
                 this.options[key] = option[key] || this.options[key]
             }
-            
+
             // 初始化图片容器
             const galleryBox = this.galleryBox = document.createElement('div')
             galleryBox.className = 'galleryBox'
@@ -109,7 +109,7 @@
             const img = new Image()
             img.src = url
             wrap.appendChild(img)
-            
+
             if (!bool) {
                 this.options.images.push(wrap)
                 return false
@@ -152,11 +152,11 @@
             this.clearLayout()
 
             switch (layout) {
-                case 1: 
+                case 1:
                     this.onresize = false
-                    this.setPuzzle() 
+                    this.setPuzzle()
                     break
-                case 2: 
+                case 2:
                     this.onresize = false
                     if (init) {
                         window.onload = () => this.setWaterFall()
@@ -254,8 +254,8 @@
          */
         setBarrel() {
             this.minRatio = this.galleryBox.clientWidth / this.options.barrelMinHeight
-            this.nPhotos = []           
-            this.nPhotosWrap = null     
+            this.nPhotos = []
+            this.nPhotosWrap = null
             const images = this.getImageDomElements()
             images.forEach(img => this.addBox(img, img.firstChild.width, img.firstChild.height))
         }
@@ -306,7 +306,7 @@
 
                 dom.remove()
                 this.nPhotos = []
-                this.addBox(dom, wid, hei, true)         
+                this.addBox(dom, wid, hei, true)
             }
         }
 
@@ -315,13 +315,13 @@
          * @param {HTMLElement} box 需要添加容器的dom
          * @param {Number} wid 图片的宽度
          * @param {Number} hei 图片的高度
-         * @param {Boolean} bool 
+         * @param {Boolean} bool
          */
         addBox(...args) {
             const box = args[0]
             const bool = args[3]
             box.style.height = ''
-            
+
             if (!bool) {
                 box.firstChild.setAttribute('index', this.imgIndex++)
             }
@@ -373,7 +373,7 @@
 
         /**
          * 设置拼图布局容器高度
-         * @param {number} [height=500] 
+         * @param {number} [height=500]
          * @returns {Boolean}
          */
         setPuzzleHeight(height = 500) {
@@ -390,7 +390,7 @@
          * 设置图片之间的间距
          * @param {number}  x  图片之间的横向间距
          * @param {number}  y  图片之间的纵向间距，如果是 undefined 则等同于 x
-         * @return {Boolean} 
+         * @return {Boolean}
          */
         setGutter(x = 10, y = 10) {
             if (x < 0 || y < 0) {
@@ -405,7 +405,7 @@
         /**
          * 设置瀑布流列数
          * @param {Number} column 瀑布流列数
-         * @return {Boolean} 
+         * @return {Boolean}
          */
         setWaterfallColumn(column = 4) {
             if (!Number.isInteger(column) || column < 0) {
@@ -532,7 +532,7 @@
             } else if (index >= (imgs.length - 2)) {
                 imageIndex = imgs.length - len
             }
-            
+
             // 刷新缩略图列表图片
             for (let i = 0; i < len; i++, imageIndex++) {
                 const currentImg = wrapImgs[i]
@@ -552,7 +552,7 @@
          */
         bindClickHandle() {
             this.container.addEventListener('click', (e) => {
-                if (e.target.nodeName === 'IMG' 
+                if (e.target.nodeName === 'IMG'
                     && e.target.className !== 'gallery-viewImg'
                     && this.options.fullScreen
                 ) {

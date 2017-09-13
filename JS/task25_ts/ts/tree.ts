@@ -17,7 +17,7 @@ class JTree {
     titleClassName: string
     wrapClassName: string
     iconClassName: string
-    
+
     constructor(public config: ITree) {
         this.data = config.data
         this.root = document.querySelector(config.root)
@@ -58,7 +58,7 @@ class JTree {
         icon.setAttribute('state', 'false')
         title.className = this.titleClassName
         span.innerHTML = `${text}`
-        
+
         if (bool) {
             icon.classList.add('hide')
         }
@@ -176,7 +176,7 @@ class JTree {
         while (node) {
             if (node.className.includes(classN)) {
                 const dom: Element = node.firstElementChild
-                const searchText: string = dom.innerHTML.trim() 
+                const searchText: string = dom.innerHTML.trim()
                 if (searchText === text) {
                     result.push(dom)
                 }
