@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-23 11:26:25 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-09-14 21:27:44
+ * @Last Modified time: 2017-09-14 22:31:01
  */
 
 import './css/style.scss'
@@ -36,7 +36,7 @@ const form1 = {
         validators: ['isNowEmpty', 'isSame'],
         success: '密码一致',
         fail: ['不能为空', '密码不一致'],
-        compare: 'password'
+        compare: 'password',
     },
     phone: {
         id: 'phone',

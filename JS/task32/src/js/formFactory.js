@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-22 21:30:35 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-09-14 21:25:40
+ * @Last Modified time: 2017-09-14 22:31:22
  */
 
 import { ValControl } from './valControl'
@@ -27,7 +27,7 @@ export class FormFactory {
      *         success: '密码可用',                                  // 验证正确文本
      *         compare: 'password',                                 // 可选，比较的input元素ID，validators规则需要加入isSame规则
      *         noMust: true,                                        // 可选，默认为必填，true则不必填
-     *         linkage: 'passwordMore2'                             // 可选，联动验证比如密码和密码确认，值为需要联动的input Id名
+     *         linkage: 'passwordMore2'                             // 可选，联动验证比如密码和密码确认，值为需要联动的input key名
      *     },
      *     {...}
      * }
@@ -39,6 +39,7 @@ export class FormFactory {
         this.box = document.querySelector(box) 
         this.config = config    // 表单配置
         this.fn = []  // 用于存放需要比较的文本框实例
+        this.validationQueue = {}
 
         this.init()
     }
@@ -78,7 +79,7 @@ export class FormFactory {
             }
 
             const { input, p } = this.createElement(value, type, id)
-            this.createValControl(input, value, p)
+            this.createValControl(input, value, p, key)
         })
 
         form.id = config.id || ''
@@ -121,13 +122,13 @@ export class FormFactory {
         }
     }
 
-    createValControl(input, value, p) {
-        new ValControl(input, value, p) // 为input添加规则
+    createValControl(input, value, p, key) {
+        this.validationQueue[key] = new ValControl(input, value, p, this.validationQueue)  // 为input添加规则
         
         if (value.compare) {  // 如果有compare(比较属性)则给fn赋值并在创建好表单后执行
             this.fn.push(() => {
                 const compareInp = document.querySelector('#' + value.compare)
-                new ValControl([input, compareInp], value, p)
+                this.validationQueue[key] = new ValControl([input, compareInp], value, p, this.validationQueue)
             })
         }
     }
@@ -146,7 +147,7 @@ export class FormFactory {
 
         this.form.appendChild(btn)
 
-        new ValControl([btn, this.form], config)
+        new ValControl([btn, this.form], config, null, this.validationQueue)
     }
 
 }

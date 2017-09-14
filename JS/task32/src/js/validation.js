@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-21 15:38:17 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-09-12 14:38:24
+ * @Last Modified time: 2017-09-14 21:49:13
  */
 
 import { getValueLen } from './function';
@@ -54,14 +54,12 @@ const Validator = (() => {
          * @memberof Validator
          */
         add(dom, rules) {
-            const self = this
-
             for (let i = 0, rule; rule = rules[i++];) {                
                 const strategyAry = rule.strategy.split(':'),   // 拆分验证条件
                     errorMsg = rule.errorMsg,   // 错误的文本
                     trueMsg = rule.trueMsg      // 正确的文本
     
-                self.cache.push(function() {         // 将验证函数添加到缓存数组中           
+                this.cache.push(function() {         // 将验证函数添加到缓存数组中           
                     const strategy = strategyAry.shift()    // 截取验证策略
                     
                     if (dom.length > 1 && strategy === 'isSame') {  

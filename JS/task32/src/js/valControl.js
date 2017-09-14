@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-22 22:01:00 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-09-14 21:27:02
+ * @Last Modified time: 2017-09-14 22:16:08
  */
 
 import { Validator } from './validation'
@@ -23,7 +23,7 @@ export class ValControl extends Validator{
      * @param {Element} prompt input的提示盒子
      * @memberof ValControl
      */
-    constructor(ele, config, prompt) {
+    constructor(ele, config, prompt, validationQueue) {
         super()
         this.ele = ele      // 需要验证的input
         this.ele2 = null    // 需要比较的input
@@ -33,7 +33,8 @@ export class ValControl extends Validator{
         this.validators = config.validators  // 验证规则数组
         this.success = config.success   // 正确返回的文本
         this.fails = config.fail        // 错误返回的文本
-        this.linkage = config.linkage
+        this.linkage = config.linkage   // 联动input
+        this.validationQueue = validationQueue || {}
 
         // 根据button判断
         this.config.type === 'button' ? this.init(ele, true) : this.init(ele)
@@ -61,9 +62,8 @@ export class ValControl extends Validator{
      * @memberof ValControl
      */
     setRule() {
-        const self = this,
-            validator1 = self.validators[0],
-            validator2 = self.validators[1]
+        const validator1 = this.validators[0]
+        const validator2 = this.validators[1]
 
         let rulsValue = ''
 
@@ -88,7 +88,7 @@ export class ValControl extends Validator{
                 break;
         }
 
-        self.rulesVals = rulsValue;
+        this.rulesVals = rulsValue;
     }
 
     /**
@@ -99,7 +99,7 @@ export class ValControl extends Validator{
      *     {
      *       strategy: validator,
      *       errorMsg: fail,
-     *       trueMsg: self.success
+     *       trueMsg: this.success
      *     },
      *     {
      *      ...
@@ -108,17 +108,16 @@ export class ValControl extends Validator{
      * @memberof ValControl
      */
     getValidators(data) {
-        const arr = [],
-            self = this
+        const arr = []
 
         for (let i = 0, l = data.length; i < l; i++) {
             const validator = data[i],
-                fail = self.fails[i]
+                fail = this.fails[i]
                 
             arr.push({
                 strategy: validator,
                 errorMsg: fail,
-                trueMsg: self.success
+                trueMsg: this.success
             })
         }
 
@@ -135,15 +134,13 @@ export class ValControl extends Validator{
      * @memberof ValControl
      */
     setValidator() {
-        const self = this
+        this.cache = []     // 清空规则缓存队列
 
-        self.cache = []     // 清空规则缓存队列
+        const data = this.getValidators(this.validators)
 
-        const data = self.getValidators(self.validators)
+        this.add([this.ele, this.ele2], data)   // 添加规则
 
-        self.add([self.ele, self.ele2], data)   // 添加规则
-
-        return self.start()  // 验证规则并返回结果
+        return this.start()  // 验证规则并返回结果
     }
 
     /**
@@ -151,24 +148,23 @@ export class ValControl extends Validator{
      * @memberof ValControl
      */
     blurHandel() {
-        const self = this,
-            msg = self.setValidator()
+        const msg = this.setValidator()
+        const prompt = this.prompt
 
-        if (self.linkage) {     // 如果linkage存在着联动对应的input
-            const dom = document.querySelector(`#${self.linkage}`)
-            dom.blur()
-            dom.focus()
+        if (this.linkage) {     // 如果linkage存在着联动对应的input
+            console.log(this.validationQueue)
+            this.validationQueue[this.linkage].blurHandel()
         }
 
         if (!msg.correct) {
-            self.prompt.innerHTML = msg.msg
-            self.prompt.parentNode.className = "error"
-            self.ele.setAttribute('data-validation', 'false') 
+            prompt.innerHTML = msg.msg
+            prompt.parentNode.className = "error"
+            this.ele.setAttribute('data-validation', 'false') 
             return false
         }
-        self.prompt.innerHTML = msg.msg
-        self.prompt.parentNode.className = "correct"
-        self.ele.setAttribute('data-validation', 'true') 
+        prompt.innerHTML = msg.msg
+        prompt.parentNode.className = "correct"
+        this.ele.setAttribute('data-validation', 'true') 
     }
 
     /**
@@ -187,17 +183,22 @@ export class ValControl extends Validator{
      * @memberof ValControl
      */
     clickHandel(e) {
-        const self = this,
-            inputs = self.ele2.getElementsByTagName('input'),
-            // 根据inputs筛选input属性data-validation是否为全部true
-            state = [].every.call(inputs, item => item.getAttribute('data-validation') === 'true')    
-        
+        const inputs = this.ele2.getElementsByTagName('input')
+
+        // 执行所有验证函数
+        const validationQueue = this.validationQueue
+        const keys = Object.keys(validationQueue)
+        keys.forEach(key => validationQueue[key].blurHandel())
+
+        // 根据inputs筛选input属性data-validation是否为全部true
+        const state = [].every.call(inputs, item => item.getAttribute('data-validation') === 'true')    
+
         if (!state) {
-            alert(self.fails)
+            alert(this.fails)
             e.preventDefault()
-            return false
+            return
         }
-        alert(self.success)
+        alert(this.success)
     }
 
     /**
@@ -205,15 +206,13 @@ export class ValControl extends Validator{
      * @memberof ValControl
      */
     setEvent(btn) {
-        const self = this
-
         if (btn) {  // 跟剧btn选择事件绑定
-            addEvent(self.ele, 'click', self.clickHandel.bind(self))
+            addEvent(this.ele, 'click', this.clickHandel.bind(this))
             return false
         }
 
-        addEvent(self.ele, 'focus', self.focusHandel.bind(self))
-        addEvent(self.ele, 'blur', self.blurHandel.bind(self))
+        addEvent(this.ele, 'focus', this.focusHandel.bind(this))
+        addEvent(this.ele, 'blur', this.blurHandel.bind(this))
     }
 
 }
