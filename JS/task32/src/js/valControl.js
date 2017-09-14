@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-22 22:01:00 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-09-12 14:19:18
+ * @Last Modified time: 2017-09-14 21:27:02
  */
 
 import { Validator } from './validation'
@@ -187,8 +187,6 @@ export class ValControl extends Validator{
      * @memberof ValControl
      */
     clickHandel(e) {
-        e.preventDefault()
-
         const self = this,
             inputs = self.ele2.getElementsByTagName('input'),
             // 根据inputs筛选input属性data-validation是否为全部true
@@ -196,6 +194,7 @@ export class ValControl extends Validator{
         
         if (!state) {
             alert(self.fails)
+            e.preventDefault()
             return false
         }
         alert(self.success)

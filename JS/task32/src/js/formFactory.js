@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-22 21:30:35 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-09-12 14:33:54
+ * @Last Modified time: 2017-09-14 21:25:40
  */
 
 import { ValControl } from './valControl'
@@ -56,10 +56,10 @@ export class FormFactory {
      * @memberof FormFactory
      */
     createInput() {
-        const self = this,
-            config = self.config
-
+        const config = this.config
+        const form = this.form
         const keys = Object.keys(config)
+
         keys.forEach(key => {
             const value = config[key]
             const type = value.type
@@ -70,49 +70,64 @@ export class FormFactory {
                 return
             }
 
-            // createElement
-            const div = document.createElement('div'),
-                label = document.createElement('label'),
-                input = document.createElement('input'),
-                p = document.createElement('p')
-        
-            // label
-            label.innerHTML = value.label
-            label.htmlFor = id
-
-            // input
-            input.className = 'input_text'
-            input.type = type
-            input.id = id
-            value.noMust  // 如果有noMust(不是必填)属性则设置验证属性为true
-                ? input.setAttribute('data-validation', 'true') 
-                : input.setAttribute('data-validation', 'false')
-
-            // p
-            p.className = 'prompt'
-
-            // appendChild
-            div.appendChild(label)
-            div.appendChild(input)
-            div.appendChild(p)
-            self.form.appendChild(div)
-
-            // 为input添加规则
-            new ValControl(input, value, p)
-            
-            if (value.compare) {  // 如果有compare(比较属性)则给fn赋值并在创建好表单后执行
-                this.fn.push(() => {
-                    const compareInp = document.querySelector('#' + value.compare)
-                    new ValControl([input, compareInp], value, p)
-                })
+            if (key === "id" 
+                || key === "class" 
+                || key === "action"
+            ) {
+                return
             }
+
+            const { input, p } = this.createElement(value, type, id)
+            this.createValControl(input, value, p)
         })
 
-        self.box.appendChild(self.form)
+        form.id = config.id || ''
+        form.class = config.class || ''
+        form.action = config.action || ''
+        this.box.appendChild(this.form)
+        this.fn.length && this.fn.forEach(func => func && func())
+    }
+
+    createElement(value, type, id) {
+        const div = document.createElement('div')
+        const label = document.createElement('label')
+        const input = document.createElement('input')
+        const p = document.createElement('p')
+
+        // label
+        label.innerHTML = value.label
+        label.htmlFor = id
+
+        // input
+        input.className = 'input_text'
+        input.type = type
+        input.id = id
+        value.noMust  // 如果有noMust(不是必填)属性则设置验证属性为true
+            ? input.setAttribute('data-validation', 'true') 
+            : input.setAttribute('data-validation', 'false')
+
+        // p
+        p.className = 'prompt'
+
+        // appendChild
+        div.appendChild(label)
+        div.appendChild(input)
+        div.appendChild(p)
+        this.form.appendChild(div)
+
+        return {
+            input,
+            p
+        }
+    }
+
+    createValControl(input, value, p) {
+        new ValControl(input, value, p) // 为input添加规则
         
-        if (this.fn.length) {
-            this.fn.forEach(func => {
-                func && func()
+        if (value.compare) {  // 如果有compare(比较属性)则给fn赋值并在创建好表单后执行
+            this.fn.push(() => {
+                const compareInp = document.querySelector('#' + value.compare)
+                new ValControl([input, compareInp], value, p)
             })
         }
     }
@@ -123,13 +138,13 @@ export class FormFactory {
      * @memberof FormFactory
      */
     createBtn(config) {
-        const btn = document.createElement('button'),
-            self = this
+        const btn = document.createElement('button')
 
         btn.className = 'btn'
         btn.innerHTML = config.value
+        btn.type = 'sumbit'
 
-        self.form.appendChild(btn)
+        this.form.appendChild(btn)
 
         new ValControl([btn, this.form], config)
     }

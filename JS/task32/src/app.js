@@ -2,13 +2,16 @@
  * @Author: Jason 
  * @Date: 2017-06-23 11:26:25 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-09-11 18:02:48
+ * @Last Modified time: 2017-09-14 21:27:44
  */
 
 import './css/style.scss'
 import { FormFactory } from './js/formFactory'
 
 const form1 = {
+    id: 'form',
+    class: 'from',
+    action: '##',
     name: {
         id: 'username',
         label: '姓名',
@@ -62,6 +65,9 @@ const form1 = {
 }
 
 const form2 = {
+    id: 'form2',
+    class: 'from2',
+    action: '##',
     name: {
         id: 'username',
         label: '姓名',
