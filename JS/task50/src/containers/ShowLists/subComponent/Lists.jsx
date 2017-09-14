@@ -68,11 +68,11 @@ class Lists extends PureComponent {
         const {
             lists,
             dialog,
-            toggleChecked,
-            removeQuestion,
+            message,
             setDialog,
             dialogFunc,
-            message
+            toggleChecked,
+            removeQuestion
         } = this.props
 
         return (

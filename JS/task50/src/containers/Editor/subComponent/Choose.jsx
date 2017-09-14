@@ -7,25 +7,25 @@ import Options from './Options'
 import EditorTitle from 'components/EditorTitle'
 
 const Choose = ({
-    setOptionChecked,
+    id,
+    up,
+    down,
+    type,
+    check,
+    title,
+    options,
+    disabled,
+    checkData,
+    addOption,
+    noTextarea,
+    moveChoose,
+    reuseChoose,
+    getChartData,
+    removeChoose,
+    removeOption,
     setChooseTitle,
     setOptionTitle,
-    removeOption,
-    removeChoose,
-    getChartData,
-    reuseChoose,
-    moveChoose,
-    noTextarea,
-    addOption,
-    checkData,
-    disabled,
-    options,
-    title,
-    check,
-    type,
-    down,
-    up,
-    id
+    setOptionChecked
 }) => (
     <div className={'choose'}>
         <EditorTitle
