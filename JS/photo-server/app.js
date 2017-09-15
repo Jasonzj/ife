@@ -3,6 +3,7 @@ const caches = {}
 
 app.get('/', (req, res) => {
     const cache = caches[req.url]
+    const callback = req.query.callback
 
     if (cache && Date.now() - cache.time < 3600000) {
         response(cache.data)
@@ -19,6 +20,11 @@ app.get('/', (req, res) => {
 
     function response(data) {
         res.set('Access-Control-Allow-Origin', '*')
+        // jsonp 回调
+        if (callback === '__onGetDate__') {
+            const str = `${callback} && ${callback}(${JSON.stringify(data)})`
+            res.send(str)
+        }
         res.send(data)
     }
 })
