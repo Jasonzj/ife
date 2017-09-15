@@ -20,12 +20,11 @@ app.get('/', (req, res) => {
 
     function response(data) {
         res.set('Access-Control-Allow-Origin', '*')
-        // jsonp 回调
-        if (callback === '__onGetDate__') {
-            const str = `${callback} && ${callback}(${JSON.stringify(data)})`
-            res.send(str)
-        }
-        res.send(data)
+        res.send(
+            callback 
+                ? `${callback} && ${callback}(${JSON.stringify(data)})`
+                : data
+        )
     }
 })
 
