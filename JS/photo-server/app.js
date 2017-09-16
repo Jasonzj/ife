@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
     }
 
     function response(data) {
+        // 允许任何来源的请求
         res.set('Access-Control-Allow-Origin', '*')
         res.send(
             callback 
