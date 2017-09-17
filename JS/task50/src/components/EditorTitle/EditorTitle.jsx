@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 class EditorTitle extends PureComponent {
     constructor() {
         super()
+        this.node = null
         this.state = {
             edit: false
         }
@@ -18,7 +19,10 @@ class EditorTitle extends PureComponent {
             alert('选项不能为空')
             return
         }
-        this.setState({ edit: !this.state.edit })
+
+        const edit = !this.state.edit
+        this.setState({ edit })
+        this.editInputFocus(edit)
     }
 
     editTextHandle = (target) => {
@@ -28,10 +32,13 @@ class EditorTitle extends PureComponent {
         func(...setTitle, msg)
     }
 
-    editInputFocus(node) {
-        setTimeout(() => {
-            node && node.focus()
-        })
+    editInputFocus(bool) {
+        if (bool) {
+            setTimeout(() => {
+                this.node.focus()
+                this.node.setSelectionRange(0, -1)
+            }, 0)
+        }
     }
 
     render() {
@@ -61,7 +68,7 @@ class EditorTitle extends PureComponent {
                         onBlur={e => this.editHandle(e.target)}
                         defaultValue={message}
                         onChange={(e => this.editTextHandle(e.target))}
-                        ref={node => this.editInputFocus(node)}
+                        ref={node => this.node = node}
                     />
                 }
             </div>
