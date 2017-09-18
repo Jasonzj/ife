@@ -10,12 +10,12 @@
      * [Animate 动画工具，canvas绘制]
      */
     const Animate = (() => {
-        const ship = document.getElementById('ship'),
-            shipCtx = ship.getContext('2d'),
-            planet = document.getElementById('planet'),
-            planet_ctx = planet.getContext('2d'),
-            cacheCanvas = document.createElement('canvas'),
-            cacheCtx = cacheCanvas.getContext('2d') //生成缓存画布
+        const ship = document.getElementById('ship')
+        const shipCtx = ship.getContext('2d')
+        const planet = document.getElementById('planet')
+        const planet_ctx = planet.getContext('2d')
+        const cacheCanvas = document.createElement('canvas')
+        const cacheCtx = cacheCanvas.getContext('2d') //生成缓存画布
 
         ship.width = SCREEN_WIDTH
         ship.height = SCREEN_HEIGHT
@@ -76,8 +76,8 @@
          * @return {Boolean}          绘画成功返回true，失败返回false
          */
         const drawSpaceship = spaceship => {
-            const spaceshipImg = new Image(),
-                _ctx = cacheCtx
+            const spaceshipImg = new Image()
+            const _ctx = cacheCtx
 
             spaceshipImg.src = 'img/min-iconfont-rocket-active.png'
             spaceshipImg.onload = function() {
