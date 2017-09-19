@@ -421,13 +421,13 @@ class Editor extends Component {
 }
 
 Editor.propTypes = {
-    dispatch: PropTypes.func,
+    match: PropTypes.any,
     dialog: PropTypes.bool,
+    lists: PropTypes.array,
+    history: PropTypes.any,
+    dispatch: PropTypes.func,
     diglogFunc: PropTypes.func,
     dialogMsg: PropTypes.string,
-    match: PropTypes.any,
-    lists: PropTypes.array,
-    history: PropTypes.any
 }
 
 export default withRouter(Editor)

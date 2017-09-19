@@ -8,17 +8,17 @@ import Button from 'components/Button'
 import './Dialog.scss'
 
 const Dialog = ({
-    message,
     close,
-    onClick
+    message,
+    onClick,
 }) => (
     <div className="dialog">
         <div className="dialog__box">
             <h1 className="dialog__title">
                 提示
                 <span
-                    className="dialog__close"
                     onClick={close}
+                    className="dialog__close"
                 >
                     X
                 </span>
@@ -48,9 +48,9 @@ const Dialog = ({
 )
 
 Dialog.propTypes = {
-    message: PropTypes.string,
     close: PropTypes.func,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    message: PropTypes.string,
 }
 
 export default Dialog

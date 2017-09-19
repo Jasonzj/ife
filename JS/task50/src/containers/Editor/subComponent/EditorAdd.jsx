@@ -37,11 +37,11 @@ const EditorAdd = ({
 )
 
 EditorAdd.propTypes = {
-    toggleAddBoxHandle: PropTypes.func,
     addRadio: PropTypes.func,
+    showAddBox: PropTypes.bool,
     addCheckBox: PropTypes.func,
     addTextarea: PropTypes.func,
-    showAddBox: PropTypes.bool
+    toggleAddBoxHandle: PropTypes.func,
 }
 
 export default EditorAdd

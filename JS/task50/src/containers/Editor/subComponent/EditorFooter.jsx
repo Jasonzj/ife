@@ -59,12 +59,12 @@ const EditorFooter = ({
 
 EditorFooter.propTypes = {
     endTime: PropTypes.string,
-    showCalendar: PropTypes.bool,
+    setDialog: PropTypes.func,
     setEndTime: PropTypes.func,
-    toggleCalendarHandle: PropTypes.func,
+    showCalendar: PropTypes.bool,
     saveQuestion: PropTypes.func,
     releaseQuestion: PropTypes.func,
-    setDialog: PropTypes.func
+    toggleCalendarHandle: PropTypes.func,
 }
 
 export default EditorFooter

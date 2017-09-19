@@ -65,10 +65,10 @@ class EditorTitle extends PureComponent {
                     edit &&
                     <input
                         type="text"
-                        onBlur={e => this.editHandle(e.target)}
                         defaultValue={message}
-                        onChange={(e => this.editTextHandle(e.target))}
                         ref={node => this.node = node}
+                        onBlur={e => this.editHandle(e.target)}
+                        onChange={(e => this.editTextHandle(e.target))}
                     />
                 }
             </div>
@@ -78,11 +78,11 @@ class EditorTitle extends PureComponent {
 }
 
 EditorTitle.propTypes = {
-    className: PropTypes.string,
+    msg: PropTypes.string,
+    disabled: PropTypes.bool,
     message: PropTypes.string,
     setTitle: PropTypes.array,
-    msg: PropTypes.string,
-    disabled: PropTypes.bool
+    className: PropTypes.string,
 }
 
 export default EditorTitle

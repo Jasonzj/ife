@@ -71,17 +71,17 @@ const Item = ({
 Item.propTypes = {
     id: PropTypes.number,
     title: PropTypes.string,
-    stateClassName: PropTypes.string,
-    endTime: PropTypes.string,
     chooses: PropTypes.array,
-    stateText: PropTypes.string,
-    isChecked: PropTypes.bool,
-    toggleChecked: PropTypes.func,
-    checkData: PropTypes.func,
     setDialog: PropTypes.func,
+    endTime: PropTypes.string,
+    checkData: PropTypes.func,
+    isChecked: PropTypes.bool,
+    stateText: PropTypes.string,
     btnStateT: PropTypes.number,
     btnStateF: PropTypes.number,
-    removeQuestion: PropTypes.func
+    toggleChecked: PropTypes.func,
+    removeQuestion: PropTypes.func,
+    stateClassName: PropTypes.string,
 }
 
 export default Item

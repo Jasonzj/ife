@@ -20,8 +20,8 @@ const ListsFooter = ({
             <td>
                 <input
                     type="checkbox"
-                    onChange={e => toogleAllChecked(e.target.checked)}
                     checked={isAllchecked}
+                    onChange={e => toogleAllChecked(e.target.checked)}
                 />
             </td>
             <td colSpan="5">

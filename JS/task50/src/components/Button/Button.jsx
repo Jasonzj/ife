@@ -5,25 +5,25 @@ import PropTypes from 'prop-types'
 import './Button.scss'
 
 const Button = ({
-    children,
-    className,
     onClick,
+    children,
     disabled,
+    className,
 }) => (
     <button
-        className={['btn--disbled', 'btn--info', 'btn--active'][className]}
         onClick={onClick}
         disabled={disabled !== undefined && !disabled}
+        className={['btn--disbled', 'btn--info', 'btn--active'][className]}
     >
         {children}
     </button>
 )
 
 Button.propTypes = {
-    children: PropTypes.string,
-    className: PropTypes.any,
     onClick: PropTypes.func,
-    disabled: PropTypes.number
+    className: PropTypes.any,
+    children: PropTypes.string,
+    disabled: PropTypes.number,
 }
 
 export default Button

@@ -29,9 +29,9 @@ const Choose = ({
 }) => (
     <div className={'choose'}>
         <EditorTitle
-            className="choose__title"
             message={title}
             msg={`Q${id + 1}`}
+            className="choose__title"
             setTitle={[setChooseTitle, id]}
         />
         {
@@ -102,21 +102,21 @@ const Choose = ({
         {
             checkData && type === 'radio' &&
             <PieChart
-                data={getChartData(id, type)}
                 width={1000}
                 height={400}
                 radius={100}
                 innerRadius={20}
                 sectorBorderColor="white"
+                data={getChartData(id, type)}
             />
         }
         {
             checkData && type === 'checkbox' &&
             <BarChart
-                data={getChartData(id, type)}
                 width={1000}
                 height={400}
                 fill={'#3182bd'}
+                data={getChartData(id, type)}
             />
         }
         {
@@ -126,25 +126,25 @@ const Choose = ({
 )
 
 Choose.propTypes = {
+    up: PropTypes.bool,
+    down: PropTypes.bool,
+    id: PropTypes.number,
+    check: PropTypes.bool,
     type: PropTypes.string,
     title: PropTypes.string,
-    id: PropTypes.number,
-    disabled: PropTypes.bool,
     options: PropTypes.array,
+    disabled: PropTypes.bool,
     addOption: PropTypes.func,
+    checkData: PropTypes.bool,
     moveChoose: PropTypes.func,
+    noTextarea: PropTypes.bool,
     reuseChoose: PropTypes.func,
     removeChoose: PropTypes.func,
+    getChartData: PropTypes.func,
     removeOption: PropTypes.func,
-    setOptionTitle: PropTypes.func,
     setChooseTitle: PropTypes.func,
+    setOptionTitle: PropTypes.func,
     setOptionChecked: PropTypes.func,
-    down: PropTypes.bool,
-    up: PropTypes.bool,
-    noTextarea: PropTypes.bool,
-    check: PropTypes.bool,
-    checkData: PropTypes.bool,
-    getChartData: PropTypes.func
 }
 
 export default Choose

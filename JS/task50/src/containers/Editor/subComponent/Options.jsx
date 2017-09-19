@@ -55,7 +55,7 @@ Options.propTypes = {
     noTextarea: PropTypes.bool,
     removeOption: PropTypes.func,
     setOptionTitle: PropTypes.func,
-    setOptionChecked: PropTypes.func
+    setOptionChecked: PropTypes.func,
 }
 
 export default Options

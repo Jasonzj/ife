@@ -82,12 +82,12 @@ class Lists extends PureComponent {
                         <Item
                             key={item.id}
                             setDialog={setDialog}
+                            checkData={this.checkData}
                             toggleChecked={toggleChecked}
                             btnStateT={item.state ? 0 : 1}
                             btnStateF={item.state ? 1 : 0}
                             removeQuestion={removeQuestion}
                             stateText={stateTexts[item.state]}
-                            checkData={this.checkData}
                             stateClassName={item.state === 1 ? 'color--success' : ''}
                             {...item}
                         />
@@ -124,7 +124,7 @@ Lists.propTypes = {
     dialogFunc: PropTypes.func,
     toggleChecked: PropTypes.func,
     removeQuestion: PropTypes.func,
-    changeEndState: PropTypes.func
+    changeEndState: PropTypes.func,
 }
 
 export default Lists

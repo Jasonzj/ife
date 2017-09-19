@@ -117,10 +117,10 @@ class Calendar extends PureComponent {
 }
 
 Calendar.propTypes = {
+    hide: PropTypes.func,
     date: PropTypes.string,
     setTime: PropTypes.func,
-    hide: PropTypes.func,
-    noToday: PropTypes.bool
+    noToday: PropTypes.bool,
 }
 
 export default Calendar
