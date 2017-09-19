@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-07-03 19:22:34 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-07-11 13:49:35
+ * @Last Modified time: 2017-09-19 17:29:52
  */
 
 import { Animate } from './animate'
@@ -138,7 +138,6 @@ export class GameControl {
         this.guards.guardsQueue.forEach((guards) => {
             const { _x = guards.x, _y = guards.y } = guards
             if (x === _x && y === _y) {
-                // this.bullet.create(this.hero, guards, '#1abc9c')
                 this.bullet.objectPoolCreate(this.hero, guards, '#1abc9c')
                 state = false
                 return false

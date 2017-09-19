@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-07-04 20:36:57 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-07-11 13:46:16
+ * @Last Modified time: 2017-09-19 17:30:37
  */
 
 export const collection = {}
@@ -17,7 +17,6 @@ const heroGuardCollision = () => {
             const dy = hero.y - guards.y
             const dist = Math.sqrt(dx * dx + dy * dy)
             if (dist < hero.radius + guards.radius) {
-                // bullet.create(guards, hero, 'red')
                 bullet.objectPoolCreate(guards, hero, 'red')
             }
         })
