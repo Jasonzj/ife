@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-29 14:49:51 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-07-05 14:26:33
+ * @Last Modified time: 2017-09-20 01:06:11
  */
 
 import { 
@@ -76,9 +76,9 @@ export class Calendar {
         const title = document.createElement('p')
         title.className = 'title'
         title.innerHTML = `
-            <strong class="calendar-title"></strong>
-            <strong class="calendar_prev"><</strong>
-            <strong class="calendar_next">></strong>
+            <b class="calendar-title"></b>
+            <strong class="calendar-prev"><</strong>
+            <strong class="calendar-next">></strong>
         `
         this.title = title
         box.appendChild(title)
@@ -87,6 +87,7 @@ export class Calendar {
         this.weeks.forEach(item => {
             const span = document.createElement('span')
             span.innerHTML = `${item}`
+            span.className = 'calendar-week'
             box.appendChild(span)
         })
 
@@ -156,22 +157,25 @@ export class Calendar {
         clearCurrent(this.dayArr, 'multi')
         
         this.dayArr.forEach((item, i) => {
-            item.innerHTML = dat.getDate()
+            const datDate = dat.getDate()
+            const datDay = dat.getDay()
+            const datMonth = dat.getMonth()
+            item.innerHTML = datDate
 
-            if (dat.getMonth() !== date.getMonth()) {        // 不是当月变暗
-                item.className = 'white'
+            if (datMonth !== date.getMonth()) {        // 不是当月变暗
+                item.className = 'calendar-white'
             } 
 
             else if (
-                dat.getDate() === date.getDate()                     // 高亮当前天数
+                datDate === date.getDate()                     // 高亮当前天数
                 && this.cacheDate.getMonth() === this.date.getMonth()     // 判断月
             ) {
                 if (!this.multi) item.className = 'current'
             } 
             
             else if (
-                dat.getDay() === 0 
-                || dat.getDay() === 6) {          // 判断周末
+                datDay === 0 
+                || datDay === 6) {          // 判断周末
                 item.className = 'light'
             } 
             
@@ -179,28 +183,31 @@ export class Calendar {
                 item.className = ''
             }
 
+            const multiDateFirst = this.multiDates[0]
+            const multiDateLast = this.multiDates[1]
+
             // 判断时间跨度
             if (
-                this.multiDates[0]                                      // 如果存在
-                && this.multiDates[0].getDate() === dat.getDate()       // 天数相同
-                && this.multiDates[0].getMonth() === dat.getMonth()     // 月数相同
-                || this.multiDates[1]                                   // 如果存在
-                && this.multiDates[1].getDate() === dat.getDate()       // 天数相同
-                && this.multiDates[1].getMonth() === dat.getMonth()     // 月数相同
+                multiDateFirst                               // 如果存在
+                && multiDateFirst.getDate() === datDate      // 天数相同
+                && multiDateFirst.getMonth() === datMonth    // 月数相同
+                || multiDateLast                             // 如果存在
+                && multiDateLast.getDate() === datDate       // 天数相同
+                && multiDateLast.getMonth() === datMonth     // 月数相同
             ) {
                 setClassName(item, 'current')
             }
 
             if (
-                this.multiDates[0] > dat        // 判断在0，1之间还是1，0之间
-                && this.multiDates[1] < dat 
-                || this.multiDates[1] > dat 
-                && this.multiDates[0] < dat
+                multiDateFirst > dat        // 判断在0，1之间还是1，0之间
+                && multiDateLast < dat 
+                || multiDateLast > dat 
+                && multiDateFirst < dat
             ) {
                 setClassName(item, 'multi')
             }
 
-            dat.setDate(dat.getDate() + 1)  
+            dat.setDate(datDate + 1)  
         })
 
     }
@@ -211,11 +218,8 @@ export class Calendar {
      * @param {Boolean} conditions true为下个月，false为上个月
      * @memberof Calendar
      */
-    setDateMonth(conditions) { 
-        conditions 
-            ? this.cacheDate.setMonth(this.cacheDate.getMonth() + 1) 
-            : this.cacheDate.setMonth(this.cacheDate.getMonth() - 1)
-
+    setDateMonth(conditions) {
+        this.cacheDate.setMonth(this.cacheDate.getMonth() + (conditions ? 1 : -1))
         this.renderDate(this.cacheDate)
     }
 
@@ -251,11 +255,11 @@ export class Calendar {
 
         const date = new Date(this.cacheDate)
         date.setDate(date.getDate() - this.cacheDate.getDate() + 1)     // 设置日期到第一天 
-        date.setDate(date.getDate() - date.getDay())           // 用第一天减去第一天的周数获得上月的的后(第一天周数)天
+        date.setDate(date.getDate() - date.getDay())                    // 用第一天减去第一天的周数获得上月的的后(第一天周数)天
         date.setDate(date.getDate() + current)
         
-        const preDate = this.multiDates[this.multiDates.length - 1],      // 获取第一个日期
-            interval = Math.abs(date - preDate) / 1000 / 60 / 60 / 24     // 用当前日期减去第一个日期获取跨度
+        const preDate = this.multiDates[this.multiDates.length - 1]         // 获取第一个日期
+        const interval = Math.abs(date - preDate) / 1000 / 60 / 60 / 24     // 用当前日期减去第一个日期获取跨度
 
         if (interval < this.min || interval > this.max) {
             this.multiCallBack()
@@ -297,18 +301,18 @@ export class Calendar {
      */
     btnHandle(btn) {
         if (btn) {
-            if (this.multiDates.length != 2) {
+            if (this.multiDates.length !== 2) {
                 alert('请选择时间')
                 return false
             }
             this.input.value = this.getDate()
             this.setToggle()
             this.callBack()     // 调用回调
-        } else {
-            this.multiDates = []
-            this.renderDate(this.cacheDate)
-            this.setToggle()
+            return false
         }
+        this.multiDates = []
+        this.renderDate(this.cacheDate)
+        this.setToggle()
     }
 
     /**
@@ -319,32 +323,35 @@ export class Calendar {
      */
     clickHandle(e) {
         const target = e.target
-        const multi = this.multi ? '' : target.className === 'white'
+        const nodeName = target.nodeName
+        const className = target.className
 
-        if (
-            target.nodeName === 'STRONG'    
-            || target.nodeName === 'SPAN' 
-            && multi
-        ) {
-            const conditions = { calendar_next: true, calendar_prev: false }[target.className],   // 根据className取值
-                conditions2 = parseInt(target.innerHTML) < 15     // 根据文本值取值
-
-            conditions ? this.setDateMonth(conditions) : this.setDateMonth(conditions2)
+        // 如果是月份按钮
+        if (nodeName === 'STRONG') {
+            const conditions = className === 'calendar-next' ? true : false
+            this.setDateMonth(conditions)
         } 
             
-        if (target.nodeName === 'INPUT') this.setToggle()
+        // 如果是日历input框
+        if (nodeName === 'INPUT') this.setToggle()
 
+        // 如果不是时间跨度日历组件
         if (!this.multi) {
-            if (target.nodeName === 'SPAN' && target.className !== 'white') this.setCurrent(target)
+            if (nodeName === 'SPAN' 
+                && className !== 'calendar-white'
+                && className !== 'calendar-week'
+            ) { 
+                this.setCurrent(target)
+            }
             return false
         } 
 
-        if (target.nodeName === 'SPAN') {
-            this.setMulti(target)
-        }
+        // 时间跨度处理
+        if (nodeName === 'SPAN') this.setMulti(target)
 
-        if (target.nodeName === 'BUTTON') {
-            const btn = { 'calendar-btnT': true, 'calendar-btnF': false }[target.className]
+        // 如果是按钮
+        if (nodeName === 'BUTTON') {
+            const btn = className === 'calendar-btnT' ? true : false
             this.btnHandle(btn)
         }
     }

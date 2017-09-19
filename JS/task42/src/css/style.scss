@@ -36,12 +36,12 @@ body {
     width: 350px; 
     height: 430px; 
     border: 2px solid $dark;
-    .calendar_prev {
+    .calendar-prev {
         float: left; 
         cursor: pointer;
     }
 
-    .calendar_next {
+    .calendar-next {
         float: right; 
         cursor: pointer;
     }
@@ -81,7 +81,7 @@ body {
     display: block;
 }
 
-.white {
+.calendar-white {
     color: $dark;
 }
 .dark {
