@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-26 17:21:21 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-27 20:44:29
+ * @Last Modified time: 2017-09-20 23:14:25
  */
 
 export class PathFinder {
@@ -47,14 +47,14 @@ export class PathFinder {
      * @memberof PathFinder
      */
     getAround(current) {
-        const x = current.x,
-            y = current.y
+        const x = current.x
+        const y = current.y
 
         return [
-            { x: x, y: y - 1 },
-            { x: x, y: y + 1 },
-            { x: x - 1, y: y },
-            { x: x + 1, y: y }
+            { x, y: y - 1 },
+            { x, y: y + 1 },
+            { x: x - 1, y },
+            { x: x + 1, y }
         ]
     }
 
@@ -66,8 +66,14 @@ export class PathFinder {
      * @memberof PathFinder
      */
     inList(point, list) {
+        const x = point.x
+        const y = point.y
+
         for (const i in list) {
-            if (point.x === list[i].x && point.y === list[i].y) {
+            const _x = list[i].x
+            const _y = list[i].y
+            
+            if (x === _x && y === _y) {
                 return true
             }
         }
@@ -84,9 +90,9 @@ export class PathFinder {
     search(start, target, wallMap) {
         this.wallMap = wallMap  // 初始化墙坐标对象
 
-        let openList = [],      // 开启列表
-            closeList = [],     // 关闭列表
-            cur = null          // 当前指针
+        let openList = []      // 开启列表
+        let closeList = []     // 关闭列表
+        let cur = null         // 当前指针
         
         // 初始化终点
         target = {
@@ -104,7 +110,7 @@ export class PathFinder {
         }
 
         closeList.push(start)   // 将起点压进closeList数组
-        cur = start     // 设置当前坐标为起点
+        cur = start             // 设置当前坐标为起点
         
         // 计算路径
         while (cur) {
@@ -139,8 +145,8 @@ export class PathFinder {
 
             openList.sort((a, b) => a.F - b.F)  // 按F值从小到大对open数组排序
 
-            let oMinF = openList[0],    // 存放open数组F值最小
-                aMinF = []              // 存放open数组F值最小并相同的集合
+            let oMinF = openList[0]     // 存放open数组F值最小
+            let aMinF = []              // 存放open数组F值最小并相同的集合
             
             // 查找open列表F值与cur的F值相同的节点，并压入aMinF数组
             openList.forEach(item => {  
@@ -149,7 +155,13 @@ export class PathFinder {
 
             // 如果最小F值有多个相同
             if (aMinF.length > 1) {
-                aMinF.forEach( item => item.D = Math.abs(parseInt(item.x) - parseInt(cur.x)) + Math.abs(parseInt(item.y) - parseInt(cur.y)) )
+                const curX = cur.x
+                const curY = cur.y
+
+                aMinF.forEach(item => {
+                    item.D = Math.abs(parseInt(item.x) - parseInt(curX)) + Math.abs(parseInt(item.y) - parseInt(curY))
+                })
+
                 aMinF.sort((a, b) => a.D - b.D)  // 根据D值进行排序
                 oMinF = aMinF[0]
             }
@@ -160,13 +172,11 @@ export class PathFinder {
 
             // 将cur从openList中删除
             openList.forEach((item, i) => {
-                if (item == cur) {
-                    openList.splice(i, 1)
-                }
+                if (item === cur) openList.splice(i, 1)
             })
 
             // 如果cur.H = 0找到终点，则停止循环
-            if (cur.H == 0) {
+            if (cur.H === 0) {
                 closeList.push(cur)
                 cur = null
             }
@@ -174,8 +184,8 @@ export class PathFinder {
 
         // 如果closeList存在将closeList数组转换成路径
         if (closeList.length) {
-            let lastPos = closeList[closeList.length - 1], 
-                path = []
+            let lastPos = closeList[closeList.length - 1]
+            let path = []
 
             while (lastPos) {
                 path.unshift(lastPos)
