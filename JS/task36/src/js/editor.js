@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-24 17:34:47 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-28 13:41:05
+ * @Last Modified time: 2017-09-20 23:17:59
  */
 
 import { addEvent, commands } from './function'
@@ -44,8 +44,8 @@ export class Editor {
      * @memberof Editor
      */
     update() {
-        let texts = this.textarea.value,
-            lines = texts.match(/\n/g)
+        let texts = this.textarea.value
+        let lines = texts.match(/\n/g)
 
         lines ? lines.push(1) : (lines = [1])
 
@@ -154,10 +154,8 @@ export class Editor {
      * @memberof Editor
      */
     setEvent() {
-        const self = this
-
-        addEvent(self.textarea, 'input', self.update.bind(self))
-        addEvent(self.textarea, 'scroll', self.scroll.bind(self))
+        addEvent(this.textarea, 'input', this.update.bind(this))
+        addEvent(this.textarea, 'scroll', this.scroll.bind(this))
     }
 }
 
