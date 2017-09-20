@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-27 17:54:24 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-28 13:11:07
+ * @Last Modified time: 2017-09-20 23:15:53
  */
 
 import { addEvent } from './function';
@@ -37,10 +37,9 @@ export class ImageReader {
      * @memberof ImageReader
      */
     imageLoad() {
-        const self = this,
-            image = new Image()
+        const image = new Image()
 
-        image.src = self.reader.result
+        image.src = this.reader.result
         addEvent(image, 'load', () => {
             const data = []
             this.ctx.drawImage(image, 0, 0, this.count, this.count)
