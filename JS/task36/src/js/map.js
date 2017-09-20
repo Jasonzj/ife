@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-23 14:59:41 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-28 13:38:21
+ * @Last Modified time: 2017-09-20 23:00:51
  */
 
 export class Map {
@@ -43,22 +43,23 @@ export class Map {
      * @memberof Map
      */
     drawMap(color) {
-        const self = this,
-            maxWidth = self.maxWidth + (self.width * 2)
-        
-        self.ctx.strokeStyle = color
-        self.ctx.lineWidth = 0.5
+        const ctx = this.ctx
+        const width = this.width
+        const maxWidth = this.maxWidth + (width * 2)
 
-        for (var i = self.width + 0.5; i < maxWidth; i += self.width) {
-            self.ctx.beginPath()
-            self.ctx.moveTo(i, self.width)
-            self.ctx.lineTo(i, maxWidth - self.width)
-            self.ctx.stroke()
+        ctx.strokeStyle = color
+        ctx.lineWidth = 0.5
 
-            self.ctx.beginPath()
-            self.ctx.moveTo(self.width, i)
-            self.ctx.lineTo(maxWidth - self.width, i)
-            self.ctx.stroke()
+        for (var i = width + 0.5; i < maxWidth; i += width) {
+            ctx.beginPath()
+            ctx.moveTo(i, width)
+            ctx.lineTo(i, maxWidth - width)
+            ctx.stroke()
+
+            ctx.beginPath()
+            ctx.moveTo(width, i)
+            ctx.lineTo(maxWidth - width, i)
+            ctx.stroke()
         }
     }
 
@@ -67,15 +68,14 @@ export class Map {
      * @memberof Map
      */
     drawCount() {
-        let self = this, 
-            x = self.width / 2,
-            y = x + 5,
-            num = 1
+        let x = this.width / 2
+        let y = x + 5
+        let num = 1
 
-        while (y < self.maxWidth) {
-            y = y + self.width;      
-            self.ctx.fillText(num, x, y);    //纵坐标的数字
-            self.ctx.fillText(num, y - 10, x + 5);  //横坐标的数字  
+        while (y < this.maxWidth) {
+            y = y + this.width;      
+            this.ctx.fillText(num, x, y);    //纵坐标的数字
+            this.ctx.fillText(num, y - 10, x + 5);  //横坐标的数字  
             num += 1;  
         }
     }
