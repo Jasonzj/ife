@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-25 15:05:05 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-28 13:14:35
+ * @Last Modified time: 2017-09-20 23:25:41
  */
 
 import { Robot } from './robot'
@@ -42,8 +42,8 @@ export class Control {
      * @memberof Control
      */
     run() {
-        let codes = this.editor.getCodes(),
-            parseError = false
+        let codes = this.editor.getCodes()
+        let parseError = false
         
         codes.forEach((str, i) => {
             if (str && this.editor.parse(str) === false) {   // 如果命令解析有误则高亮错误行
@@ -55,20 +55,21 @@ export class Control {
         if (!parseError) {  // 无错误
             let prev = 0
             codes.forEach((code, i) => {
-                if (code)
-                    this.editor.exec(this, code)    // 执行完拿到promise
-                    .then(() => {   // 正确执行命令处理
-                        if (i % 37 === 0) {     // 大于当页最大行更新滚动条到当前执行命令行
+                if (code) {
+                    this.editor.exec(this, code)        // 执行完拿到promise
+                    .then(() => {                       // 正确执行命令处理
+                        if (i % 37 === 0) {             // 大于当页最大行更新滚动条到当前执行命令行
                             this.editor.scrollTo(i)
                         }
                         this.editor.clearTag(prev)
                         this.editor.setTag(i, 'light')
                         prev = i
                     })
-                    .catch(()=> {   // 错误执行命令处理
+                    .catch(()=> {                       // 错误执行命令处理
                         this.editor.clearTag()
                         this.editor.setTag(i, 'warning')
                     })
+                }
             })
         }
         
@@ -117,11 +118,7 @@ export class Control {
                 func: func, 
                 params: params, 
                 callback(exception) {
-                    if (exception) {
-                        reject(exception)
-                    } else {
-                        resolve()
-                    }
+                    exception ? reject(exception) : resolve()
                 }
             })
         })
@@ -137,12 +134,12 @@ export class Control {
     taskLoop() {
         this.queueState = true
         const task = this.queue.shift()     // 模拟队列取出第一个任务
+        
         if (task) {
             try {
-                task.func.name === 'search' 
-                    ? task.func.apply(this, task.params)
-                    : task.func.apply(this.robot, task.params)
-                    
+                const self = task.func.name === 'search' ? this : this.robot
+                
+                task.func.apply(self, task.params)
                 task.callback()
                 setTimeout(this.taskLoop.bind(this), this.duration)
             } catch (e) {   
@@ -167,7 +164,7 @@ export class Control {
             this.robot.wallMap              // 墙对应坐标集合对象
         )
 
-        path.forEach(item => {  // 循环path路径依次运行
+        path.forEach(item => {              // 循环path路径依次运行
             this.runQueue(this.robot.goto, [[item.x, item.y], true])
         })
     }
@@ -251,8 +248,7 @@ export class Control {
      * @memberof Control
      */
     setEvent() {
-        const self = this       
-        addEvent(self.btnBox, 'click', self.clickHandle.bind(self))
-        addEvent(self.btnBox, 'change', self.changeHandle.bind(self))
+        addEvent(this.btnBox, 'click', this.clickHandle.bind(this))
+        addEvent(this.btnBox, 'change', this.changeHandle.bind(this))
     }
 }
