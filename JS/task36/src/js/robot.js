@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-23 22:56:18 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-06-28 13:36:49
+ * @Last Modified time: 2017-09-20 23:35:36
  */
 
 import { addEvent } from './function';
@@ -20,11 +20,11 @@ export class Robot {
         this.height = this.width                                        // robot高度
         this.ele = document.querySelector(selector)                     // robot Element
         this.parentNode = this.ele.parentNode
-        this.mapCount = count  // 地图格子
-        this.deg = 0    // 角度
-        this.x = 1      // X坐标
-        this.y = 1      // Y坐标
-        this.direction = 0  // 方向，0：bottom，1：left，2：top，3：right
+        this.mapCount = count   // 地图格子
+        this.deg = 0            // 角度
+        this.x = 1              // X坐标
+        this.y = 1              // Y坐标
+        this.direction = 0      // 方向，0：bottom，1：left，2：top，3：right
         this.wallMap = {}
 
         // 初始化robot宽高
@@ -52,11 +52,11 @@ export class Robot {
      */
     turn(direction) {
         const ROTATE_MAP = {    // 旋转对应表
-                0: {0: 0, 1: 90, 2: 180, 3: -90},  
-                1: {1: 0, 2: 90, 3: 180, 0: -90},
-                2: {2: 0, 3: 90, 0: 180, 1: -90},
-                3: {3: 0, 0: 90, 1: 180, 2: -90}
-            }
+            0: {0: 0, 1: 90, 2: 180, 3: -90},  
+            1: {1: 0, 2: 90, 3: 180, 0: -90},
+            2: {2: 0, 3: 90, 0: 180, 1: -90},
+            3: {3: 0, 0: 90, 1: 180, 2: -90}
+        }
         
         this.deg += ROTATE_MAP[this.direction][direction]   // 设置旋转角度
         this.direction = direction                          // 设置方向
@@ -118,7 +118,7 @@ export class Robot {
     goto(position, turn) {
         if (turn) {
             const pos = [position[0] - this.x, position[1] - this.y]
-            if (pos[0] > 0) {   // 右
+            if (pos[0] > 0) {           // 右
                 this.turn(3)
             } else if (pos[0] < 0) {    // 左
                 this.turn(1)
@@ -180,8 +180,7 @@ export class Robot {
      * @memberof Robot
      */
     checkPosition(position, string) {
-        if (    
-            position[0] < 1 
+        if (position[0] < 1 
             || position[1] < 1
             || position[0] > this.mapCount
             || position[1] > this.mapCount
@@ -203,9 +202,9 @@ export class Robot {
     checkPath(direction, step) {
         const offsetPosition = this.getOfficePosition(direction, 1)
 
-        for (var i = 1; i <= step; i++) {
-            var x = this.x + offsetPosition[0] * i
-            var y = this.y + offsetPosition[1] * i
+        for (let i = 1; i <= step; i++) {
+            const x = this.x + offsetPosition[0] * i
+            const y = this.y + offsetPosition[1] * i
 
             if (this.getWallMap([x, y])) {
                 throw `路上有墙移动不了[${x}, ${y}]`
@@ -240,15 +239,16 @@ export class Robot {
     setWall(position) {
         this.checkPosition(position, '超过建墙范围')  // 判断是否超过范围
 
+        const width = this.width
+        const height = this.height
         const wall = document.createElement('div')
         wall.className = 'wall'
-        wall.style.left = position[0] * this.width + 'px'
-        wall.style.top = position[1] * this.height + 'px'
-        wall.style.width = this.width + 'px'
-        wall.style.height = this.height + 'px'
+        wall.style.left = position[0] * height + 'px'
+        wall.style.top = position[1] * height + 'px'
+        wall.style.width = height + 'px'
+        wall.style.height = height + 'px'
 
         this.parentNode.appendChild(wall)
-
         this.wallMap[position] = wall   // 存进wallMap
     }
 
@@ -276,9 +276,12 @@ export class Robot {
      * @memberof Robot
      */
     splitWall() {
-        this.checkWall(this.getPosition(this.direction, 1), '拆墙')   // 判断前方有无墙无墙则抛出错误
-        this.parentNode.removeChild(this.wallMap[this.getPosition(this.direction, 1)])
-        delete this.wallMap[this.getPosition(this.direction, 1)]
+        const direction = this.direction
+        const getPosition = this.getPosition
+        
+        this.checkWall(getPosition(direction, 1), '拆墙')   // 判断前方有无墙无墙则抛出错误
+        this.parentNode.removeChild(this.wallMap[getPosition(direction, 1)])
+        delete this.wallMap[getPosition(direction, 1)]
     }
 
     /**
@@ -339,8 +342,8 @@ export class Robot {
      */
     keyHandel(e) {
         if (e.target.tagName === 'BODY') {
-            const direction = { 37: 1, 38: 2, 39: 3, 40: 0 }[e.keyCode],  // 对应方向
-                eventFunc = { 32: this.buildWall, 18: this.paintWall, 17: this.splitWall }[e.keyCode] // 对应方法
+            const direction = { 37: 1, 38: 2, 39: 3, 40: 0 }[e.keyCode]                                  // 对应方向
+            const eventFunc = { 32: this.buildWall, 18: this.paintWall, 17: this.splitWall }[e.keyCode]  // 对应方法
 
             eventFunc ? eventFunc.call(this, '#1abc9c') : this.keyMove(direction) 
         }
@@ -351,8 +354,7 @@ export class Robot {
      * @memberof Robot
      */
     setEvent() {
-        const self = this
-        addEvent(document, 'keydown', self.keyHandel.bind(self))
+        addEvent(document, 'keydown', this.keyHandel.bind(this))
     }
 
 }
