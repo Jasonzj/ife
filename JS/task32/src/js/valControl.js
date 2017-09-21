@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-06-22 22:01:00 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-09-14 22:16:08
+ * @Last Modified time: 2017-09-21 15:30:30
  */
 
 import { Validator } from './validation'
@@ -152,7 +152,6 @@ export class ValControl extends Validator{
         const prompt = this.prompt
 
         if (this.linkage) {     // 如果linkage存在着联动对应的input
-            console.log(this.validationQueue)
             this.validationQueue[this.linkage].blurHandel()
         }
 
