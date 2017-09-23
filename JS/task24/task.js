@@ -2,7 +2,7 @@
  * @Author: Jason 
  * @Date: 2017-05-31 21:04:43 
  * @Last Modified by: Jason
- * @Last Modified time: 2017-08-07 15:50:44
+ * @Last Modified time: 2017-09-23 14:22:10
  */
 
 /**
@@ -283,6 +283,7 @@
             var self = this;
 
             self.nodeState = false;    //设置当前节点选中状态
+            self.BFindex = 0;
 
             var divs = self.treeBox.getElementsByTagName('div');
             divs = [].slice.call(divs);
