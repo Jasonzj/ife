@@ -80,7 +80,7 @@ const form2 = {
         id: 'password2',
         label: '密码',
         type: 'text',
-        validators: ['isNowEmpty', 'lengthBetween:4:12'],
+        validators: ['isNowEmpty', 'lengthBetween:4:16'],
         success: '密码可用',
         fail: ['密码不能为空', '密码格式有误'],
         linkage: 'passwordMore2'
@@ -92,7 +92,7 @@ const form2 = {
         validators: ['isNowEmpty', 'isSame'],
         success: '密码一致',
         fail: ['不能为空', '密码不一致'],
-        compare: 'password2'
+        compare: 'password2',
     },
     phone: {
         id: 'phone',

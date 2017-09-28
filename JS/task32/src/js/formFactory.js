@@ -79,7 +79,7 @@ export class FormFactory {
             }
 
             const { input, p } = this.createElement(value, type, id)
-            this.createValControl(input, value, p, key)
+            this.createValControl(input, value, p, id)
         })
 
         form.id = config.id || ''
@@ -122,13 +122,13 @@ export class FormFactory {
         }
     }
 
-    createValControl(input, value, p, key) {
-        this.validationQueue[key] = new ValControl(input, value, p, this.validationQueue)  // 为input添加规则
+    createValControl(input, value, p, id) {
+        this.validationQueue[id] = new ValControl(input, value, p, this.validationQueue)  // 为input添加规则
         
         if (value.compare) {  // 如果有compare(比较属性)则给fn赋值并在创建好表单后执行
             this.fn.push(() => {
                 const compareInp = document.querySelector('#' + value.compare)
-                this.validationQueue[key] = new ValControl([input, compareInp], value, p, this.validationQueue)
+                this.validationQueue[id] = new ValControl([input, compareInp], value, p, this.validationQueue)
             })
         }
     }
