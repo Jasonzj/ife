@@ -75,9 +75,9 @@ class Calendar extends PureComponent {
         this.initDate(this.state.cacheDate)
     }
 
-    setCurrent = (target) => {
+    setCurrent = (e) => {
         const { setTime, hide, noToday } = this.props
-        const _cacheDate = this.state.cacheDate.setDate((target.innerHTML))
+        const _cacheDate = this.state.cacheDate.setDate((e.target.innerHTML))
         const cacheDate = new Date(_cacheDate)
         const date = new Date(_cacheDate)
 

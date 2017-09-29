@@ -11,7 +11,7 @@ const CalendarBody = ({
                 <span
                     key={day.id}
                     className={day.className}
-                    onClick={e => setCurrent(e.target)}
+                    onClick={setCurrent}
                 >
                     {day.text}
                 </span>

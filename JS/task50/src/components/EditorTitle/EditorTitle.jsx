@@ -10,8 +10,10 @@ class EditorTitle extends PureComponent {
         }
     }
 
-    editHandle = (target) => {
+    editHandle = (e) => {
+        const target = e.target
         const { disabled } = this.props
+
         if (disabled) {
             return
         }
@@ -25,9 +27,9 @@ class EditorTitle extends PureComponent {
         this.editInputFocus(edit)
     }
 
-    editTextHandle = (target) => {
+    editTextHandle = (e) => {
         const { setTitle } = this.props
-        const msg = target.value
+        const msg = e.target.value
         const func = setTitle.shift()
         func(...setTitle, msg)
     }
@@ -67,8 +69,8 @@ class EditorTitle extends PureComponent {
                         type="text"
                         defaultValue={message}
                         ref={node => this.node = node}
-                        onBlur={e => this.editHandle(e.target)}
-                        onChange={(e => this.editTextHandle(e.target))}
+                        onBlur={this.editHandle}
+                        onChange={this.editTextHandle}
                     />
                 }
             </div>
