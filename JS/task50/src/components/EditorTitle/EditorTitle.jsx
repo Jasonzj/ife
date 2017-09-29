@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import shallowCompare from 'utils/shallowCompare'
 
 class EditorTitle extends PureComponent {
     constructor() {
@@ -8,6 +9,10 @@ class EditorTitle extends PureComponent {
         this.state = {
             edit: false
         }
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return shallowCompare(nextProps, this.props) || shallowCompare(nextState, this.state)
     }
 
     editHandle = (e) => {

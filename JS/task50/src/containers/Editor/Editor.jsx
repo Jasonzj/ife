@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import shallowCompare from 'utils/shallowCompare'
 
 // component
 import EditorAdd from './subComponent/EditorAdd'
@@ -49,6 +50,10 @@ class Editor extends Component {
             chooses: [],
             endTime: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
         }
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return shallowCompare(nextProps, this.props) || shallowCompare(nextState, this.state)
     }
 
     componentWillMount() {
@@ -349,7 +354,6 @@ class Editor extends Component {
                     message={this.state.title}
                 />
                 <EditorMain
-                    test={this.state}
                     check={this.check}
                     checkData={this.data}
                     disabled={this.disabled}
