@@ -1,6 +1,5 @@
 import React from 'react'
 import { Provider } from 'react-redux'
-import Bundle from './bundle'
 import store from './store'
 import {
     HashRouter as Router,
@@ -14,18 +13,13 @@ import ShowLists from 'containers/ShowLists'
 import NotFound from 'containers/404'
 
 // lazyContainer
-import Create from 'bundle-loader?lazy&name=create-[name]!containers/Create/index'
-import Editor from 'bundle-loader?lazy&name=editor-[name]!containers/Editor/index'
+import asyncComponent from './AsyncComponent'
+
+const Create = asyncComponent(() => import(/* webpackChunkName: "Create" */ './containers/Create/index'))
+const Editor = asyncComponent(() => import(/* webpackChunkName: "Editor" */ './containers/Editor/index'))
 
 // scss
 import './app.scss'
-
-// router
-const createComponent = component => () => (
-    <Bundle load={component}>
-        { Component => <Component /> }
-    </Bundle>
-)
 
 // app
 const App = () => (
@@ -34,11 +28,11 @@ const App = () => (
             <HomeContainer>
                 <Switch>
                     <Route exact path="/" component={ShowLists} />
-                    <Route path="/create" component={createComponent(Create)} />
-                    <Route path="/newQuestion" component={createComponent(Editor)} />
-                    <Route path="/editor/:id" component={createComponent(Editor)} />
-                    <Route path="/check/:id" component={createComponent(Editor)} />
-                    <Route path="/data/:id" component={createComponent(Editor)} />
+                    <Route path="/create" component={Create} />
+                    <Route path="/newQuestion" component={Editor} />
+                    <Route path="/editor/:id" component={Editor} />
+                    <Route path="/check/:id" component={Editor} />
+                    <Route path="/data/:id" component={Editor} />
                     <Route component={NotFound} />
                 </Switch>
             </HomeContainer>
