@@ -14,7 +14,7 @@ const dialog = (state = data, action) => {
                 message: action.message
             }
 
-        default: 
+        default:
             return state
     }
 }
