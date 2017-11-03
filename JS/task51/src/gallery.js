@@ -4,7 +4,7 @@
  * @Author: Jason
  */
 
-;((root, factory) => {
+; ((root, factory) => {
     if (typeof define === 'function' && define.amd) {
         define(factory)
     } else if (typeof exports === 'object') {
@@ -21,20 +21,20 @@
             this.container = document.querySelector(containerSelector)
             this.options = {
                 layout: 2,                  // 布局类型
-                waterfallColumn: 4,         // 瀑布流布局列数
-                fullScreen: false,           // 是否全屏
-                puzzleHeight: 600,          // 拼图高度
-                barrelMinHeight: 200,       // 木桶布局最小行高
+                waterfallColumn: 4,                  // 瀑布流布局列数
+                fullScreen: false,              // 是否全屏
+                puzzleHeight: 600,                // 拼图高度
+                barrelMinHeight: 200,                // 木桶布局最小行高
                 gutter: { x: 10, y: 10 },   // 木桶布局间距
                 images: [],                 // 图片数组
             }
-            this.galleryBox = null      // 图片容器
+            this.galleryBox = null         // 图片容器
             this.columns = []           // 瀑布流列数组
             this.nPhotos = []           // 木桶布局未加入行数组
-            this.nPhotosWrap = null     // 木桶布局未加入行容器
-            this.resizeTimer = null     // 木桶布局自适应timer
-            this.onresize = false       // 监听容器宽度
-            this.imgIndex = 0           // 图片索引
+            this.nPhotosWrap = null         // 木桶布局未加入行容器
+            this.resizeTimer = null         // 木桶布局自适应timer
+            this.onresize = false        // 监听容器宽度
+            this.imgIndex = 0            // 图片索引
             this.cacheWidth = this.container.clientWidth  // 图片宽度缓存
 
             this.init()
@@ -397,7 +397,7 @@
                 console.error('图片间距必须大于等于0')
                 return false
             }
-            this.options.gutter = {x, y}
+            this.options.gutter = { x, y }
             this.updateLayout()
             return true
         }
@@ -506,7 +506,7 @@
         setThumbnail(index) {
             const wrap = document.querySelector('.gallery-view-list')
             const imgs = this.getImageDomElements()
-            let wrapImgs =  Array.from(wrap.querySelectorAll('img'))
+            let wrapImgs = Array.from(wrap.querySelectorAll('img'))
             let len = imgs.length
 
             // 最多显示5张缩略图
@@ -534,7 +534,7 @@
             }
 
             // 刷新缩略图列表图片
-            for (let i = 0; i < len; i++, imageIndex++) {
+            for (let i = 0; i < len; i++ , imageIndex++) {
                 const currentImg = wrapImgs[i]
                 currentImg.className = ''
                 currentImg.src = imgs[imageIndex].firstChild.src
