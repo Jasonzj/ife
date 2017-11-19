@@ -11,25 +11,25 @@
      * [strategies 验证策略对象]
      */
     const strategies = {
-        isNowEmpty(value, errorMsg, trueMsg) {
+        isNowEmpty(value, errorMsg, successMsg) {
             if (value === '') return { msg: errorMsg, correct: false }
         },
-        lengthBetween(value, length, length2, errorMsg, trueMsg) {
+        lengthBetween(value, length, length2, errorMsg, successMsg) {
             const len = getValueLen(value)
             if (!(len >= length && len <= length2)) return { msg: errorMsg, correct: false }
-            else return { msg: trueMsg, correct: true }
+            else return { msg: successMsg, correct: true }
         },
-        isSame(value, value2, errorMsg, trueMsg) {
+        isSame(value, value2, errorMsg, successMsg) {
             if (value !== value2) return { msg: errorMsg, correct: false }
-            else return { msg: trueMsg, correct: true }
+            else return { msg: successMsg, correct: true }
         },
-        isMail(value, errorMsg, trueMsg) {
+        isMail(value, errorMsg, successMsg) {
             if (!/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/.test(value)) return { msg: errorMsg, correct: false }
-            else return { msg: trueMsg, correct: true }
+            else return { msg: successMsg, correct: true }
         },
-        isMobile(value, errorMsg, trueMsg) {
+        isMobile(value, errorMsg, successMsg) {
             if (!/(^1[3|5|8][0-9]{9}$)/.test(value)) return { msg: errorMsg, correct: false }
-            else return { msg: trueMsg, correct: true }
+            else return { msg: successMsg, correct: true }
         }
     }
 
@@ -53,7 +53,7 @@
             for (let i = 0, rule; rule = rules[i++];) {                
                 const strategyAry = rule.strategy.split(':'),   // 拆分验证条件
                     errorMsg = rule.errorMsg,   // 错误的文本
-                    trueMsg = rule.trueMsg      // 正确的文本
+                    successMsg = rule.successMsg      // 正确的文本
                                 
                 self.cache.push(function(ele) {         // 将验证函数添加到缓存数组中           
                     const strategy = strategyAry.shift()    // 截取验证策略
@@ -67,7 +67,7 @@
                     }    
 
                     strategyAry.push(errorMsg)
-                    strategyAry.push(trueMsg)
+                    strategyAry.push(successMsg)
                     
                     return strategies[strategy].apply(dom, strategyAry)
                 })
@@ -100,11 +100,11 @@
                 validator.add([obj.inputName, obj.inputName2], [{
                     strategy: obj.strategy,
                     errorMsg: obj.errorMsg,
-                    trueMsg: obj.trueMsg
+                    successMsg: obj.successMsg
                 }, {
                     strategy: obj.strategy2,
                     errorMsg: obj.errorMsg2,
-                    trueMsg: obj.trueMsg
+                    successMsg: obj.successMsg
                 }])
                 const msg = validator.start()
                 return msg
@@ -164,7 +164,7 @@
             strategy2: 'lengthBetween:4:16',
             errorMsg: '名称不能为空',
             errorMsg2: '名称格式有误',
-            trueMsg: '名称格式正确'
+            successMsg: '名称格式正确'
     })
     validatorFunc.add({
             inputName: registerForm.password,
@@ -172,7 +172,7 @@
             strategy2: 'lengthBetween:4:16',
             errorMsg: '密码不能为空',
             errorMsg2: '密码格式有误',
-            trueMsg: '密码可用'
+            successMsg: '密码可用'
     })
     validatorFunc.add({
             inputName: registerForm.passwordMore,
@@ -181,7 +181,7 @@
             strategy2: 'isSame',
             errorMsg: '不能为空',
             errorMsg2: '两次密码不一致',
-            trueMsg: '两次密码一致'
+            successMsg: '两次密码一致'
     })
     validatorFunc.add({
             inputName: registerForm.mail,
@@ -189,7 +189,7 @@
             strategy2: 'isMail',
             errorMsg: '邮箱不能为空',
             errorMsg2: '邮箱格式有误',
-            trueMsg: '邮箱格式正确'
+            successMsg: '邮箱格式正确'
     })
     validatorFunc.add({
             inputName: registerForm.phone,
@@ -197,7 +197,7 @@
             strategy2: 'isMobile',
             errorMsg: '手机号码不能为空',
             errorMsg2: '手机格式有误',
-            trueMsg: '手机格式正确'
+            successMsg: '手机格式正确'
     })
 
     /**

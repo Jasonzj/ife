@@ -5,8 +5,8 @@
  * @Last Modified time: 2017-09-21 15:30:30
  */
 
-import { Validator } from './validation'
-import { addEvent } from './function';
+import Validator from './validation'
+import { addEvent } from './function'
 
 /**
  * [ValControl 验证器控制]
@@ -14,7 +14,7 @@ import { addEvent } from './function';
  * @class ValControl
  * @extends {Validator}
  */
-export class ValControl extends Validator{
+export default class ValControl extends Validator{
 
     /**
      * Creates an instance of ValControl.
@@ -53,8 +53,10 @@ export class ValControl extends Validator{
         }
 
         this.setEvent(btn)
-        if (!btn) this.setRule()
-        
+        if (!btn) {
+            this.setRule()
+            this.add()      // 初始化验证规则
+        }
     }
 
     /**
@@ -88,7 +90,7 @@ export class ValControl extends Validator{
                 break;
         }
 
-        this.rulesVals = rulsValue;
+        this.rulesVals = rulsValue
     }
 
     /**
@@ -99,7 +101,7 @@ export class ValControl extends Validator{
      *     {
      *       strategy: validator,
      *       errorMsg: fail,
-     *       trueMsg: this.success
+     *       successMsg: this.success
      *     },
      *     {
      *      ...
@@ -107,40 +109,21 @@ export class ValControl extends Validator{
      * ]
      * @memberof ValControl
      */
-    getValidators(data) {
+    getValidators() {
         const arr = []
+        const data = this.validators
 
-        for (let i = 0, l = data.length; i < l; i++) {
-            const validator = data[i],
-                fail = this.fails[i]
-                
+        data.forEach((strategy, i) => {
+            const fail = this.fails[i]
+
             arr.push({
-                strategy: validator,
+                strategy,
                 errorMsg: fail,
-                trueMsg: this.success
+                successMsg: this.success
             })
-        }
-
+        })
+            
         return arr
-    }
-
-    /**
-     * [setValidator 设置验证规则]
-     * @returns {Object} 验证结果对象
-     * {
-     *     msg: '验证成功xxx',
-     *     correct: true
-     * }
-     * @memberof ValControl
-     */
-    setValidator() {
-        this.cache = []     // 清空规则缓存队列
-
-        const data = this.getValidators(this.validators)
-
-        this.add([this.ele, this.ele2], data)   // 添加规则
-
-        return this.start()  // 验证规则并返回结果
     }
 
     /**
@@ -148,7 +131,7 @@ export class ValControl extends Validator{
      * @memberof ValControl
      */
     blurHandel() {
-        const msg = this.setValidator()
+        const msg = this.start()  // 验证规则并返回结果
         const prompt = this.prompt
 
         if (this.linkage) {     // 如果linkage存在着联动对应的input

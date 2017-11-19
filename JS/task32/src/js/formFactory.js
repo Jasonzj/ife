@@ -5,7 +5,7 @@
  * @Last Modified time: 2017-09-14 22:31:22
  */
 
-import { ValControl } from './valControl'
+import ValControl from './valControl'
 
 /**
  * [FormFactory 表单生成工厂]
@@ -123,14 +123,15 @@ export class FormFactory {
     }
 
     createValControl(input, value, p, id) {
-        this.validationQueue[id] = new ValControl(input, value, p, this.validationQueue)  // 为input添加规则
-        
         if (value.compare) {  // 如果有compare(比较属性)则给fn赋值并在创建好表单后执行
             this.fn.push(() => {
                 const compareInp = document.querySelector('#' + value.compare)
                 this.validationQueue[id] = new ValControl([input, compareInp], value, p, this.validationQueue)
             })
+            return
         }
+        
+        this.validationQueue[id] = new ValControl(input, value, p, this.validationQueue)  // 为input添加规则
     }
 
     /**
