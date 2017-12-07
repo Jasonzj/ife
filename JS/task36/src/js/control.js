@@ -8,9 +8,9 @@
 import { Robot } from './robot'
 import { Editor } from './editor'
 import { addEvent } from './function'
-import { Promise } from './promise';
-import { PathFinder } from './pathfinding';
-import { ImageReader } from './imageReader';
+import { Promise } from './promise'
+import { PathFinder } from './pathfinding'
+import { ImageReader } from './imageReader'
 
 export class Control {
     /**

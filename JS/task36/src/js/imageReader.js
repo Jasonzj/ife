@@ -5,8 +5,8 @@
  * @Last Modified time: 2017-09-20 23:15:53
  */
 
-import { addEvent } from './function';
-import { Promise  } from './promise';
+import { addEvent } from './function'
+import { Promise  } from './promise'
 
 export class ImageReader {
     constructor(count) {
