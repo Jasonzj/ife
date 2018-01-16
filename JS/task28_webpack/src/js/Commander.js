@@ -265,10 +265,10 @@ const DC = (() => {
 
         data[message.id] = {
             id: message.id,
+            power: message.power,
             engine: message.engine,
             energy: message.energy,
             commond: message.commond,
-            power: message.power
         }
 
         if (message.commond == 'destroy') {
