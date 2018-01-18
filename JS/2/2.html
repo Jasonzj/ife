@@ -46,20 +46,20 @@
 //            });
 //        })();
 
-        var aqiUl = document.getElementById('aqi-list');
-        var city = aqiData.filter(function (a) { return a[1] > 60; });
-        city.sort(function (a,b) { return b[1] - a[1]; });
+        var aqiUl = document.getElementById('aqi-list')
+        var city = aqiData.filter(function (a) { return a[1] > 60 })
+        city.sort(function (a,b) { return b[1] - a[1] })
         (function write(){
             city.forEach(function(v,i,a) {
-                var li = document.createElement('li');
-                aqiUl.append(li);
-                li.innerHTML = "第" + (i + 1) + "名" + v[0] + "," + v[1];
-            });
-        })();
+                var li = document.createElement('li')
+                aqiUl.append(li)
+                li.innerHTML = "第" + (i + 1) + "名" + v[0] + "," + v[1]
+            })
+        })()
 
 
 
-    })();
+    })()
 
 </script>
 </body>
