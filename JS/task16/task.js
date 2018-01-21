@@ -78,9 +78,9 @@
 	 * aqiData = {
 	 *    "北京": 90,
 	 *    "上海": 40
-	 * };
+	 * }
 	 */
-	 // var aqiData = {};
+	 // var aqiData = {}
 	var aqiData = store.fetch("aqiData")
 	console.log(aqiData)
 	/**
@@ -138,7 +138,7 @@
 	  var tr = item.parentElement.parentElement
 	  var strCity = tr.children[0].innerHTML
 	  delete aqiData[strCity]
-	  store.save('aqiData', aqiData);
+	  store.save('aqiData', aqiData)
 	  renderAqiList()
 	}
 
