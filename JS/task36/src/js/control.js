@@ -109,7 +109,7 @@ export class Control {
      * [runQueue 运行命令队列]
      * @param {Function} func 要运行的函数
      * @param {Array} params 要运行的函数的参数数组
-     * @return {Promise} 每行命令的promise
+     * @return {Promise} 每行命令的promise对象
      * @memberof Control
      */
     runQueue(func, params) {
