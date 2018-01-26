@@ -32,38 +32,38 @@
 		<script>
 		(function () {
 			function $ (id) {
-				return document.getElementById(id);
+				return document.getElementById(id)
 			}
 
-			var data = [];
+			var data = []
 
-			var insertBtn = $('insertBtn');
-			var searchBtn = $('searchBtn');
-			var textArea = $('textArea');
-			var searchInput = $('searchInput');
+			var insertBtn = $('insertBtn')
+			var searchBtn = $('searchBtn')
+			var textArea = $('textArea')
+			var searchInput = $('searchInput')
 
 			function render (str) {
 				$('output').innerHTML = data.map(function (e) {
 					if (str !== undefined) {
-						e = e.replace(new RegExp(str, "g"), "<span class='result'>" + str + "</span>");
+						e = e.replace(new RegExp(str, "g"), "<span class='result'>" + str + "</span>")
 					}
-					return "<div>"+ e +"</div>";
-				}).join('');
+					return "<div>"+ e +"</div>"
+				}).join('')
 			}
 			
 			insertBtn.onclick = function () {
-				var str = textArea.value.trim();
+				var str = textArea.value.trim()
 				data = str.split(/[^0-9a-zA-Z\u4e00-\u9fa5]+/).filter(function (e) {
-					return e.length !== 0;
-				});
-				render();
+					return e.length !== 0
+				})
+				render()
 			}
 
 			searchBtn.onclick = function () {
-				var str = searchInput.value.trim();
-				render(str);
+				var str = searchInput.value.trim()
+				render(str)
 			}
-		}());
+		}())
 		</script>
 </body>
 </html>
