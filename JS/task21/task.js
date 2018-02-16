@@ -8,7 +8,7 @@
  * @param {String} - button 按钮的id, 可选， 如果不选默认触发键盘事件
  */
 
-(function() {
+;(function() {
 
 	//私有属性
 	var Regular = /[^0-9a-zA-Z\u4e00-\u9fa5]+/
