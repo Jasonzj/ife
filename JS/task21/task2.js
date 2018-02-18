@@ -5,7 +5,7 @@
  */
 
 
- (function () {
+ ;(function () {
 
  	//简化查询
  	function $ (id) {
