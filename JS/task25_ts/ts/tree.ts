@@ -12,7 +12,7 @@ class JTree {
     data: any
     root: Element
     btnBox: Element
-    searchInp: Element
+    searchInp: HTMLInputElement
     treeArr: Element[]
     titleClassName: string
     wrapClassName: string
