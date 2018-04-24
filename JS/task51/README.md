@@ -2,7 +2,7 @@
 
 一个使用JS编写的图片库
 
-[查看Demo](http://www.jasonzj.me/gallery/index.html)
+[查看Demo](http://www.jasonzj.xyz/gallery/index.html)
 
 ## 使用方法
 1. 在HTML中引入gallery.min.js和gallery.min.css(压缩文件已使用babel编译成es5语法)
